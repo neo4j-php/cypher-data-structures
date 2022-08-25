@@ -29,11 +29,6 @@ jobs:
               shell: bash
             - run: composer test:coverage:xml
               shell: bash
-            - uses: codecov/codecov-action@v2
-              with:
-                  files: coverage.xml
-                  fail_ci_if_error: true
-                  verbose: true
             - uses: paambaati/codeclimate-action@v3.0.0
               env:
                   CC_TEST_REPORTER_ID: 203d856fbc3ebebe66cc94cccde4429973298c7fb919df64a1557850cc9c8345
