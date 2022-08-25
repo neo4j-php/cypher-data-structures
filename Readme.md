@@ -5,6 +5,7 @@
 
 [![Unit Tests](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-unit-test.yml/badge.svg)](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-unit-test.yml)
 [![Mutant Test](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-mutant-test.yml/badge.svg)](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-mutant-test.yml)
+[![Leak Tests](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-leak-test.yml/badge.svg)](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-leak-test.yml)
 [![PHPStan](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-phpstan.yml/badge.svg)](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-phpstan.yml)
 [![Psalm](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-psalm.yml/badge.svg)](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-psalm.yml)
 [![Code Style](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-code-style.yml/badge.svg)](https://github.com/Syndesi/cypher-data-structures/actions/workflows/ci-code-style.yml)
