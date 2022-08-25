@@ -1,5 +1,5 @@
 [![GitHub](https://img.shields.io/github/license/Syndesi/cypher-data-structures)](https://github.com/Syndesi/cypher-data-structures/blob/main/LICENSE)
-![Packagist PHP Version Support (specify version)](https://img.shields.io/packagist/php-v/syndesi/cypher-data-structures/dev-refactor)
+![Packagist PHP Version Support (specify version)](https://img.shields.io/packagist/php-v/syndesi/cypher-data-structures/dev-main)
 ![Packagist Version](https://img.shields.io/packagist/v/syndesi/cypher-data-structures)
 ![Packagist Downloads](https://img.shields.io/packagist/dm/syndesi/cypher-data-structures)
 
