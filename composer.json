@@ -1,0 +1,59 @@
+{
+    "name": "syndesi/cypher-data-structures",
+    "description": "Provides generic cypher data structures for PHP",
+    "type": "library",
+    "homepage": "https://syndesi.github.io/neo4j-sync-bundle/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Syndesi (Sören Klein)",
+            "email": "soerenklein98@gmail.com",
+            "homepage": "https://syndesi.dev",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "graph",
+        "neo4j",
+        "cypher"
+    ],
+    "require": {
+        "php": "^8.1",
+        "wikibase-solutions/php-cypher-dsl": "^4.4",
+        "illuminate/contracts": "^9.25"
+    },
+    "autoload": {
+        "psr-4": {
+            "Syndesi\\CypherDataStructures\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Syndesi\\CypherDataStructures\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "vimeo/psalm": "^4.23",
+        "psalm/plugin-symfony": "^3.1",
+        "boesing/psalm-plugin-stringf": "^1.1",
+        "phpstan/phpstan": "^1.6",
+        "symfony/dotenv": "^6.0",
+        "phpunit/php-code-coverage": "^9.2",
+        "infection/infection": "^0.26.10",
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "test": "php ./vendor/phpunit/phpunit/phpunit",
+        "test:coverage:xml": "export XDEBUG_MODE=coverage && php ./vendor/phpunit/phpunit/phpunit --coverage-clover coverage.xml",
+        "test:coverage:html": "export XDEBUG_MODE=coverage && php ./vendor/phpunit/phpunit/phpunit --coverage-html ./tmp",
+        "test:mutant": "export XDEBUG_MODE=coverage && php vendor/infection/infection/bin/infection --threads=4",
+        "cs:list": "php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes --dry-run ./src",
+        "cs:fix": "php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes",
+        "psalm": "php vendor/bin/psalm --show-info=true --no-cache",
+        "psalm:fix": "php vendor/bin/psalm --alter --issues=MissingReturnType,InvalidReturnType,InvalidNullableReturnType,MismatchingDocblockParamType",
+        "phpstan": "vendor/bin/phpstan",
+        "yml:lint": "docker run --rm -it -v $(pwd):/data cytopia/yamllint .",
+        "markdown:lint": "docker run --rm -v $(pwd):/work tmknom/markdownlint '**/*.md' --ignore vendor"
+    }
+}
