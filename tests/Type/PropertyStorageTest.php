@@ -43,6 +43,9 @@ class PropertyStorageTest extends TestCase
 
     public function testInvalidPropertyStorage(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $propertyStorage = new PropertyStorage();
 
         $this->expectExceptionMessage("Syndesi\CypherDataStructures\Contract\PropertyNameInterface', got type 'stdClass'");

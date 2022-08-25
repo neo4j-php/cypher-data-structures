@@ -47,6 +47,9 @@ class PropertyNameTest extends TestCase
      */
     public function testInvalidPropertyName(string $propertyName): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $this->expectExceptionMessage(sprintf(
             "Expected string '%s' to follow regex for camel case with optional underscore (_) at beginning, '/^_?[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/'",
             $propertyName
