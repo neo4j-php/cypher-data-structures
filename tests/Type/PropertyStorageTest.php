@@ -6,60 +6,60 @@ namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
+use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\PropertyStorage;
 
-class NodeLabelStorageTest extends TestCase
+class PropertyStorageTest extends TestCase
 {
-    public function testValidNodeLabelStorage(): void
+    public function testValidPropertyStorage(): void
     {
-        $nodeLabelStorage = new NodeLabelStorage();
-        $this->assertSame(0, $nodeLabelStorage->count());
+        $propertyStorage = new PropertyStorage();
+        $this->assertSame(0, $propertyStorage->count());
 
-        $nodeLabelA = new NodeLabel('NodeLabelA');
-        $nodeLabelB = new NodeLabel('NodeLabelB');
-        $nodeLabelC = new NodeLabel('NodeLabelC');
+        $propertyNameA = new PropertyName('_propertyNameA');
+        $propertyNameB = new PropertyName('_propertyNameB');
+        $propertyNameC = new PropertyName('_propertyNameC');
 
-        $nodeLabelStorage->attach($nodeLabelA, 123);
-        $nodeLabelStorage->attach($nodeLabelB, 'some string');
-        $nodeLabelStorage->attach($nodeLabelC, ['some' => 'array']);
+        $propertyStorage->attach($propertyNameA, 123);
+        $propertyStorage->attach($propertyNameB, 'some string');
+        $propertyStorage->attach($propertyNameC, ['some' => 'array']);
 
-        $this->assertSame(3, $nodeLabelStorage->count());
+        $this->assertSame(3, $propertyStorage->count());
 
         // test access with same object
-        $this->assertSame(123, $nodeLabelStorage->offsetGet($nodeLabelA));
+        $this->assertSame(123, $propertyStorage->offsetGet($propertyNameA));
 
         // test access with different object
-        $newNodeLabelB = new NodeLabel('NodeLabelB');
-        $this->assertSame('some string', $nodeLabelStorage->offsetGet($newNodeLabelB));
+        $newPropertyNameB = new PropertyName('_propertyNameB');
+        $this->assertSame('some string', $propertyStorage->offsetGet($newPropertyNameB));
 
         // test current
-        foreach ($nodeLabelStorage as $key) {
-            $this->assertInstanceOf(NodeLabelInterface::class, $key);
+        foreach ($propertyStorage as $key) {
+            $this->assertInstanceOf(PropertyNameInterface::class, $key);
         }
     }
 
-    public function testInvalidNodeLabelStorage(): void
+    public function testInvalidPropertyStorage(): void
     {
         if (false !== getenv("LEAK")) {
             $this->markTestSkipped();
         }
-        $nodeLabelStorage = new NodeLabelStorage();
+        $propertyStorage = new PropertyStorage();
 
-        $this->expectExceptionMessage("Syndesi\CypherDataStructures\Contract\NodeLabelInterface', got type 'stdClass'");
+        $this->expectExceptionMessage("Syndesi\CypherDataStructures\Contract\PropertyNameInterface', got type 'stdClass'");
         $this->expectException(InvalidArgumentException::class);
-        $nodeLabelStorage->attach(new stdClass());
+        $propertyStorage->attach(new stdClass());
     }
 
-    public function testDuplicateNodeLabelStorage(): void
+    public function testDuplicatePropertyStorage(): void
     {
-        $nodeLabelStorage = new NodeLabelStorage();
-        $nodeLabelA = new NodeLabel('SomeNodeLabel');
-        $nodeLabelB = new NodeLabel('SomeNodeLabel');
-        $nodeLabelStorage->attach($nodeLabelA, 'initial value');
-        $nodeLabelStorage->attach($nodeLabelB, 'updated value');
-        $this->assertSame('updated value', $nodeLabelStorage->offsetGet($nodeLabelA));
+        $propertyStorage = new PropertyStorage();
+        $propertyNameA = new PropertyName('_somePropertyName');
+        $propertyNameB = new PropertyName('_somePropertyName');
+        $propertyStorage->attach($propertyNameA, 'initial value');
+        $propertyStorage->attach($propertyNameB, 'updated value');
+        $this->assertSame('updated value', $propertyStorage->offsetGet($propertyNameA));
     }
 }
