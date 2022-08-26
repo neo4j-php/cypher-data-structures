@@ -16,7 +16,6 @@ class PropertyNameTest extends TestCase
             ['valid'],
             ['validPropertyName'],
             ['_valid'],
-            ['validPropertyName'],
             ['validProperty123Name'],
         ];
     }
