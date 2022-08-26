@@ -2,3 +2,4 @@
 - [Getting Started](/getting_started.md)
 - [Properties](/properties.md)
 - [Node](/node.md)
+- [Relation](/relation.md)
