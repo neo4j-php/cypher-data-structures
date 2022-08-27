@@ -62,4 +62,29 @@ class PropertyStorageTest extends TestCase
         $propertyStorage->attach($propertyNameB, 'updated value');
         $this->assertSame('updated value', $propertyStorage->offsetGet($propertyNameA));
     }
+
+    public function testIsEqualTo(): void
+    {
+        $propertyNameA = new PropertyName('propertyA');
+        $propertyNameB = new PropertyName('propertyB');
+        $propertyNameC = new PropertyName('propertyC');
+
+        $propertyStorageA = new PropertyStorage();
+        $propertyStorageA->attach($propertyNameA, 'some value');
+
+        $propertyStorageB = new PropertyStorage();
+        $propertyStorageB->attach($propertyNameA, 'some value');
+
+        $propertyStorageC = new PropertyStorage();
+        $propertyStorageC->attach($propertyNameB, 'some value');
+        $propertyStorageC->attach($propertyNameC, 'some value');
+
+        $this->assertTrue($propertyStorageA->isEqualTo($propertyStorageB));
+        $this->assertTrue($propertyStorageB->isEqualTo($propertyStorageA));
+
+        $this->assertFalse($propertyStorageA->isEqualTo($propertyStorageC));
+        $this->assertFalse($propertyStorageC->isEqualTo($propertyStorageA));
+
+        $this->assertFalse($propertyStorageA->isEqualTo(new stdClass()));
+    }
 }

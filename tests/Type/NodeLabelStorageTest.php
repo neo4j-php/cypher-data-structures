@@ -62,4 +62,29 @@ class NodeLabelStorageTest extends TestCase
         $nodeLabelStorage->attach($nodeLabelB, 'updated value');
         $this->assertSame('updated value', $nodeLabelStorage->offsetGet($nodeLabelA));
     }
+
+    public function testIsEqualTo(): void
+    {
+        $nodeLabelA = new NodeLabel('LabelA');
+        $nodeLabelB = new NodeLabel('LabelB');
+        $nodeLabelC = new NodeLabel('LabelC');
+
+        $nodeLabelStorageA = new NodeLabelStorage();
+        $nodeLabelStorageA->attach($nodeLabelA);
+
+        $nodeLabelStorageB = new NodeLabelStorage();
+        $nodeLabelStorageB->attach($nodeLabelA, 'ignored value');
+
+        $nodeLabelStorageC = new NodeLabelStorage();
+        $nodeLabelStorageC->attach($nodeLabelB);
+        $nodeLabelStorageC->attach($nodeLabelC);
+
+        $this->assertTrue($nodeLabelStorageA->isEqualTo($nodeLabelStorageB));
+        $this->assertTrue($nodeLabelStorageB->isEqualTo($nodeLabelStorageA));
+
+        $this->assertFalse($nodeLabelStorageA->isEqualTo($nodeLabelStorageC));
+        $this->assertFalse($nodeLabelStorageC->isEqualTo($nodeLabelStorageA));
+
+        $this->assertFalse($nodeLabelStorageA->isEqualTo(new stdClass()));
+    }
 }

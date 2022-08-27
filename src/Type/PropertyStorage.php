@@ -8,6 +8,7 @@ use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
 use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 class PropertyStorage extends SplObjectStorage implements PropertyStorageInterface
 {
@@ -26,5 +27,14 @@ class PropertyStorage extends SplObjectStorage implements PropertyStorageInterfa
     public function current(): PropertyNameInterface
     {
         return parent::current();
+    }
+
+    public function isEqualTo(mixed $element): bool
+    {
+        if (!($element instanceof PropertyStorageInterface)) {
+            return false;
+        }
+
+        return ToCypherHelper::propertyStorageToCypherPropertyString($this) === ToCypherHelper::propertyStorageToCypherPropertyString($element);
     }
 }

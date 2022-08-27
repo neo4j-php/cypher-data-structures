@@ -8,6 +8,7 @@ use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInterface
 {
@@ -26,5 +27,14 @@ class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInter
     public function current(): NodeLabelInterface
     {
         return parent::current();
+    }
+
+    public function isEqualTo(mixed $element): bool
+    {
+        if (!($element instanceof NodeLabelStorageInterface)) {
+            return false;
+        }
+
+        return ToCypherHelper::nodeLabelStorageToCypherLabelString($this) === ToCypherHelper::nodeLabelStorageToCypherLabelString($element);
     }
 }

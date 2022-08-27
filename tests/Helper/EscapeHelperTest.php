@@ -37,6 +37,9 @@ class EscapeHelperTest extends TestCase
 
     public function testInvalidEscapeCharacter(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $this->expectExceptionMessage('Escape character must be of length 1, got \'--\'');
         $this->expectException(InvalidArgumentException::class);
         EscapeHelper::escapeCharacter('--', 'some input');

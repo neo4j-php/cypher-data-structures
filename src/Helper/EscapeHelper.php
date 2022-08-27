@@ -41,6 +41,7 @@ class EscapeHelper
         );
         if (null === $escapedString) {
             // @codeCoverageIgnoreStart
+            // @infection-ignore-all
             throw new Exception(preg_last_error_msg());
             // @codeCoverageIgnoreEnd
         }

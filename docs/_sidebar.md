@@ -1,5 +1,6 @@
 - [Home](/)
 - [Getting Started](/getting_started.md)
-- [Properties](/properties.md)
+- [Property](/property.md)
 - [Node](/node.md)
 - [Relation](/relation.md)
+- [Helper](/helper.md)

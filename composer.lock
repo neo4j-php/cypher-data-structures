@@ -4,240 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "141a764edc94a0fe1ec1755a7c545ea8",
-    "packages": [
-        {
-            "name": "illuminate/contracts",
-            "version": "v9.26.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/contracts.git",
-                "reference": "0d1dd1a7e947072319f2e641cc50081219606502"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/0d1dd1a7e947072319f2e641cc50081219606502",
-                "reference": "0d1dd1a7e947072319f2e641cc50081219606502",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.0.2",
-                "psr/container": "^1.1.1|^2.0.1",
-                "psr/simple-cache": "^1.0|^2.0|^3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "9.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Contracts\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Contracts package.",
-            "homepage": "https://laravel.com",
-            "support": {
-                "issues": "https://github.com/laravel/framework/issues",
-                "source": "https://github.com/laravel/framework"
-            },
-            "time": "2022-08-18T14:18:13+00:00"
-        },
-        {
-            "name": "psr/container",
-            "version": "2.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/container.git",
-                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/c71ecc56dfe541dbd90c5360474fbc405f8d5963",
-                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Container\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common Container Interface (PHP FIG PSR-11)",
-            "homepage": "https://github.com/php-fig/container",
-            "keywords": [
-                "PSR-11",
-                "container",
-                "container-interface",
-                "container-interop",
-                "psr"
-            ],
-            "support": {
-                "issues": "https://github.com/php-fig/container/issues",
-                "source": "https://github.com/php-fig/container/tree/2.0.2"
-            },
-            "time": "2021-11-05T16:47:00+00:00"
-        },
-        {
-            "name": "psr/simple-cache",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/764e0b3939f5ca87cb904f570ef9be2d78a07865",
-                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\SimpleCache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interfaces for simple caching",
-            "keywords": [
-                "cache",
-                "caching",
-                "psr",
-                "psr-16",
-                "simple-cache"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
-            },
-            "time": "2021-10-29T13:26:27+00:00"
-        },
-        {
-            "name": "wikibase-solutions/php-cypher-dsl",
-            "version": "4.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/neo4j-php/php-cypher-dsl.git",
-                "reference": "e4cb18a346f6097c573e487790b29878ebe3364c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/neo4j-php/php-cypher-dsl/zipball/e4cb18a346f6097c573e487790b29878ebe3364c",
-                "reference": "e4cb18a346f6097c573e487790b29878ebe3364c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-openssl": "*",
-                "php": ">=7.4"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.0",
-                "infection/infection": "^0.25.5",
-                "phpunit/phpunit": "~9.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "WikibaseSolutions\\CypherDSL\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Marijn van Wezel",
-                    "email": "marijn@wikibase.nl",
-                    "homepage": "https://wikibase-solutions.com/author/marijn",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Wout Gevaert",
-                    "email": "wout@wikibase.nl",
-                    "homepage": "https://wikibase-solutions.com/author/wout",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Ghlen Nagels",
-                    "email": "ghlen@nagels.tech",
-                    "homepage": "https://nagels.tech",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Lars Akkermans",
-                    "email": "lars@wikibase.nl",
-                    "homepage": "https://wikibase-solutions.com/author/lars",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A query builder for the Cypher query language written in PHP",
-            "homepage": "https://wikibase-solutions.com",
-            "keywords": [
-                "DSL",
-                "builder",
-                "cypher",
-                "graph",
-                "neo4j",
-                "query",
-                "querybuilder"
-            ],
-            "support": {
-                "email": "info@wikibase-solutions.com",
-                "issues": "https://github.com/WikibaseSolutions/php-cypher-dsl/issues",
-                "source": "https://github.com/WikibaseSolutions/php-cypher-dsl",
-                "wiki": "https://github.com/WikibaseSolutions/php-cypher-dsl/wiki"
-            },
-            "time": "2022-06-21T10:59:06+00:00"
-        }
-    ],
+    "content-hash": "b7d68c7600bdd2ba0aee129b6d769677",
+    "packages": [],
     "packages-dev": [
         {
             "name": "amphp/amp",
@@ -2728,6 +2496,59 @@
                 "source": "https://github.com/php-fig/cache/tree/3.0.0"
             },
             "time": "2021-02-03T23:26:27+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/2.0.2"
+            },
+            "time": "2021-11-05T16:47:00+00:00"
         },
         {
             "name": "psr/event-dispatcher",

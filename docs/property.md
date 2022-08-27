@@ -1,4 +1,4 @@
-# Properties
+# Property
 
 Properties are defined as three separate types:
 
@@ -11,7 +11,7 @@ Properties are defined as three separate types:
 - **PropertyValue**: This library does not provide a specific type, it uses `mixed` internally.  
   Check out [Neo4j's official documentation regarding property
   types](https://neo4j.com/docs/cypher-manual/current/syntax/values/#property-types) as well as the [supported types in
-  Laudi's Neo4j client library](https://github.com/neo4j-php/neo4j-php-client#accessing-the-results) for real world
+  Laudis' Neo4j client library](https://github.com/neo4j-php/neo4j-php-client#accessing-the-results) for real world
   limitations.
 
 - **PropertyStorage**: Basically an array which supports `PropertyName` as keys and `mixed` for values. Uses

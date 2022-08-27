@@ -10,7 +10,7 @@ Nodes are entities which contain the following attributes:
   `Syndesi\CypherDataStructures\Contract\NodeLabelInterface`.
 
 - **Properties**: Zero or more properties, which are composed of one `PropertyName` for the key and a mixed property value.
-  Within the node they are stored as an array-like storage. for more information see [properties](properties.md).
+  Within the node they are stored as an array-like storage. For more information see [property](property.md).
 
 - **Identifiers**: The names of zero or more properties which uniquely identify the node. The referenced properties must
   contain a value.  
