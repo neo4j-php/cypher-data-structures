@@ -48,6 +48,7 @@ interface NodeInterface extends Stringable, IsEqualToInterface
 
     public function getIdentifier(PropertyNameInterface $identifier): mixed;
 
+    // todo return list of identifiers? return list of identifiers + current values?
     public function getIdentifiers(): PropertyStorageInterface;
 
     public function removeIdentifier(PropertyNameInterface $identifier): self;
