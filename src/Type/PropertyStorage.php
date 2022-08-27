@@ -6,9 +6,10 @@ namespace Syndesi\CypherDataStructures\Type;
 
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
+use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 
-class PropertyStorage extends SplObjectStorage
+class PropertyStorage extends SplObjectStorage implements PropertyStorageInterface
 {
     /**
      * @throws InvalidArgumentException

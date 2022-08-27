@@ -13,7 +13,7 @@ use Serializable;
  * Classes which implement this interface should extend from SplObjectStorage,
  * see https://www.php.net/manual/en/class.splobjectstorage.
  */
-interface PropertyStorageInterface extends Countable, Iterator, Serializable, ArrayAccess
+interface NodeLabelStorageInterface extends Countable, Iterator, Serializable, ArrayAccess
 {
-    public function current(): PropertyNameInterface;
+    public function current(): NodeLabelInterface;
 }

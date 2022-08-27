@@ -6,9 +6,10 @@ namespace Syndesi\CypherDataStructures\Type;
 
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
+use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 
-class NodeLabelStorage extends SplObjectStorage
+class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInterface
 {
     /**
      * @throws InvalidArgumentException
