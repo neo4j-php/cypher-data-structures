@@ -188,41 +188,42 @@ class Node implements NodeInterface
     // todo refactor with ToCypherHelper-methods?
     public function isEqualTo(mixed $element): bool
     {
-        if (!($element instanceof NodeInterface)) {
-            return false;
-        }
-
-        // compare labels
-        if ($this->nodeLabelStorage->count() !== $element->getNodeLabels()->count()) {
-            return false;
-        }
-        foreach ($this->nodeLabelStorage as $key) {
-            if (!$element->hasNodeLabel($key)) {
-                return false;
-            }
-        }
-
-        // compare identifying properties
-        if ($this->identifierStorage->count() !== $element->getIdentifiers()->count()) {
-            return false;
-        }
-        foreach ($this->identifierStorage as $key) {
-            if (!$element->hasIdentifier($key)) {
-                return false;
-            }
-            $identifier = $this->getIdentifier($key);
-            $elementIdentifier = $element->getIdentifier($key);
-            if ($identifier instanceof IsEqualToInterface) {
-                if (!$identifier->isEqualTo($elementIdentifier)) {
-                    return false;
-                }
-            } else {
-                if ($identifier !== $elementIdentifier) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return false;
+//        if (!($element instanceof NodeInterface)) {
+//            return false;
+//        }
+//
+//        // compare labels
+//        if ($this->nodeLabelStorage->count() !== $element->getNodeLabels()->count()) {
+//            return false;
+//        }
+//        foreach ($this->nodeLabelStorage as $key) {
+//            if (!$element->hasNodeLabel($key)) {
+//                return false;
+//            }
+//        }
+//
+//        // compare identifying properties
+//        if ($this->identifierStorage->count() !== $element->getIdentifiers()->count()) {
+//            return false;
+//        }
+//        foreach ($this->identifierStorage as $key) {
+//            if (!$element->hasIdentifier($key)) {
+//                return false;
+//            }
+//            $identifier = $this->getIdentifier($key);
+//            $elementIdentifier = $element->getIdentifier($key);
+//            if ($identifier instanceof IsEqualToInterface) {
+//                if (!$identifier->isEqualTo($elementIdentifier)) {
+//                    return false;
+//                }
+//            } else {
+//                if ($identifier !== $elementIdentifier) {
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        return true;
     }
 }
