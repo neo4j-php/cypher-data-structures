@@ -18,6 +18,8 @@ Nodes are entities which contain the following attributes:
 
 - **Relations**: A list of relations which either start or end at the node.
 
+!> Relations are currently being [discussed on GitHub](https://github.com/Syndesi/cypher-data-structures/discussions/1).
+
 ## Examples
 
 ```php

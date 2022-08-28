@@ -16,6 +16,8 @@ Relations are entities which contain the following attributes:
   must contain a value.  
   When removing identifying properties without removing the identifier first, an exception is triggered.
 
+!> Relations are currently being [discussed on GitHub](https://github.com/Syndesi/cypher-data-structures/discussions/1).
+
 ## Examples
 
 ```php

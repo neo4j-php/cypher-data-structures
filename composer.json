@@ -52,6 +52,7 @@
         "psalm:fix": "php vendor/bin/psalm --alter --issues=MissingReturnType,InvalidReturnType,InvalidNullableReturnType,MismatchingDocblockParamType",
         "phpstan": "vendor/bin/phpstan",
         "yml:lint": "docker run --rm -it -v $(pwd):/data cytopia/yamllint .",
-        "markdown:lint": "docker run --rm -v $(pwd):/work tmknom/markdownlint '**/*.md' --ignore vendor"
+        "markdown:lint": "docker run --rm -v $(pwd):/work tmknom/markdownlint '**/*.md' --ignore vendor",
+        "docs:serve": "docker run --rm -d -p 3000:3000 -v $(pwd)/docs:/docs sujaykumarh/docsify serve"
     }
 }
