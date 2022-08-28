@@ -3,4 +3,6 @@
 - [Property](/property.md)
 - [Node](/node.md)
 - [Relation](/relation.md)
+- [Index](/type.index.md)
+- [Constraint](/constraint.md)
 - [Helper](/helper.md)
