@@ -15,3 +15,7 @@
 .markdown-section p.tip::before {
     background-color: var(--theme-color);
 }
+
+.sidebar-nav li {
+    font-size: 14px;
+}
