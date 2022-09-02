@@ -6,7 +6,7 @@ namespace Syndesi\CypherDataStructures\Contract;
 
 use Stringable;
 
-interface NodeInterface extends Stringable, IsEqualToInterface
+interface NodeInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface
 {
     // node label
 
@@ -22,40 +22,17 @@ interface NodeInterface extends Stringable, IsEqualToInterface
 
     public function clearNodeLabels(): self;
 
-    // node properties
-
-    public function addProperty(PropertyNameInterface $propertyName, mixed $value): self;
-
-    public function addProperties(PropertyStorageInterface $propertyStorage): self;
-
-    public function hasProperty(PropertyNameInterface $propertyName): bool;
-
-    public function getProperty(PropertyNameInterface $propertyName): mixed;
-
-    public function getProperties(): PropertyStorageInterface;
-
-    public function removeProperty(PropertyNameInterface $propertyName): self;
-
-    public function clearProperties(): self;
-
-    // node identifier
-
-    public function addIdentifier(PropertyNameInterface $identifier): self;
-
-    public function addIdentifiers(PropertyStorageInterface $identifies): self;
-
-    public function hasIdentifier(PropertyNameInterface $identifier): bool;
-
-    public function getIdentifier(PropertyNameInterface $identifier): mixed;
-
-    // todo return list of identifiers? return list of identifiers + current values?
-    public function getIdentifiers(): PropertyStorageInterface;
-
-    public function removeIdentifier(PropertyNameInterface $identifier): self;
-
-    public function clearIdentifier(): self;
-
     // relations
 
-    // todo
+    public function addRelation(RelationInterface $relation): self;
+
+    public function addRelations(WeakRelationStorageInterface $weakRelationStorage): self;
+
+    public function hasRelation(RelationInterface $relation): bool;
+
+    public function getRelations(): WeakRelationStorageInterface;
+
+    public function removeRelation(RelationInterface $relation): self;
+
+    public function clearRelations(): self;
 }

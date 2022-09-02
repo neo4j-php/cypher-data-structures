@@ -8,15 +8,17 @@ use Syndesi\CypherDataStructures\Contract\IsEqualToInterface;
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
-use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
-use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
+use Syndesi\CypherDataStructures\Contract\RelationInterface;
+use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
 class Node implements NodeInterface
 {
+    use PropertiesTrait;
+
     private NodeLabelStorageInterface $nodeLabelStorage;
-    private PropertyStorageInterface $propertyStorage;
-    private PropertyStorageInterface $identifierStorage;
+    private WeakRelationStorageInterface $weakRelationStorage;
 
     /**
      * @throws InvalidArgumentException
@@ -24,8 +26,8 @@ class Node implements NodeInterface
     public function __construct(
     ) {
         $this->nodeLabelStorage = new NodeLabelStorage();
-        $this->propertyStorage = new PropertyStorage();
-        $this->identifierStorage = new PropertyStorage();
+        $this->weakRelationStorage = new WeakRelationStorage();
+        $this->initPropertiesTrait();
     }
 
     public function __toString()
@@ -76,111 +78,44 @@ class Node implements NodeInterface
         return $this;
     }
 
-    // node properties
+    // relations
 
-    public function addProperty(PropertyNameInterface $propertyName, mixed $value): self
+    public function addRelation(RelationInterface $relation): self
     {
-        $this->propertyStorage->attach($propertyName, $value);
+        $this->weakRelationStorage->attach($relation);
 
         return $this;
     }
 
-    public function addProperties(PropertyStorageInterface $propertyStorage): self
+    public function addRelations(WeakRelationStorageInterface $weakRelationStorage): self
     {
-        foreach ($propertyStorage as $key) {
-            $this->propertyStorage->attach($key, $propertyStorage->offsetGet($key));
+        foreach ($weakRelationStorage as $key) {
+            $this->weakRelationStorage->attach($key);
         }
 
         return $this;
     }
 
-    public function hasProperty(PropertyNameInterface $propertyName): bool
+    public function hasRelation(RelationInterface $relation): bool
     {
-        return $this->propertyStorage->contains($propertyName);
+        return $this->weakRelationStorage->contains($relation);
     }
 
-    public function getProperty(PropertyNameInterface $propertyName): mixed
+    public function getRelations(): WeakRelationStorageInterface
     {
-        return $this->propertyStorage->offsetGet($propertyName);
+        return $this->weakRelationStorage;
     }
 
-    public function getProperties(): PropertyStorageInterface
+    public function removeRelation(RelationInterface $relation): self
     {
-        return $this->propertyStorage;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function removeProperty(PropertyNameInterface $propertyName): self
-    {
-        if ($this->identifierStorage->contains($propertyName)) {
-            throw new InvalidArgumentException(sprintf("Unable to remove identifying property with name '%s' - remove identifier first", (string) $propertyName));
-        }
-        $this->propertyStorage->detach($propertyName);
+        $this->weakRelationStorage->detach($relation);
 
         return $this;
     }
 
-    public function clearProperties(): self
+    public function clearRelations(): self
     {
-        if ($this->identifierStorage->count() > 0) {
-            throw new InvalidArgumentException("Unable to remove all properties because identifiers are still defined");
-        }
-        $this->propertyStorage = new PropertyStorage();
-
-        return $this;
-    }
-
-    // node identifier
-
-    public function addIdentifier(PropertyNameInterface $identifier): self
-    {
-        if (!$this->propertyStorage->contains($identifier)) {
-            throw new InvalidArgumentException(sprintf("Unable to add identifier '%s' because there exists no property with the same name", (string) $identifier));
-        }
-        $this->identifierStorage->attach($identifier);
-
-        return $this;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function addIdentifiers(PropertyStorageInterface $identifies): self
-    {
-        foreach ($identifies as $identifier) {
-            $this->addIdentifier($identifier);
-        }
-
-        return $this;
-    }
-
-    public function hasIdentifier(PropertyNameInterface $identifier): bool
-    {
-        return $this->identifierStorage->contains($identifier);
-    }
-
-    public function getIdentifier(PropertyNameInterface $identifier): mixed
-    {
-        return $this->propertyStorage->offsetGet($identifier);
-    }
-
-    public function getIdentifiers(): PropertyStorageInterface
-    {
-        return $this->identifierStorage;
-    }
-
-    public function removeIdentifier(PropertyNameInterface $identifier): self
-    {
-        $this->identifierStorage->detach($identifier);
-
-        return $this;
-    }
-
-    public function clearIdentifier(): self
-    {
-        $this->identifierStorage = new PropertyStorage();
+        $this->weakRelationStorage = new WeakRelationStorage();
 
         return $this;
     }

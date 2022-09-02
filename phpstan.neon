@@ -5,4 +5,4 @@ parameters:
   checkGenericClassInNonGenericObjectType: false
   ignoreErrors:
 #    - '#Method [a-zA-Z0-9\\_:()]+ should return static\([a-zA-Z0-9\\_]+\) but returns [a-zA-Z0-9\\_]+\.#'
-    - '#Method [a-zA-Z0-9\\_]+::current\(\) should return [a-zA-Z0-9\\_]+ but returns object\.#'
+#    - '#Method [a-zA-Z0-9\\_]+::current\(\) should return [a-zA-Z0-9\\_]+ but returns object\.#'

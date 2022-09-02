@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type;
 
+use LogicException;
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
 use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
@@ -26,7 +27,12 @@ class PropertyStorage extends SplObjectStorage implements PropertyStorageInterfa
 
     public function current(): PropertyNameInterface
     {
-        return parent::current();
+        $element = parent::current();
+        if (!($element instanceof PropertyNameInterface)) {
+            throw new LogicException('Internal type missmatch');
+        }
+
+        return $element;
     }
 
     public function isEqualTo(mixed $element): bool
