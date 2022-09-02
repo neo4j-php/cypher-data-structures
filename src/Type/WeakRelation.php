@@ -35,8 +35,13 @@ class WeakRelation implements WeakRelationInterface
     public function get(): ?RelationInterface
     {
         $element = $this->relation->get();
+        if (null === $element) {
+            return null;
+        }
         if (!($element instanceof RelationInterface)) {
+            // @codeCoverageIgnoreStart
             throw new LogicException('Internal type missmatch');
+            // @codeCoverageIgnoreEnd
         }
 
         return $element;

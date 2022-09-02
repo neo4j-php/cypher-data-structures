@@ -30,7 +30,9 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
     {
         $element = parent::current();
         if (!($element instanceof WeakRelationInterface)) {
+            // @codeCoverageIgnoreStart
             throw new LogicException('Internal type missmatch');
+            // @codeCoverageIgnoreEnd
         }
 
         return $element;
