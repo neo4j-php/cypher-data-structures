@@ -24,6 +24,12 @@ Nodes are entities which contain the following attributes:
 
 ```php
 use \Syndesi\CypherDataStructures\Type\NodeLabel;
+use \Syndesi\CypherDataStructures\Type\Node;
+use \Syndesi\CypherDataStructures\Type\PropertyName;
 
-$nodeLabel = new NodeLabel("SomeNode");
+$node = new Node();
+$node
+    ->addNodeLabel(new NodeLabel("SomeNode"))
+    ->addProperty(new PropertyName("id"), 1234)
+    ->addIdentifier(new PropertyName("id"));
 ```

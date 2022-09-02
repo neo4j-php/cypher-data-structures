@@ -22,6 +22,25 @@ Relations are entities which contain the following attributes:
 
 ```php
 use \Syndesi\CypherDataStructures\Type\RelationType;
+use \Syndesi\CypherDataStructures\Type\NodeLabel;
+use \Syndesi\CypherDataStructures\Type\Node;
+use \Syndesi\CypherDataStructures\Type\PropertyName;
+use \Syndesi\CypherDataStructures\Type\Relation;
+use \Syndesi\CypherDataStructures\Type\RelationType;
 
-$relationType = new RelationType('SOME_TYPE');
+$nodeA = new Node();
+$nodeA
+    ->addNodeLabel(new NodeLabel("NodeA"));
+
+$nodeB = new Node();
+$nodeB
+    ->addNodeLabel(new NodeLabel("NodeB"));
+
+$relation = new Relation();
+$relation
+    ->setRelationType(new RelationType("SOME_TYPE"))
+    ->setStartNode($nodeA)
+    ->setEndNode($nodeB)
+    ->addProperty(new PropertyName("id"), 1234)
+    ->addIdentifier(new PropertyName("id"));
 ```
