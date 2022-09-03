@@ -9,7 +9,6 @@ use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
@@ -20,9 +19,6 @@ class Node implements NodeInterface
     private NodeLabelStorageInterface $nodeLabelStorage;
     private WeakRelationStorageInterface $weakRelationStorage;
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function __construct(
     ) {
         $this->nodeLabelStorage = new NodeLabelStorage();

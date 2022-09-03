@@ -7,7 +7,6 @@ namespace Syndesi\CypherDataStructures\Type;
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
@@ -21,9 +20,6 @@ class Relation implements RelationInterface
 
     private ?RelationTypeInterface $relationType = null;
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function __construct(
     ) {
         $this->initPropertiesTrait();

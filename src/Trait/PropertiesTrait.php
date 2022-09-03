@@ -78,6 +78,9 @@ trait PropertiesTrait
 
     // identifier
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function addIdentifier(PropertyNameInterface $identifier): self
     {
         if (!$this->propertyStorage->contains($identifier)) {
