@@ -10,19 +10,19 @@ interface RelationInterface extends Stringable, IsEqualToInterface, HasPropertie
 {
     // start node
 
-    public function setStartNode(NodeInterface $node): self;
+    public function setStartNode(?NodeInterface $node): self;
 
-    public function getStartNode(): NodeInterface;
+    public function getStartNode(): ?NodeInterface;
 
     // end node
 
-    public function setEndNode(NodeInterface $node): self;
+    public function setEndNode(?NodeInterface $node): self;
 
-    public function getEndNode(): NodeInterface;
+    public function getEndNode(): ?NodeInterface;
 
     // relation type
 
-    public function setRelationType(RelationTypeInterface $relationType): self;
+    public function setRelationType(?RelationTypeInterface $relationType): self;
 
-    public function getRelationType(): RelationTypeInterface;
+    public function getRelationType(): ?RelationTypeInterface;
 }

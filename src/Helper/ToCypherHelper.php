@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Helper;
 
+use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
+use Syndesi\CypherDataStructures\Contract\RelationInterface;
 
 class ToCypherHelper
 {
@@ -67,5 +69,69 @@ class ToCypherHelper
             ":%s",
             implode(':', array_merge($internalNodeLabels, $publicNodeLabels))
         );
+    }
+
+    public static function nodeToCypherString(?NodeInterface $node, bool $identifying = false): ?string
+    {
+        if (null === $node) {
+            return null;
+        }
+        $parts = [];
+        $cypherLabelString = self::nodeLabelStorageToCypherLabelString($node->getNodeLabels());
+        if ('' !== $cypherLabelString) {
+            $parts[] = $cypherLabelString;
+        }
+        $propertyStorage = $node->getProperties();
+        if ($identifying) {
+            $propertyStorage = $node->getIdentifiersWithPropertyValues();
+        }
+        $propertyString = self::propertyStorageToCypherPropertyString($propertyStorage);
+        if ('' !== $propertyString) {
+            $parts[] = '{'.$propertyString.'}';
+        }
+
+        return '('.implode(' ', $parts).')';
+    }
+
+    public static function nodeToIdentifyingCypherString(?NodeInterface $node): ?string
+    {
+        return self::nodeToCypherString($node, true);
+    }
+
+    public static function relationToCypherString(RelationInterface $relation, bool $identifying = false, bool $withNodes = true): string
+    {
+        $parts = [];
+        if ($withNodes) {
+            $parts[] = self::nodeToIdentifyingCypherString($relation->getStartNode()) ?? '()';
+        }
+
+        $relationParts = [];
+        if ($relation->getRelationType()) {
+            $relationParts[] = ':'.$relation->getRelationType()->getRelationType();
+        }
+        $propertyStorage = $relation->getProperties();
+        if ($identifying) {
+            $propertyStorage = $relation->getIdentifiersWithPropertyValues();
+        }
+        $propertyString = self::propertyStorageToCypherPropertyString($propertyStorage);
+        if ('' !== $propertyString) {
+            $relationParts[] = '{'.$propertyString.'}';
+        }
+        $relationParts = '['.implode(' ', $relationParts).']';
+        if ($withNodes) {
+            $relationParts = '-'.$relationParts.'->';
+        }
+
+        $parts[] = $relationParts;
+        if ($withNodes) {
+            $parts[] = self::nodeToIdentifyingCypherString($relation->getEndNode()) ?? '()';
+        }
+
+        return implode('', $parts);
+    }
+
+    public static function relationToIdentifyingCypherString(RelationInterface $relation, bool $withNodes = true): string
+    {
+        return self::relationToCypherString($relation, true, $withNodes);
     }
 }

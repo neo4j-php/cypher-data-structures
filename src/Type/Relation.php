@@ -14,11 +14,11 @@ class Relation implements RelationInterface
 {
     use PropertiesTrait;
 
-    private NodeInterface $startNode;
+    private ?NodeInterface $startNode = null;
 
-    private NodeInterface $endNode;
+    private ?NodeInterface $endNode = null;
 
-    private RelationTypeInterface $relationType;
+    private ?RelationTypeInterface $relationType = null;
 
     /**
      * @throws InvalidArgumentException
@@ -34,36 +34,36 @@ class Relation implements RelationInterface
         return '';
     }
 
-    public function getStartNode(): NodeInterface
+    public function getStartNode(): ?NodeInterface
     {
         return $this->startNode;
     }
 
-    public function setStartNode(NodeInterface $node): RelationInterface
+    public function setStartNode(?NodeInterface $node): RelationInterface
     {
         $this->startNode = $node;
 
         return $this;
     }
 
-    public function getEndNode(): NodeInterface
+    public function getEndNode(): ?NodeInterface
     {
         return $this->endNode;
     }
 
-    public function setEndNode(NodeInterface $node): RelationInterface
+    public function setEndNode(?NodeInterface $node): RelationInterface
     {
         $this->endNode = $node;
 
         return $this;
     }
 
-    public function getRelationType(): RelationTypeInterface
+    public function getRelationType(): ?RelationTypeInterface
     {
         return $this->relationType;
     }
 
-    public function setRelationType(RelationTypeInterface $relationType): RelationInterface
+    public function setRelationType(?RelationTypeInterface $relationType): RelationInterface
     {
         $this->relationType = $relationType;
 
