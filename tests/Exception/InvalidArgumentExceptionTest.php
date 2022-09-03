@@ -25,4 +25,11 @@ class InvalidArgumentExceptionTest extends TestCase
         $this->assertSame("Expected string 'c' to follow regex for b, 'a'", $exception->getMessage());
         $this->assertInstanceOf(CypherDataStructureException::class, $exception);
     }
+
+    public function testCreateForAlreadyNullReference(): void
+    {
+        $exception = InvalidArgumentException::createForAlreadyNullReference('a');
+        $this->assertSame("Reference of type 'a' is already null.", $exception->getMessage());
+        $this->assertInstanceOf(CypherDataStructureException::class, $exception);
+    }
 }

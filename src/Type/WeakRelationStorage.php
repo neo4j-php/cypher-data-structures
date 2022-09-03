@@ -21,9 +21,12 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
         if (!($object instanceof WeakRelationInterface)) {
             throw InvalidArgumentException::createForTypeMismatch(WeakRelationInterface::class, get_class($object));
         }
+        if ($object->get() === null) {
+            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
+        }
 
-        // todo change to unique identifying string
-        return '';
+        /** @psalm-suppress PossiblyNullArgument */
+        return ToCypherHelper::relationToIdentifyingCypherString($object->get());
     }
 
     /**
@@ -45,8 +48,12 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
             return false;
         }
 
-        // todo
-//        return ToCypherHelper::nodeLabelStorageToCypherLabelString($this) === ToCypherHelper::nodeLabelStorageToCypherLabelString($element);
-        return false;
+        foreach ($this as $key) {
+            if (!$element->offsetExists($key)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

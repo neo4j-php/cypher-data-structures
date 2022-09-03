@@ -24,4 +24,9 @@ class InvalidArgumentException extends CypherDataStructureException
             $regex
         ));
     }
+
+    public static function createForAlreadyNullReference(string $type): self
+    {
+        return new InvalidArgumentException(sprintf("Reference of type '%s' is already null.", $type));
+    }
 }

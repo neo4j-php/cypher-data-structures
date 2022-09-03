@@ -124,6 +124,7 @@ class ToCypherHelperTest extends TestCase
         $this->assertSame("[:SOME_TYPE {id: '123', somethingElse: 'some non id value'}]", ToCypherHelper::relationToCypherString($relation, withNodes: false));
         $this->assertSame("(:StartNode {id: '1234'})-[:SOME_TYPE {id: '123'}]->(:EndNode {id: '4321'})", ToCypherHelper::relationToIdentifyingCypherString($relation));
         $this->assertSame("[:SOME_TYPE {id: '123'}]", ToCypherHelper::relationToIdentifyingCypherString($relation, false));
+        $this->assertSame("[:SOME_TYPE {id: '123'}]", ToCypherHelper::relationToIdentifyingCypherString($relation, false));
     }
 
     public function testEmptyRelationToCypherString(): void
