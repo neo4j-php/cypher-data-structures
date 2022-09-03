@@ -8,6 +8,7 @@ use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
 class Relation implements RelationInterface
@@ -30,8 +31,7 @@ class Relation implements RelationInterface
 
     public function __toString()
     {
-        // todo
-        return '';
+        return ToCypherHelper::relationToCypherString($this);
     }
 
     public function getStartNode(): ?NodeInterface
@@ -72,7 +72,10 @@ class Relation implements RelationInterface
 
     public function isEqualTo(mixed $element): bool
     {
-        // TODO: Implement isEqualTo() method.
-        return false;
+        if (!($element instanceof RelationInterface)) {
+            return false;
+        }
+
+        return ToCypherHelper::relationToIdentifyingCypherString($this) === ToCypherHelper::relationToIdentifyingCypherString($element);
     }
 }

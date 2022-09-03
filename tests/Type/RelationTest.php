@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Type\Node;
 use Syndesi\CypherDataStructures\Type\NodeLabel;
@@ -120,5 +121,39 @@ class RelationTest extends TestCase
         $relation = new Relation();
         $relation->setEndNode($node);
         $this->assertSame($node, $relation->getEndNode());
+    }
+
+    public function testToString(): void
+    {
+        $relation = new Relation();
+        $relation->setRelationType(new RelationType('TYPE'));
+        $relation->addProperty(new PropertyName('id'), 'A');
+        $relation->addProperty(new PropertyName('value'), 'A');
+        $this->assertSame("()-[:TYPE {id: 'A', value: 'A'}]->()", (string) $relation);
+    }
+
+    public function testIsEqual(): void
+    {
+        $relationA = new Relation();
+        $relationA->setRelationType(new RelationType('TYPE_A'));
+        $relationA->addProperty(new PropertyName('id'), 'A');
+        $relationA->addProperty(new PropertyName('value'), 'A');
+
+        $relationB = new Relation();
+        $relationB->setRelationType(new RelationType('TYPE_A'));
+        $relationB->addProperty(new PropertyName('id'), 'A');
+        $relationB->addProperty(new PropertyName('value'), 'B');
+
+        $relationC = new Relation();
+        $relationC->setRelationType(new RelationType('TYPE_C'));
+        $relationC->addProperty(new PropertyName('id'), 'C');
+        $relationC->addProperty(new PropertyName('value'), 'C');
+
+        $this->assertTrue($relationA->isEqualTo($relationB));
+        $this->assertTrue($relationB->isEqualTo($relationA));
+        $this->assertFalse($relationA->isEqualTo($relationC));
+        $this->assertFalse($relationC->isEqualTo($relationA));
+        $this->assertFalse($relationA->isEqualTo(new stdClass()));
+        $this->assertFalse($relationA->isEqualTo('some string'));
     }
 }

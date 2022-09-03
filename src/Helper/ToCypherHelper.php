@@ -107,6 +107,7 @@ class ToCypherHelper
 
         $relationParts = [];
         if ($relation->getRelationType()) {
+            /** @psalm-suppress PossiblyNullReference */
             $relationParts[] = ':'.$relation->getRelationType()->getRelationType();
         }
         $propertyStorage = $relation->getProperties();

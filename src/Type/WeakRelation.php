@@ -18,13 +18,20 @@ class WeakRelation implements WeakRelationInterface
         $this->relation = WeakReference::create($relation);
     }
 
+    /**
+     * @throws LogicException
+     */
     public function isEqualTo(mixed $element): null|bool
     {
         if (!($element instanceof WeakRelationInterface)) {
             return false;
         }
+        if (null === $this->get() || null === $element->get()) {
+            return null;
+        }
 
-        return $this->get()?->isEqualTo($element->get());
+        /** @psalm-suppress PossiblyNullReference */
+        return $this->get()->isEqualTo($element->get());
     }
 
     public static function create(RelationInterface $relation): WeakRelationInterface
