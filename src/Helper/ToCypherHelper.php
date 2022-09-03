@@ -71,6 +71,11 @@ class ToCypherHelper
         );
     }
 
+    /**
+     * This method transforms a node to a Cypher node string, optionally limiting included properties to identifying
+     * ones.
+     * Return example: (:Label {property: 'value'}).
+     */
     public static function nodeToCypherString(?NodeInterface $node, bool $identifying = false): ?string
     {
         if (null === $node) {

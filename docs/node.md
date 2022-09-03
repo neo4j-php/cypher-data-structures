@@ -16,9 +16,15 @@ Nodes are entities which contain the following attributes:
   contain a value.  
   When removing identifying properties without removing the identifier first, an exception is triggered.
 
-- **Relations**: A list of relations which either start or end at the node.
-
-!> Relations are currently being [discussed on GitHub](https://github.com/Syndesi/cypher-data-structures/discussions/1).
+- **Relations**: A list of relations which either start or end at the node.  
+  The default implementation stores relations in [weak references](https://www.php.net/manual/en/class.weakreference.php)
+  so when a relation is unset, the node's relation will become `null`. This is done to remove the possibility of cyclic
+  references.  
+  Relations must contain the node itself as either the start or end node.  
+  
+!> **Note**: Make sure that identifying elements (node labels, relation type, identifying properties) are set before
+   referencing nodes to relations and vice versa.  
+   Changing those elements later does not update the existing references.
 
 ## Examples
 

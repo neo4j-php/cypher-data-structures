@@ -9,6 +9,7 @@ use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
+use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
@@ -75,8 +76,18 @@ class Node implements NodeInterface
 
     // relations
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function addRelation(RelationInterface $relation): self
     {
+        $ownIdentifyingString = ToCypherHelper::nodeToIdentifyingCypherString($this);
+        if (ToCypherHelper::nodeToIdentifyingCypherString($relation->getStartNode()) !== $ownIdentifyingString &&
+            ToCypherHelper::nodeToIdentifyingCypherString($relation->getEndNode()) !== $ownIdentifyingString
+        ) {
+            throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
+        }
+
         $this->weakRelationStorage->attach($relation);
 
         return $this;
