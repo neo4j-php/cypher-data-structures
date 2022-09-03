@@ -21,7 +21,7 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
         if (!($object instanceof WeakRelationInterface)) {
             throw InvalidArgumentException::createForTypeMismatch(WeakRelationInterface::class, get_class($object));
         }
-        if ($object->get() === null) {
+        if (null === $object->get()) {
             throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
         }
 
