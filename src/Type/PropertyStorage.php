@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type;
 
-use LogicException;
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
 use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Exception\LogicException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 class PropertyStorage extends SplObjectStorage implements PropertyStorageInterface
@@ -25,11 +25,14 @@ class PropertyStorage extends SplObjectStorage implements PropertyStorageInterfa
         return $object->getPropertyName();
     }
 
+    /**
+     * @throws LogicException
+     */
     public function current(): PropertyNameInterface
     {
         $element = parent::current();
         if (!($element instanceof PropertyNameInterface)) {
-            throw new LogicException('Internal type missmatch');
+            throw LogicException::createForInternalTypeMismatch(PropertyNameInterface::class, get_class($element));
         }
 
         return $element;

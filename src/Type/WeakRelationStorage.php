@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type;
 
-use LogicException;
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Exception\LogicException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorageInterface
@@ -26,13 +26,14 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
         return '';
     }
 
+    /**
+     * @throws LogicException
+     */
     public function current(): WeakRelationInterface
     {
         $element = parent::current();
         if (!($element instanceof WeakRelationInterface)) {
-            // @codeCoverageIgnoreStart
-            throw new LogicException('Internal type missmatch');
-            // @codeCoverageIgnoreEnd
+            throw LogicException::createForInternalTypeMismatch(WeakRelationInterface::class, get_class($element));
         }
 
         return $element;

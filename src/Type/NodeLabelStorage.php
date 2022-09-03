@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type;
 
-use LogicException;
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Exception\LogicException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInterface
@@ -25,12 +25,14 @@ class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInter
         return $object->getNodeLabel();
     }
 
+    /**
+     * @throws LogicException
+     */
     public function current(): NodeLabelInterface
     {
-//        return parent::current();
         $element = parent::current();
         if (!($element instanceof NodeLabelInterface)) {
-            throw new LogicException('Internal type missmatch');
+            throw LogicException::createForInternalTypeMismatch(NodeLabelInterface::class, get_class($element));
         }
 
         return $element;

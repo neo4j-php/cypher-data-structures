@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type;
 
-use LogicException;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;
+use Syndesi\CypherDataStructures\Exception\LogicException;
 use WeakReference;
 
 class WeakRelation implements WeakRelationInterface
@@ -32,6 +32,9 @@ class WeakRelation implements WeakRelationInterface
         return new WeakRelation($relation);
     }
 
+    /**
+     * @throws LogicException
+     */
     public function get(): ?RelationInterface
     {
         $element = $this->relation->get();
@@ -40,7 +43,7 @@ class WeakRelation implements WeakRelationInterface
         }
         if (!($element instanceof RelationInterface)) {
             // @codeCoverageIgnoreStart
-            throw new LogicException('Internal type missmatch');
+            throw LogicException::createForInternalTypeMismatch(RelationInterface::class, get_class($element));
             // @codeCoverageIgnoreEnd
         }
 

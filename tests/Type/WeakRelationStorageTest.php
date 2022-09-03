@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
+use SplObjectStorage;
+use stdClass;
+use Syndesi\CypherDataStructures\Exception\LogicException;
 use Syndesi\CypherDataStructures\Type\Relation;
 use Syndesi\CypherDataStructures\Type\RelationType;
 use Syndesi\CypherDataStructures\Type\WeakRelation;
@@ -45,6 +48,30 @@ class WeakRelationStorageTest extends TestCase
         foreach ($weakRelationStore as $key) {
             $this->assertInstanceOf(WeakRelation::class, $key);
             $this->assertNull($key->get());
+        }
+    }
+
+    public function testInternalTypeMismatch(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+
+        $instance = new class() extends WeakRelationStorage {
+            public function getHash(object $object): string
+            {
+                return SplObjectStorage::getHash($object);
+            }
+        };
+
+        $object = new stdClass();
+        $instance->attach($object);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("Internal type mismatch, expected type 'Syndesi\CypherDataStructures\Contract\WeakRelationInterface', got type 'stdClass'");
+
+        foreach ($instance as $key) {
+            $this->assertInstanceOf(WeakRelation::class, $key);
         }
     }
 }

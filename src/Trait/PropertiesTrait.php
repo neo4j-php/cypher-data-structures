@@ -115,6 +115,16 @@ trait PropertiesTrait
         return $this->identifierStorage;
     }
 
+    public function getIdentifiersWithPropertyValues(): PropertyStorageInterface
+    {
+        $identifierStorage = new PropertyStorage();
+        foreach ($this->identifierStorage as $key) {
+            $identifierStorage->attach($key, $this->propertyStorage->offsetGet($key));
+        }
+
+        return $identifierStorage;
+    }
+
     public function removeIdentifier(PropertyNameInterface $identifier): self
     {
         $this->identifierStorage->detach($identifier);

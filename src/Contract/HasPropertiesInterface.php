@@ -32,8 +32,9 @@ interface HasPropertiesInterface
 
     public function getIdentifier(PropertyNameInterface $identifier): mixed;
 
-    // todo return list of identifiers? return list of identifiers + current values?
     public function getIdentifiers(): PropertyStorageInterface;
+
+    public function getIdentifiersWithPropertyValues(): PropertyStorageInterface;
 
     public function removeIdentifier(PropertyNameInterface $identifier): self;
 

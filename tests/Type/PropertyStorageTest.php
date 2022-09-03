@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
+use SplObjectStorage;
 use stdClass;
 use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Exception\LogicException;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Type\PropertyStorage;
 
@@ -51,6 +53,30 @@ class PropertyStorageTest extends TestCase
         $this->expectExceptionMessage("Syndesi\CypherDataStructures\Contract\PropertyNameInterface', got type 'stdClass'");
         $this->expectException(InvalidArgumentException::class);
         $propertyStorage->attach(new stdClass());
+    }
+
+    public function testInternalTypeMismatch(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+
+        $instance = new class() extends PropertyStorage {
+            public function getHash(object $object): string
+            {
+                return SplObjectStorage::getHash($object);
+            }
+        };
+
+        $object = new stdClass();
+        $instance->attach($object);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("Internal type mismatch, expected type 'Syndesi\CypherDataStructures\Contract\PropertyNameInterface', got type 'stdClass'");
+
+        foreach ($instance as $key) {
+            $this->assertInstanceOf(PropertyName::class, $key);
+        }
     }
 
     public function testDuplicatePropertyStorage(): void
