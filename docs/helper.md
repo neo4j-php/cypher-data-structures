@@ -21,7 +21,7 @@ $propertyStorage->attach(new PropertyName('propertyB'), 'value B');
 $propertyStorage->attach(new PropertyName('_internal'), 'value _');
 
 echo(ToCypherHelper::propertyStorageToCypherPropertyString($propertyStorage));
-// > _internal: 'value _', propertyA: 'value A', propertyB: 'value B', propertyZ: 'property Z'
+// > _internal: 'value _', propertyA: 'value A', propertyB: 'value B', propertyZ: 'value Z'
 ```
 
 ### Node label storage to Cypher label string
