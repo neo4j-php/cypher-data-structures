@@ -8,11 +8,14 @@ use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
-use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
+use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class Relation implements RelationInterface
 {
-    use PropertiesTrait;
+    use IdentifiersTrait;
 
     private ?NodeInterface $startNode = null;
 
@@ -22,7 +25,7 @@ class Relation implements RelationInterface
 
     public function __construct(
     ) {
-        $this->initPropertiesTrait();
+        $this->initIdentifiersTrait();
     }
 
     public function __toString()

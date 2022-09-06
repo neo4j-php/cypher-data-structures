@@ -6,7 +6,7 @@ namespace Syndesi\CypherDataStructures\Contract;
 
 use Stringable;
 
-interface RelationInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface
+interface RelationInterface extends Stringable, IsEqualToInterface, HasIdentifiersInterface
 {
     // start node
 

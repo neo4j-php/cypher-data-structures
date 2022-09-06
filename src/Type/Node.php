@@ -12,11 +12,14 @@ use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
-use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
+use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class Node implements NodeInterface
 {
-    use PropertiesTrait;
+    use IdentifiersTrait;
 
     private NodeLabelStorageInterface $nodeLabelStorage;
     private WeakRelationStorageInterface $weakRelationStorage;
@@ -25,7 +28,7 @@ class Node implements NodeInterface
     ) {
         $this->nodeLabelStorage = new NodeLabelStorage();
         $this->weakRelationStorage = new WeakRelationStorage();
-        $this->initPropertiesTrait();
+        $this->initIdentifiersTrait();
     }
 
     public function __toString()
