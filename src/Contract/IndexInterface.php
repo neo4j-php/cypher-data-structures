@@ -11,11 +11,11 @@ interface IndexInterface extends Stringable, IsEqualToInterface, HasPropertiesIn
 {
     public function getIndexName(): ?IndexNameInterface;
 
-    public function setIndexName(?IndexNameInterface $constraintName): self;
+    public function setIndexName(?IndexNameInterface $indexName): self;
 
     public function getIndexType(): ?IndexType;
 
-    public function setIndexType(?IndexType $constraintType): self;
+    public function setIndexType(?IndexType $indexType): self;
 
     public function getFor(): NodeLabelInterface|RelationTypeInterface|null;
 
