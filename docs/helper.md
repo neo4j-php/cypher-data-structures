@@ -133,6 +133,72 @@ echo(ToCypherHelper::relationToIdentifyingCypherString($relation, false));
 // > [:TYPE {id: '123'}]
 ```
 
+### Constraint to cypher string
+
+Transforms objects of type `ConstraintInterface` to a Cypher constraint string.
+
+```php
+use Syndesi\CypherDataStructures\Type\ConstraintName;
+use Syndesi\CypherDataStructures\Type\Constraint;
+use Syndesi\CypherDataStructures\Type\ConstraintType;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+
+$constraint = new Constraint();
+$constraint
+    ->setConstraintName(new ConstraintName('some_name'))
+    ->setConstraintType(ConstraintType::UNIQUE)
+    ->setFor(new NodeLabel('SomeNode'))
+    ->addProperty(new PropertyName('id'));
+
+echo(ToCypherHelper::constraintToCypherString($constraint));
+// > CONSTRAINT some_name FOR (element:SomeNode) REQUIRE (element.id) IS UNIQUE
+```
+
+### Index to cypher string
+
+Transforms objects of type `ConstraintInterface` to a Cypher constraint string.
+
+```php
+use Syndesi\CypherDataStructures\Type\IndexName;
+use Syndesi\CypherDataStructures\Type\Index;
+use Syndesi\CypherDataStructures\Type\IndexType;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+
+$index = new Index();
+$index
+    ->setIndexName(new IndexName('some_name'))
+    ->setIndexType(IndexType::BTREE)
+    ->setFor(new NodeLabel('SomeNode'))
+    ->addProperty(new PropertyName('id'));
+
+echo(ToCypherHelper::indexToCypherString($index));
+// > BTREE INDEX some_name FOR (element:SomeNode) ON (element.id)
+```
+
+### Option storage to Cypher string
+
+Transforms objects of type `OptionStorageInterface` to a Cypher string with sorted keys. Values must be scalar, array or
+implement `Stringable`.
+
+```php
+use Syndesi\CypherDataStructures\Type\OptionStorage;
+use Syndesi\CypherDataStructures\Type\OptionName;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+
+$indexConfig = new OptionStorage();
+$indexConfig->attach(new OptionName('spatial.cartesian.min', [-100.0, -100.0]));
+$indexConfig->attach(new OptionName('spatial.cartesian.max', [100.0, 100.0]));
+$optionStorage = new OptionStorage();
+$optionStorage->attach(new OptionName('indexConfig'), $indexConfig);
+
+echo(ToCypherHelper::optionStorageToCypherString($optionStorage));
+// > {indexConfig: {`spatial.cartesian.max`: [100, 100], `spatial.cartesian.min`: [-100, -100]}}
+```
+
 ## Escape helper
 
 The escape helper is a function which can escape a single character from a string which is not already escaped.

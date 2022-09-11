@@ -200,7 +200,7 @@ class ToCypherHelper
         $optionsString = '';
         if ($constraint->getOptions()->count() > 0) {
             $optionsString = sprintf(
-                " OPTIONS {%s}",
+                " OPTIONS %s",
                 self::optionStorageToCypherString($constraint->getOptions())
             );
         }
@@ -267,7 +267,7 @@ class ToCypherHelper
         $optionsString = '';
         if ($index->getOptions()->count() > 0) {
             $optionsString = sprintf(
-                " OPTIONS {%s}",
+                " OPTIONS %s",
                 self::optionStorageToCypherString($index->getOptions())
             );
         }
@@ -348,6 +348,7 @@ class ToCypherHelper
             );
         }
 
-        return implode(', ', $optionStringParts);
+        $optionStringParts = implode(', ', $optionStringParts);
+        return sprintf("{%s}", $optionStringParts);
     }
 }

@@ -148,6 +148,13 @@ class ToCypherHelperTest extends TestCase
 
     public function valueToStringProvider(): array
     {
+        $indexConfig = new OptionStorage();
+        $indexConfig->attach(new OptionName('spatial.cartesian.min'), [-100.0, -100.0]);
+        $indexConfig->attach(new OptionName('spatial.cartesian.max'), [100.0, 100.0]);
+        $optionStorage = new OptionStorage();
+        $optionStorage->attach(new OptionName('indexConfig'), $indexConfig);
+
+
         return [
             [null, 'null'],
             [true, 'true'],
@@ -161,6 +168,7 @@ class ToCypherHelperTest extends TestCase
             [[1, 3, 2], '[1, 2, 3]'],
             [[0, null, 'hi', 'abc'], "[0, null, 'abc', 'hi']"],
             [new OptionName('someOption'), 'someOption'],
+            [$optionStorage, '{indexConfig: {`spatial.cartesian.max`: [100, 100], `spatial.cartesian.min`: [-100, -100]}}']
         ];
     }
 
@@ -196,7 +204,7 @@ class ToCypherHelperTest extends TestCase
     {
         $optionStorage = new OptionStorage();
         $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
-        $this->assertSame('', $generatedString);
+        $this->assertSame('{}', $generatedString);
     }
 
     public function testEmptyValueOptionStorageToCypherOptionString(): void
@@ -204,7 +212,7 @@ class ToCypherHelperTest extends TestCase
         $optionStorage = new OptionStorage();
         $optionStorage->attach(new OptionName('a'));
         $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
-        $this->assertSame("a: null", $generatedString);
+        $this->assertSame("{a: null}", $generatedString);
     }
 
     public function testSingleOptionStorageToCypherOptionString(): void
@@ -212,7 +220,7 @@ class ToCypherHelperTest extends TestCase
         $optionStorage = new OptionStorage();
         $optionStorage->attach(new OptionName('a'), 'value a');
         $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
-        $this->assertSame("a: 'value a'", $generatedString);
+        $this->assertSame("{a: 'value a'}", $generatedString);
     }
 
     public function testMultipleOptionStorageToCypherOptionString(): void
@@ -223,7 +231,7 @@ class ToCypherHelperTest extends TestCase
         $optionStorage->attach(new OptionName('b'), "value which ' needs to be escaped");
         $optionStorage->attach(new OptionName('something.else'), "hi");
         $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
-        $this->assertSame("a: 1, b: 'value which \\' needs to be escaped', `something.else`: 'hi', z: true", $generatedString);
+        $this->assertSame("{a: 1, b: 'value which \\' needs to be escaped', `something.else`: 'hi', z: true}", $generatedString);
     }
 
     public function testConstraintToCypherString(): void

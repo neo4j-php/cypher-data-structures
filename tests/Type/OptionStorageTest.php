@@ -120,6 +120,6 @@ class OptionStorageTest extends TestCase
         $optionStorage->attach(new OptionName('a'), 'some value');
         $optionStorage->attach(new OptionName('b'), 'some value');
         $optionStorage->attach(new OptionName('c'), 'some value');
-        $this->assertSame("a: 'some value', b: 'some value', c: 'some value'", (string) $optionStorage);
+        $this->assertSame("{a: 'some value', b: 'some value', c: 'some value'}", (string) $optionStorage);
     }
 }
