@@ -154,7 +154,6 @@ class ToCypherHelperTest extends TestCase
         $optionStorage = new OptionStorage();
         $optionStorage->attach(new OptionName('indexConfig'), $indexConfig);
 
-
         return [
             [null, 'null'],
             [true, 'true'],
@@ -168,7 +167,7 @@ class ToCypherHelperTest extends TestCase
             [[1, 3, 2], '[1, 2, 3]'],
             [[0, null, 'hi', 'abc'], "[0, null, 'abc', 'hi']"],
             [new OptionName('someOption'), 'someOption'],
-            [$optionStorage, '{indexConfig: {`spatial.cartesian.max`: [100, 100], `spatial.cartesian.min`: [-100, -100]}}']
+            [$optionStorage, '{indexConfig: {`spatial.cartesian.max`: [100, 100], `spatial.cartesian.min`: [-100, -100]}}'],
         ];
     }
 

@@ -349,6 +349,7 @@ class ToCypherHelper
         }
 
         $optionStringParts = implode(', ', $optionStringParts);
+
         return sprintf("{%s}", $optionStringParts);
     }
 }
