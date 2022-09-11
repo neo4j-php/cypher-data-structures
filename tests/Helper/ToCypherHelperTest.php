@@ -5,10 +5,20 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
+use stdClass;
+use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Type\Constraint;
+use Syndesi\CypherDataStructures\Type\ConstraintName;
+use Syndesi\CypherDataStructures\Type\ConstraintType;
+use Syndesi\CypherDataStructures\Type\Index;
+use Syndesi\CypherDataStructures\Type\IndexName;
+use Syndesi\CypherDataStructures\Type\IndexType;
 use Syndesi\CypherDataStructures\Type\Node;
 use Syndesi\CypherDataStructures\Type\NodeLabel;
 use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
+use Syndesi\CypherDataStructures\Type\OptionName;
+use Syndesi\CypherDataStructures\Type\OptionStorage;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Type\PropertyStorage;
 use Syndesi\CypherDataStructures\Type\Relation;
@@ -134,5 +144,239 @@ class ToCypherHelperTest extends TestCase
         $this->assertSame("[]", ToCypherHelper::relationToCypherString($relation, withNodes: false));
         $this->assertSame("()-[]->()", ToCypherHelper::relationToIdentifyingCypherString($relation));
         $this->assertSame("[]", ToCypherHelper::relationToIdentifyingCypherString($relation, false));
+    }
+
+    public function valueToStringProvider(): array
+    {
+        return [
+            [null, 'null'],
+            [true, 'true'],
+            [false, 'false'],
+            [0, '0'],
+            [123, '123'],
+            [1.23, '1.23'],
+            ['some string', "'some string'"],
+            ['some \'string', "'some \'string'"],
+            [[1, 2, 3], '[1, 2, 3]'],
+            [[1, 3, 2], '[1, 2, 3]'],
+            [[0, null, 'hi', 'abc'], "[0, null, 'abc', 'hi']"],
+            [new OptionName('someOption'), 'someOption'],
+        ];
+    }
+
+    /**
+     * @dataProvider valueToStringProvider
+     */
+    public function testValueToString($value, $string): void
+    {
+        $this->assertSame($string, ToCypherHelper::valueToString($value));
+    }
+
+    public function testInvalidObjectValueToString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Expected type 'Stringable', got type 'stdClass'");
+        ToCypherHelper::valueToString(new stdClass());
+    }
+
+    public function testInvalidValueToString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unable to cast value to string");
+        ToCypherHelper::valueToString(tmpfile());
+    }
+
+    public function testEmptyOptionStorageToCypherOptionString(): void
+    {
+        $optionStorage = new OptionStorage();
+        $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
+        $this->assertSame('', $generatedString);
+    }
+
+    public function testEmptyValueOptionStorageToCypherOptionString(): void
+    {
+        $optionStorage = new OptionStorage();
+        $optionStorage->attach(new OptionName('a'));
+        $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
+        $this->assertSame("a: null", $generatedString);
+    }
+
+    public function testSingleOptionStorageToCypherOptionString(): void
+    {
+        $optionStorage = new OptionStorage();
+        $optionStorage->attach(new OptionName('a'), 'value a');
+        $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
+        $this->assertSame("a: 'value a'", $generatedString);
+    }
+
+    public function testMultipleOptionStorageToCypherOptionString(): void
+    {
+        $optionStorage = new OptionStorage();
+        $optionStorage->attach(new OptionName('a'), 1);
+        $optionStorage->attach(new OptionName('z'), true);
+        $optionStorage->attach(new OptionName('b'), "value which ' needs to be escaped");
+        $optionStorage->attach(new OptionName('something.else'), "hi");
+        $generatedString = ToCypherHelper::optionStorageToCypherString($optionStorage);
+        $this->assertSame("a: 1, b: 'value which \\' needs to be escaped', `something.else`: 'hi', z: true", $generatedString);
+    }
+
+    public function testConstraintToCypherString(): void
+    {
+        $constraint = new Constraint();
+        $constraint
+            ->setConstraintType(ConstraintType::UNIQUE)
+            ->setConstraintName(new ConstraintName('some_name'))
+            ->setFor(new NodeLabel('SomeLabel'))
+            ->addProperty(new PropertyName('id'));
+
+        $this->assertSame('CONSTRAINT some_name FOR (element:SomeLabel) REQUIRE (element.id) IS UNIQUE', ToCypherHelper::constraintToCypherString($constraint));
+
+        $constraint->addOption(new OptionName('option'), 123);
+        $this->assertSame('CONSTRAINT some_name FOR (element:SomeLabel) REQUIRE (element.id) IS UNIQUE OPTIONS {option: 123}', ToCypherHelper::constraintToCypherString($constraint));
+        $constraint->addOption(new OptionName('something.else'));
+        $this->assertSame('CONSTRAINT some_name FOR (element:SomeLabel) REQUIRE (element.id) IS UNIQUE OPTIONS {option: 123, `something.else`: null}', ToCypherHelper::constraintToCypherString($constraint));
+    }
+
+    public function testWithoutForConstraintToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Contract\NodeLabelInterface|Syndesi\CypherDataStructures\Contract\RelationTypeInterface', got type 'null'");
+        $this->expectException(InvalidArgumentException::class);
+        $constraint = new Constraint();
+        $constraint
+            ->setConstraintType(ConstraintType::UNIQUE)
+            ->setConstraintName(new ConstraintName('some_name'))
+            ->addProperty(new PropertyName('id'));
+        ToCypherHelper::constraintToCypherString($constraint);
+    }
+
+    public function testWithoutConstraintNameConstraintToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Contract\ConstraintNameInterface', got type 'null'");
+        $this->expectException(InvalidArgumentException::class);
+        $constraint = new Constraint();
+        $constraint
+            ->setConstraintType(ConstraintType::UNIQUE)
+            ->setFor(new NodeLabel('SomeLabel'))
+            ->addProperty(new PropertyName('id'));
+        ToCypherHelper::constraintToCypherString($constraint);
+    }
+
+    public function testWithoutConstraintTypeConstraintToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Type\ConstraintType', got type 'null'");
+        $this->expectException(InvalidArgumentException::class);
+        $constraint = new Constraint();
+        $constraint
+            ->setConstraintName(new ConstraintName('some_name'))
+            ->setFor(new NodeLabel('SomeLabel'))
+            ->addProperty(new PropertyName('id'));
+        ToCypherHelper::constraintToCypherString($constraint);
+    }
+
+    public function testWithoutPropertiesConstraintToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("At least one property is required");
+        $this->expectException(InvalidArgumentException::class);
+        $constraint = new Constraint();
+        $constraint
+            ->setConstraintType(ConstraintType::UNIQUE)
+            ->setConstraintName(new ConstraintName('some_name'))
+            ->setFor(new NodeLabel('SomeLabel'));
+        ToCypherHelper::constraintToCypherString($constraint);
+    }
+
+    public function testIndexToCypherString(): void
+    {
+        $index = new Index();
+        $index
+            ->setIndexType(IndexType::BTREE)
+            ->setIndexName(new IndexName('some_name'))
+            ->setFor(new NodeLabel('SomeLabel'))
+            ->addProperty(new PropertyName('id'));
+
+        $this->assertSame('BTREE INDEX some_name FOR (element:SomeLabel) ON (element.id)', ToCypherHelper::indexToCypherString($index));
+
+        $index->addOption(new OptionName('option'), 123);
+        $this->assertSame('BTREE INDEX some_name FOR (element:SomeLabel) ON (element.id) OPTIONS {option: 123}', ToCypherHelper::indexToCypherString($index));
+        $index->addOption(new OptionName('something.else'));
+        $this->assertSame('BTREE INDEX some_name FOR (element:SomeLabel) ON (element.id) OPTIONS {option: 123, `something.else`: null}', ToCypherHelper::indexToCypherString($index));
+    }
+
+    public function testWithoutForIndexToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Contract\NodeLabelInterface|Syndesi\CypherDataStructures\Contract\RelationTypeInterface', got type 'null'");
+        $this->expectException(InvalidArgumentException::class);
+        $index = new Index();
+        $index
+            ->setIndexType(IndexType::BTREE)
+            ->setIndexName(new IndexName('some_name'))
+            ->addProperty(new PropertyName('id'));
+        ToCypherHelper::indexToCypherString($index);
+    }
+
+    public function testWithoutIndexNameIndexToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Contract\IndexNameInterface', got type 'null'");
+        $this->expectException(InvalidArgumentException::class);
+        $index = new Index();
+        $index
+            ->setIndexType(IndexType::BTREE)
+            ->setFor(new NodeLabel('SomeLabel'))
+            ->addProperty(new PropertyName('id'));
+        ToCypherHelper::indexToCypherString($index);
+    }
+
+    public function testWithoutIndexTypeIndexToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Type\IndexType', got type 'null'");
+        $this->expectException(InvalidArgumentException::class);
+        $index = new Index();
+        $index
+            ->setIndexName(new IndexName('some_name'))
+            ->setFor(new NodeLabel('SomeLabel'))
+            ->addProperty(new PropertyName('id'));
+        ToCypherHelper::indexToCypherString($index);
+    }
+
+    public function testWithoutPropertiesIndexToCypherString(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $this->expectExceptionMessage("At least one property is required");
+        $this->expectException(InvalidArgumentException::class);
+        $index = new Index();
+        $index
+            ->setIndexType(IndexType::BTREE)
+            ->setIndexName(new IndexName('some_name'))
+            ->setFor(new NodeLabel('SomeLabel'));
+        ToCypherHelper::indexToCypherString($index);
     }
 }

@@ -7,7 +7,7 @@ namespace Syndesi\CypherDataStructures\Contract;
 use Stringable;
 use Syndesi\CypherDataStructures\Type\ConstraintType;
 
-interface ConstraintInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface
+interface ConstraintInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface, HasOptionsInterface
 {
     public function getConstraintName(): ?ConstraintNameInterface;
 
@@ -20,14 +20,4 @@ interface ConstraintInterface extends Stringable, IsEqualToInterface, HasPropert
     public function getFor(): NodeLabelInterface|RelationTypeInterface|null;
 
     public function setFor(NodeLabelInterface|RelationTypeInterface|null $for): self;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getOptions(): array;
-
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function setOptions(array $options): self;
 }

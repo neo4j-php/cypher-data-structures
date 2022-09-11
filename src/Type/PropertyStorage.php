@@ -46,4 +46,9 @@ class PropertyStorage extends SplObjectStorage implements PropertyStorageInterfa
 
         return ToCypherHelper::propertyStorageToCypherPropertyString($this) === ToCypherHelper::propertyStorageToCypherPropertyString($element);
     }
+
+    public function __toString(): string
+    {
+        return ToCypherHelper::propertyStorageToCypherPropertyString($this);
+    }
 }

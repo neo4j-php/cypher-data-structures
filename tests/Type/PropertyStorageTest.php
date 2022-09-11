@@ -113,4 +113,13 @@ class PropertyStorageTest extends TestCase
 
         $this->assertFalse($propertyStorageA->isEqualTo(new stdClass()));
     }
+
+    public function testToString(): void
+    {
+        $propertyStorage = new PropertyStorage();
+        $propertyStorage->attach(new PropertyName('a'), 'some value');
+        $propertyStorage->attach(new PropertyName('b'), 'some value');
+        $propertyStorage->attach(new PropertyName('c'), 'some value');
+        $this->assertSame("a: 'some value', b: 'some value', c: 'some value'", (string) $propertyStorage);
+    }
 }

@@ -7,6 +7,6 @@ namespace Syndesi\CypherDataStructures\Type;
 enum ConstraintType: string
 {
     case UNIQUE = 'UNIQUE';
-    case NOT_NULL = 'NOT_NULL';
-    case NODE_KEY = 'NODE_KEY';
+    case NOT_NULL = 'NOT NULL';
+    case NODE_KEY = 'NODE KEY';
 }

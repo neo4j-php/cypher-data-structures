@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Syndesi\CypherDataStructures\Type\Index;
 use Syndesi\CypherDataStructures\Type\IndexName;
 use Syndesi\CypherDataStructures\Type\IndexType;
 use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Type\RelationType;
 
 class IndexTest extends TestCase
@@ -45,14 +47,41 @@ class IndexTest extends TestCase
         $this->assertNull($constraint->getFor());
     }
 
-    public function testOptions(): void
+    public function testToString(): void
     {
-        $constraint = new Index();
-        $this->assertCount(0, $constraint->getOptions());
-        $constraint->setOptions(['some' => 'options']);
-        $this->assertCount(1, $constraint->getOptions());
-        $this->assertArrayHasKey('some', $constraint->getOptions());
-        $constraint->setOptions([]);
-        $this->assertCount(0, $constraint->getOptions());
+        $index = new Index();
+        $index->setIndexName(new IndexName('index'));
+        $index->setFor(new NodeLabel('Node'));
+        $index->setIndexType(IndexType::BTREE);
+        $index->addProperty(new PropertyName('id'));
+        $this->assertSame('BTREE INDEX index FOR (element:Node) ON (element.id)', (string) $index);
+    }
+
+    public function testIsEqualTo(): void
+    {
+        $indexA = new Index();
+        $indexA->setIndexName(new IndexName('index_a'));
+        $indexA->setFor(new NodeLabel('NodeA'));
+        $indexA->addProperty(new PropertyName('id'));
+        $indexA->setIndexType(IndexType::BTREE);
+
+        $indexB = new Index();
+        $indexB->setIndexName(new IndexName('index_a'));
+        $indexB->setFor(new NodeLabel('NodeA'));
+        $indexB->addProperty(new PropertyName('id'));
+        $indexB->setIndexType(IndexType::BTREE);
+
+        $indexC = new Index();
+        $indexC->setIndexName(new IndexName('index_a'));
+        $indexC->setFor(new RelationType('RELATION_A'));
+        $indexC->addProperty(new PropertyName('id'));
+        $indexC->setIndexType(IndexType::BTREE);
+
+        $this->assertTrue($indexA->isEqualTo($indexB));
+        $this->assertTrue($indexB->isEqualTo($indexA));
+        $this->assertFalse($indexA->isEqualTo($indexC));
+        $this->assertFalse($indexC->isEqualTo($indexA));
+        $this->assertFalse($indexA->isEqualTo(new stdClass()));
+        $this->assertFalse($indexA->isEqualTo('something'));
     }
 }

@@ -8,11 +8,15 @@ use Syndesi\CypherDataStructures\Contract\ConstraintInterface;
 use Syndesi\CypherDataStructures\Contract\ConstraintNameInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
+use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
 class Constraint implements ConstraintInterface
 {
     use PropertiesTrait;
+    use OptionsTrait;
 
     private ?ConstraintNameInterface $constraintName = null;
 
@@ -20,14 +24,10 @@ class Constraint implements ConstraintInterface
 
     private NodeLabelInterface|RelationTypeInterface|null $for = null;
 
-    /**
-     * @var array<string, mixed>
-     */
-    private array $options = [];
-
     public function __construct(
     ) {
         $this->initPropertiesTrait();
+        $this->initOptionsTrait();
     }
 
     public function getConstraintName(): ?ConstraintNameInterface
@@ -66,22 +66,12 @@ class Constraint implements ConstraintInterface
         return $this;
     }
 
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    public function setOptions(array $options): self
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __toString()
     {
-//        return ToCypherHelper::nodeToCypherString($this) ?? '()';
-        return '';
+        return ToCypherHelper::constraintToCypherString($this);
     }
 
     public function isEqualTo(mixed $element): bool
@@ -90,7 +80,6 @@ class Constraint implements ConstraintInterface
             return false;
         }
 
-//        return ToCypherHelper::nodeToIdentifyingCypherString($this) === ToCypherHelper::nodeToIdentifyingCypherString($element);
-        return false;
+        return ToCypherHelper::constraintToCypherString($this) === ToCypherHelper::constraintToCypherString($element);
     }
 }

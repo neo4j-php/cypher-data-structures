@@ -10,7 +10,7 @@ use Stringable;
  * Classes which implement this interface should extend from SplObjectStorage,
  * see https://www.php.net/manual/en/class.splobjectstorage.
  */
-interface PropertyStorageInterface extends SplObjectStorageInterface, IsEqualToInterface, Stringable
+interface OptionStorageInterface extends SplObjectStorageInterface, IsEqualToInterface, Stringable
 {
-    public function current(): PropertyNameInterface;
+    public function current(): OptionNameInterface;
 }

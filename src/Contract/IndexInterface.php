@@ -7,7 +7,7 @@ namespace Syndesi\CypherDataStructures\Contract;
 use Stringable;
 use Syndesi\CypherDataStructures\Type\IndexType;
 
-interface IndexInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface
+interface IndexInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface, HasOptionsInterface
 {
     public function getIndexName(): ?IndexNameInterface;
 
@@ -20,14 +20,4 @@ interface IndexInterface extends Stringable, IsEqualToInterface, HasPropertiesIn
     public function getFor(): NodeLabelInterface|RelationTypeInterface|null;
 
     public function setFor(NodeLabelInterface|RelationTypeInterface|null $for): self;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getOptions(): array;
-
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function setOptions(array $options): self;
 }

@@ -8,11 +8,15 @@ use Syndesi\CypherDataStructures\Contract\IndexInterface;
 use Syndesi\CypherDataStructures\Contract\IndexNameInterface;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
+use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
 class Index implements IndexInterface
 {
     use PropertiesTrait;
+    use OptionsTrait;
 
     private ?IndexNameInterface $constraintName = null;
 
@@ -20,14 +24,10 @@ class Index implements IndexInterface
 
     private NodeLabelInterface|RelationTypeInterface|null $for = null;
 
-    /**
-     * @var array<string, mixed>
-     */
-    private array $options = [];
-
     public function __construct(
     ) {
         $this->initPropertiesTrait();
+        $this->initOptionsTrait();
     }
 
     public function getIndexName(): ?IndexNameInterface
@@ -66,22 +66,12 @@ class Index implements IndexInterface
         return $this;
     }
 
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    public function setOptions(array $options): self
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __toString()
     {
-//        return ToCypherHelper::nodeToCypherString($this) ?? '()';
-        return '';
+        return ToCypherHelper::indexToCypherString($this);
     }
 
     public function isEqualTo(mixed $element): bool
@@ -90,7 +80,6 @@ class Index implements IndexInterface
             return false;
         }
 
-//        return ToCypherHelper::nodeToIdentifyingCypherString($this) === ToCypherHelper::nodeToIdentifyingCypherString($element);
-        return false;
+        return ToCypherHelper::indexToCypherString($this) === ToCypherHelper::indexToCypherString($element);
     }
 }

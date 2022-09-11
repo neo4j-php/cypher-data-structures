@@ -17,7 +17,7 @@ trait PropertiesTrait
         $this->propertyStorage = new PropertyStorage();
     }
 
-    public function addProperty(PropertyNameInterface $propertyName, mixed $value): self
+    public function addProperty(PropertyNameInterface $propertyName, mixed $value = null): self
     {
         $this->propertyStorage->attach($propertyName, $value);
 

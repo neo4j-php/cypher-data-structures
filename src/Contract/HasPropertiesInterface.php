@@ -6,7 +6,7 @@ namespace Syndesi\CypherDataStructures\Contract;
 
 interface HasPropertiesInterface
 {
-    public function addProperty(PropertyNameInterface $propertyName, mixed $value): self;
+    public function addProperty(PropertyNameInterface $propertyName, mixed $value = null): self;
 
     public function addProperties(PropertyStorageInterface $propertyStorage): self;
 
