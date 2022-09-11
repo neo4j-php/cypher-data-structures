@@ -10,9 +10,9 @@ Transforms objects of type `PropertyStorageInterface` to a Cypher property strin
 Internal properties will be sorted first.
 
 ```php
-use \Syndesi\CypherDataStructures\Type\PropertyStorage;
-use \Syndesi\CypherDataStructures\Type\PropertyName;
-use \Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Type\PropertyStorage;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 $propertyStorage = new PropertyStorage();
 $propertyStorage->attach(new PropertyName('propertyA'), 'value A');
@@ -30,9 +30,9 @@ Transforms objects of type `NodeLabelInterface` to a Cypher label string with so
 Internal labels will be sorted first.
 
 ```php
-use \Syndesi\CypherDataStructures\Helper\ToCypherHelper;
-use \Syndesi\CypherDataStructures\Type\NodeLabelStorage;
-use \Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
 
 $nodeLabelStorage = new NodeLabelStorage();
 $nodeLabelStorage->attach(new NodeLabel('LabelA'));
@@ -50,10 +50,10 @@ Transforms objects of type `NodeInterface` to a Cypher node string, optionally l
 ones.
 
 ```php
-use \Syndesi\CypherDataStructures\Type\Node;
-use \Syndesi\CypherDataStructures\Type\PropertyName;
-use \Syndesi\CypherDataStructures\Type\NodeLabel;
-use \Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 $node = new Node();
 $node->addNodeLabel(new NodeLabel('Label'));
@@ -81,12 +81,12 @@ identifying ones.
 Referenced nodes are limited to identifying properties. Both nodes can be omitted.
 
 ```php
-use \Syndesi\CypherDataStructures\Type\Node;
-use \Syndesi\CypherDataStructures\Type\NodeLabel;
-use \Syndesi\CypherDataStructures\Type\PropertyName;
-use \Syndesi\CypherDataStructures\Type\Relation;
-use \Syndesi\CypherDataStructures\Type\RelationType;
-use \Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\Relation;
+use Syndesi\CypherDataStructures\Type\RelationType;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 $startNode = new Node();
 $startNode->addNodeLabel(new NodeLabel('StartNode'));
@@ -138,7 +138,7 @@ echo(ToCypherHelper::relationToIdentifyingCypherString($relation, false));
 The escape helper is a function which can escape a single character from a string which is not already escaped.
 
 ```php
-use \Syndesi\CypherDataStructures\Helper\EscapeHelper;
+use Syndesi\CypherDataStructures\Helper\EscapeHelper;
 
 echo(EscapeHelper::escapeCharacter("'", "some string"));
 // > some string

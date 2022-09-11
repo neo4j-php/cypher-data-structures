@@ -24,11 +24,11 @@ Relations are entities which contain the following attributes:
 ## Examples
 
 ```php
-use \Syndesi\CypherDataStructures\Type\RelationType;
-use \Syndesi\CypherDataStructures\Type\NodeLabel;
-use \Syndesi\CypherDataStructures\Type\Node;
-use \Syndesi\CypherDataStructures\Type\PropertyName;
-use \Syndesi\CypherDataStructures\Type\Relation;
+use Syndesi\CypherDataStructures\Type\RelationType;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\Relation;
 
 $nodeA = new Node();
 $nodeA

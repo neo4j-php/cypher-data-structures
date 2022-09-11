@@ -20,8 +20,8 @@ Properties are defined as three separate types:
 ## Examples
 
 ```php
-use \Syndesi\CypherDataStructures\Type\PropertyName;
-use \Syndesi\CypherDataStructures\Type\PropertyStorage;
+use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\PropertyStorage;
 
 // create property names
 $somePropertyName = new PropertyName("somePropertyName");

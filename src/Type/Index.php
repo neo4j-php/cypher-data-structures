@@ -18,9 +18,9 @@ class Index implements IndexInterface
     use PropertiesTrait;
     use OptionsTrait;
 
-    private ?IndexNameInterface $constraintName = null;
+    private ?IndexNameInterface $indexName = null;
 
-    private ?IndexType $constraintType = null;
+    private ?IndexType $indexType = null;
 
     private NodeLabelInterface|RelationTypeInterface|null $for = null;
 
@@ -32,24 +32,24 @@ class Index implements IndexInterface
 
     public function getIndexName(): ?IndexNameInterface
     {
-        return $this->constraintName;
+        return $this->indexName;
     }
 
-    public function setIndexName(?IndexNameInterface $constraintName): self
+    public function setIndexName(?IndexNameInterface $indexName): self
     {
-        $this->constraintName = $constraintName;
+        $this->indexName = $indexName;
 
         return $this;
     }
 
     public function getIndexType(): ?IndexType
     {
-        return $this->constraintType;
+        return $this->indexType;
     }
 
-    public function setIndexType(?IndexType $constraintType): self
+    public function setIndexType(?IndexType $indexType): self
     {
-        $this->constraintType = $constraintType;
+        $this->indexType = $indexType;
 
         return $this;
     }

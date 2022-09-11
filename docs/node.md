@@ -29,9 +29,9 @@ Nodes are entities which contain the following attributes:
 ## Examples
 
 ```php
-use \Syndesi\CypherDataStructures\Type\NodeLabel;
-use \Syndesi\CypherDataStructures\Type\Node;
-use \Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\PropertyName;
 
 $node = new Node();
 $node
