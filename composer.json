@@ -2,7 +2,7 @@
     "name": "syndesi/cypher-data-structures",
     "description": "Provides generic cypher data structures for PHP",
     "type": "library",
-    "homepage": "https://syndesi.github.io/neo4j-sync-bundle/",
+    "homepage": "https://syndesi.github.io/cypher-data-structures/#/",
     "license": "MIT",
     "authors": [
         {
