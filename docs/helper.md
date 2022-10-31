@@ -65,6 +65,10 @@ $node->addIdentifier(new PropertyName('id'));
 echo(ToCypherHelper::nodeToCypherString($node));
 // > (:Label {id: '1234', someKey: 'some value'})
 
+// print whole node with variable
+echo(ToCypherHelper::nodeToCypherString($node, nodeVariable: 'node'));
+// > (node:Label {id: '1234', someKey: 'some value'})
+
 // print node with only identifying properties
 echo(ToCypherHelper::nodeToCypherString($node, true));
 // > (:Label {id: '1234'})
@@ -111,6 +115,10 @@ $relation->addIdentifier(new PropertyName('id'));
 // print relation with all properties & nodes
 echo(ToCypherHelper::relationToCypherString($relation));
 // > (:StartNode {id: '1234'})-[:TYPE {id: '123', key: 'value'}]->(:EndNode {id: 4321})
+
+// print relation with all properties & nodes with variable
+echo(ToCypherHelper::relationToCypherString($relation, relationVariable: 'relation'));
+// > (:StartNode {id: '1234'})-[relation:TYPE {id: '123', key: 'value'}]->(:EndNode {id: 4321})
 
 // print relation with identifying properties & nodes
 echo(ToCypherHelper::relationToCypherString($relation, true));

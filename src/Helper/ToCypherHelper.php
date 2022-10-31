@@ -88,7 +88,7 @@ class ToCypherHelper
      * ones.
      * Return example: (:Label {property: 'value'}).
      */
-    public static function nodeToCypherString(?NodeInterface $node, bool $identifying = false): ?string
+    public static function nodeToCypherString(?NodeInterface $node, bool $identifying = false, ?string $nodeVariable = null): ?string
     {
         if (null === $node) {
             return null;
@@ -106,16 +106,19 @@ class ToCypherHelper
         if ('' !== $propertyString) {
             $parts[] = '{'.$propertyString.'}';
         }
+        if (!$nodeVariable) {
+            $nodeVariable = '';
+        }
 
-        return '('.implode(' ', $parts).')';
+        return '('.$nodeVariable.implode(' ', $parts).')';
     }
 
-    public static function nodeToIdentifyingCypherString(?NodeInterface $node): ?string
+    public static function nodeToIdentifyingCypherString(?NodeInterface $node, ?string $nodeVariable = null): ?string
     {
-        return self::nodeToCypherString($node, true);
+        return self::nodeToCypherString($node, true, $nodeVariable);
     }
 
-    public static function relationToCypherString(RelationInterface $relation, bool $identifying = false, bool $withNodes = true): string
+    public static function relationToCypherString(RelationInterface $relation, bool $identifying = false, bool $withNodes = true, ?string $relationVariable = null): string
     {
         $parts = [];
         if ($withNodes) {
@@ -124,8 +127,11 @@ class ToCypherHelper
 
         $relationParts = [];
         if ($relation->getRelationType()) {
+            if (!$relationVariable) {
+                $relationVariable = '';
+            }
             /** @psalm-suppress PossiblyNullReference */
-            $relationParts[] = ':'.$relation->getRelationType()->getRelationType();
+            $relationParts[] = $relationVariable.':'.$relation->getRelationType()->getRelationType();
         }
         $propertyStorage = $relation->getProperties();
         if ($identifying) {
@@ -148,9 +154,9 @@ class ToCypherHelper
         return implode('', $parts);
     }
 
-    public static function relationToIdentifyingCypherString(RelationInterface $relation, bool $withNodes = true): string
+    public static function relationToIdentifyingCypherString(RelationInterface $relation, bool $withNodes = true, ?string $relationVariable = null): string
     {
-        return self::relationToCypherString($relation, true, $withNodes);
+        return self::relationToCypherString($relation, true, $withNodes, $relationVariable);
     }
 
     /**

@@ -100,6 +100,8 @@ class ToCypherHelperTest extends TestCase
         $node->addIdentifier(new PropertyName('propertyC'));
         $this->assertSame("(:SomeNode {propertyA: 'value A', propertyB: 'value B', propertyC: 'value C', propertyD: 'value D'})", ToCypherHelper::nodeToCypherString($node));
         $this->assertSame("(:SomeNode {propertyA: 'value A', propertyC: 'value C'})", ToCypherHelper::nodeToIdentifyingCypherString($node));
+        $this->assertSame("(node:SomeNode {propertyA: 'value A', propertyB: 'value B', propertyC: 'value C', propertyD: 'value D'})", ToCypherHelper::nodeToCypherString($node, nodeVariable: 'node'));
+        $this->assertSame("(node:SomeNode {propertyA: 'value A', propertyC: 'value C'})", ToCypherHelper::nodeToIdentifyingCypherString($node, nodeVariable: 'node'));
         $node->clearNodeLabels();
         $this->assertSame("({propertyA: 'value A', propertyB: 'value B', propertyC: 'value C', propertyD: 'value D'})", ToCypherHelper::nodeToCypherString($node));
         $this->assertSame("({propertyA: 'value A', propertyC: 'value C'})", ToCypherHelper::nodeToIdentifyingCypherString($node));
@@ -132,6 +134,8 @@ class ToCypherHelperTest extends TestCase
 
         $this->assertSame("(:StartNode {id: '1234'})-[:SOME_TYPE {id: '123', somethingElse: 'some non id value'}]->(:EndNode {id: '4321'})", ToCypherHelper::relationToCypherString($relation));
         $this->assertSame("[:SOME_TYPE {id: '123', somethingElse: 'some non id value'}]", ToCypherHelper::relationToCypherString($relation, withNodes: false));
+        $this->assertSame("(:StartNode {id: '1234'})-[relation:SOME_TYPE {id: '123', somethingElse: 'some non id value'}]->(:EndNode {id: '4321'})", ToCypherHelper::relationToCypherString($relation, relationVariable: 'relation'));
+        $this->assertSame("[relation:SOME_TYPE {id: '123', somethingElse: 'some non id value'}]", ToCypherHelper::relationToCypherString($relation, withNodes: false, relationVariable: 'relation'));
         $this->assertSame("(:StartNode {id: '1234'})-[:SOME_TYPE {id: '123'}]->(:EndNode {id: '4321'})", ToCypherHelper::relationToIdentifyingCypherString($relation));
         $this->assertSame("[:SOME_TYPE {id: '123'}]", ToCypherHelper::relationToIdentifyingCypherString($relation, false));
         $this->assertSame("[:SOME_TYPE {id: '123'}]", ToCypherHelper::relationToIdentifyingCypherString($relation, false));
