@@ -22,7 +22,7 @@ interface RelationInterface extends Stringable, IsEqualToInterface, HasIdentifie
 
     // relation type
 
-    public function setRelationType(?RelationTypeInterface $relationType): self;
+    public function setType(?string $type): self;
 
-    public function getRelationType(): ?RelationTypeInterface;
+    public function getType(): ?string;
 }

@@ -6,17 +6,23 @@ namespace Syndesi\CypherDataStructures\Contract;
 
 interface HasPropertiesInterface
 {
-    public function addProperty(PropertyNameInterface $propertyName, mixed $value = null): self;
+    public function addProperty(string $name, mixed $value = null): self;
 
-    public function addProperties(PropertyStorageInterface $propertyStorage): self;
+    /**
+     * @param iterable<string, mixed> $properties
+     */
+    public function addProperties(iterable $properties): self;
 
-    public function hasProperty(PropertyNameInterface $propertyName): bool;
+    public function hasProperty(string $name): bool;
 
-    public function getProperty(PropertyNameInterface $propertyName): mixed;
+    public function getProperty(string $name): mixed;
 
-    public function getProperties(): PropertyStorageInterface;
+    /**
+     * @return iterable<string, mixed>
+     */
+    public function getProperties(): iterable;
 
-    public function removeProperty(PropertyNameInterface $propertyName): self;
+    public function removeProperty(string $name): self;
 
     public function clearProperties(): self;
 }

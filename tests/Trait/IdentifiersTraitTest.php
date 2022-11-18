@@ -8,8 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Syndesi\CypherDataStructures\Contract\HasIdentifiersInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
-use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\PropertyStorage;
 
 class IdentifiersTraitTest extends TestCase
 {
@@ -17,52 +15,47 @@ class IdentifiersTraitTest extends TestCase
     {
         return new class() implements HasIdentifiersInterface {
             use IdentifiersTrait;
-
-            public function __construct()
-            {
-                $this->initIdentifiersTrait();
-            }
         };
     }
 
     public function testIdentifier(): void
     {
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('someProperty'), 'some value');
-        $trait->addIdentifier(new PropertyName('someProperty'));
-        $this->assertTrue($trait->hasIdentifier(new PropertyName('someProperty')));
-        $this->assertFalse($trait->hasIdentifier(new PropertyName('notExistingProperty')));
-        $this->assertSame(1, $trait->getIdentifiers()->count());
-        $this->assertSame('some value', $trait->getIdentifier(new PropertyName('someProperty')));
+        $trait->addProperty('someProperty', 'some value');
+        $trait->addIdentifier('someProperty');
+        $this->assertTrue($trait->hasIdentifier('someProperty'));
+        $this->assertFalse($trait->hasIdentifier('notExistingProperty'));
+        $this->assertSame(1, count($trait->getIdentifiers()));
+        $this->assertSame('some value', $trait->getIdentifier('someProperty'));
 
-        $trait->addProperty(new PropertyName('otherProperty'), 'other value');
-        $trait->addProperty(new PropertyName('anotherProperty'), 'another value');
-        $identifierStorage = new PropertyStorage();
-        $identifierStorage->attach(new PropertyName('otherProperty'));
-        $identifierStorage->attach(new PropertyName('anotherProperty'));
-        $trait->addIdentifiers($identifierStorage);
-        $this->assertSame(3, $trait->getIdentifiers()->count());
-        $trait->removeIdentifier(new PropertyName('otherProperty'));
-        $this->assertSame(2, $trait->getIdentifiers()->count());
+        $trait->addProperty('otherProperty', 'other value');
+        $trait->addProperty('anotherProperty', 'another value');
+        $trait->addIdentifiers([
+            'otherProperty',
+            'anotherProperty',
+        ]);
+        $this->assertCount(3, $trait->getIdentifiers());
+        $trait->removeIdentifier('otherProperty');
+        $this->assertCount(2, $trait->getIdentifiers());
         $trait->clearIdentifier();
-        $this->assertSame(0, $trait->getIdentifiers()->count());
+        $this->assertCount(0, $trait->getIdentifiers());
     }
 
     public function testGetIdentifierWithPropertyValues(): void
     {
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('propertyA'), 'value A');
-        $trait->addProperty(new PropertyName('propertyB'), 'value B');
-        $trait->addProperty(new PropertyName('propertyC'), 'value C');
-        $trait->addProperty(new PropertyName('propertyD'), 'value D');
-        $trait->addIdentifier(new PropertyName('propertyA'));
-        $trait->addIdentifier(new PropertyName('propertyC'));
-        $identifierWithPropertyValues = $trait->getIdentifiersWithPropertyValues();
-        $this->assertSame(2, $identifierWithPropertyValues->count());
-        $this->assertTrue($identifierWithPropertyValues->offsetExists(new PropertyName('propertyA')));
-        $this->assertTrue($identifierWithPropertyValues->offsetExists(new PropertyName('propertyC')));
-        $this->assertSame('value A', $identifierWithPropertyValues->offsetGet(new PropertyName('propertyA')));
-        $this->assertSame('value C', $identifierWithPropertyValues->offsetGet(new PropertyName('propertyC')));
+        $trait->addProperty('propertyA', 'value A');
+        $trait->addProperty('propertyB', 'value B');
+        $trait->addProperty('propertyC', 'value C');
+        $trait->addProperty('propertyD', 'value D');
+        $trait->addIdentifier('propertyA');
+        $trait->addIdentifier('propertyC');
+        $identifierWithPropertyValues = [...$trait->getIdentifiersWithPropertyValues()];
+        $this->assertCount(2, $identifierWithPropertyValues);
+        $this->assertArrayHasKey('propertyA', $identifierWithPropertyValues);
+        $this->assertArrayHasKey('propertyC', $identifierWithPropertyValues);
+        $this->assertSame('value A', $identifierWithPropertyValues['propertyA']);
+        $this->assertSame('value C', $identifierWithPropertyValues['propertyC']);
     }
 
     public function testRemoveIdentifyingProperty(): void
@@ -71,10 +64,10 @@ class IdentifiersTraitTest extends TestCase
             $this->markTestSkipped();
         }
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('someProperty'), 'some value');
-        $trait->addIdentifier(new PropertyName('someProperty'));
+        $trait->addProperty('someProperty', 'some value');
+        $trait->addIdentifier('someProperty');
         $this->expectException(InvalidArgumentException::class);
-        $trait->removeProperty(new PropertyName('someProperty'));
+        $trait->removeProperty('someProperty');
     }
 
     public function testClearIdentifyingProperties(): void
@@ -83,8 +76,8 @@ class IdentifiersTraitTest extends TestCase
             $this->markTestSkipped();
         }
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('someProperty'), 'some value');
-        $trait->addIdentifier(new PropertyName('someProperty'));
+        $trait->addProperty('someProperty', 'some value');
+        $trait->addIdentifier('someProperty');
         $this->expectException(InvalidArgumentException::class);
         $trait->clearProperties();
     }
@@ -96,6 +89,6 @@ class IdentifiersTraitTest extends TestCase
         }
         $trait = $this->getTrait();
         $this->expectException(InvalidArgumentException::class);
-        $trait->addIdentifier(new PropertyName('someProperty'));
+        $trait->addIdentifier('someProperty');
     }
 }

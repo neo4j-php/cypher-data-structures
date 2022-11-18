@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
-use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
-use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;
 use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
@@ -21,14 +19,15 @@ class Node implements NodeInterface
 {
     use IdentifiersTrait;
 
-    private NodeLabelStorageInterface $nodeLabelStorage;
+    /**
+     * @var array<string, null>
+     */
+    private $labels = [];
     private WeakRelationStorageInterface $weakRelationStorage;
 
     public function __construct(
     ) {
-        $this->nodeLabelStorage = new NodeLabelStorage();
         $this->weakRelationStorage = new WeakRelationStorage();
-        $this->initIdentifiersTrait();
     }
 
     public function __toString()
@@ -38,42 +37,45 @@ class Node implements NodeInterface
 
     // node label
 
-    public function addNodeLabel(NodeLabelInterface $nodeLabel): self
+    public function addLabel(string $label): self
     {
-        $this->nodeLabelStorage->attach($nodeLabel);
+        $this->labels[$label] = null;
 
         return $this;
     }
 
-    public function addNodeLabels(NodeLabelStorageInterface $nodeLabelStorage): self
+    public function addLabels(iterable $labels): self
     {
-        foreach ($nodeLabelStorage as $key) {
-            $this->nodeLabelStorage->attach($key);
+        foreach ($labels as $label) {
+            $this->addLabel($label);
         }
 
         return $this;
     }
 
-    public function hasNodeLabel(NodeLabelInterface $nodeLabel): bool
+    public function hasLabel(string $label): bool
     {
-        return $this->nodeLabelStorage->contains($nodeLabel);
+        return array_key_exists($label, $this->labels);
     }
 
-    public function getNodeLabels(): NodeLabelStorageInterface
+    /**
+     * @return iterable<string>
+     */
+    public function getLabels(): iterable
     {
-        return $this->nodeLabelStorage;
+        return $this->labels;
     }
 
-    public function removeNodeLabel(NodeLabelInterface $nodeLabel): self
+    public function removeLabel(string $label): self
     {
-        $this->nodeLabelStorage->detach($nodeLabel);
+        unset($this->labels[$label]);
 
         return $this;
     }
 
-    public function clearNodeLabels(): self
+    public function clearLabels(): self
     {
-        $this->nodeLabelStorage = new NodeLabelStorage();
+        $this->labels = [];
 
         return $this;
     }

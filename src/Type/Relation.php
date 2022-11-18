@@ -6,7 +6,6 @@ namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
-use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
@@ -21,12 +20,7 @@ class Relation implements RelationInterface
 
     private ?NodeInterface $endNode = null;
 
-    private ?RelationTypeInterface $relationType = null;
-
-    public function __construct(
-    ) {
-        $this->initIdentifiersTrait();
-    }
+    private ?string $type = null;
 
     public function __toString()
     {
@@ -38,7 +32,7 @@ class Relation implements RelationInterface
         return $this->startNode;
     }
 
-    public function setStartNode(?NodeInterface $node): RelationInterface
+    public function setStartNode(?NodeInterface $node): self
     {
         $this->startNode = $node;
 
@@ -50,21 +44,21 @@ class Relation implements RelationInterface
         return $this->endNode;
     }
 
-    public function setEndNode(?NodeInterface $node): RelationInterface
+    public function setEndNode(?NodeInterface $node): self
     {
         $this->endNode = $node;
 
         return $this;
     }
 
-    public function getRelationType(): ?RelationTypeInterface
+    public function getType(): ?string
     {
-        return $this->relationType;
+        return $this->type;
     }
 
-    public function setRelationType(?RelationTypeInterface $relationType): RelationInterface
+    public function setType(?string $type): self
     {
-        $this->relationType = $relationType;
+        $this->type = $type;
 
         return $this;
     }

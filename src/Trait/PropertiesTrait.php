@@ -4,60 +4,54 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Trait;
 
-use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
-use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
-use Syndesi\CypherDataStructures\Type\PropertyStorage;
-
 trait PropertiesTrait
 {
-    private PropertyStorageInterface $propertyStorage;
+    /**
+     * @var array<string, mixed>
+     */
+    private array $properties = [];
 
-    private function initPropertiesTrait(): void
+    public function addProperty(string $name, mixed $value = null): self
     {
-        $this->propertyStorage = new PropertyStorage();
-    }
-
-    public function addProperty(PropertyNameInterface $propertyName, mixed $value = null): self
-    {
-        $this->propertyStorage->attach($propertyName, $value);
+        $this->properties[$name] = $value;
 
         return $this;
     }
 
-    public function addProperties(PropertyStorageInterface $propertyStorage): self
+    public function addProperties(iterable $properties): self
     {
-        foreach ($propertyStorage as $key) {
-            $this->propertyStorage->attach($key, $propertyStorage->offsetGet($key));
+        foreach ($properties as $name => $value) {
+            $this->properties[$name] = $value;
         }
 
         return $this;
     }
 
-    public function hasProperty(PropertyNameInterface $propertyName): bool
+    public function hasProperty(string $name): bool
     {
-        return $this->propertyStorage->contains($propertyName);
+        return array_key_exists($name, $this->properties);
     }
 
-    public function getProperty(PropertyNameInterface $propertyName): mixed
+    public function getProperty(string $name): mixed
     {
-        return $this->propertyStorage->offsetGet($propertyName);
+        return $this->properties[$name];
     }
 
-    public function getProperties(): PropertyStorageInterface
+    public function getProperties(): iterable
     {
-        return $this->propertyStorage;
+        return $this->properties;
     }
 
-    public function removeProperty(PropertyNameInterface $propertyName): self
+    public function removeProperty(string $name): self
     {
-        $this->propertyStorage->detach($propertyName);
+        unset($this->properties[$name]);
 
         return $this;
     }
 
     public function clearProperties(): self
     {
-        $this->propertyStorage = new PropertyStorage();
+        $this->properties = [];
 
         return $this;
     }

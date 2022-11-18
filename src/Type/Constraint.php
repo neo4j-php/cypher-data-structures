@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\ConstraintInterface;
-use Syndesi\CypherDataStructures\Contract\ConstraintNameInterface;
-use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
-use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\OptionsTrait;
@@ -18,11 +15,11 @@ class Constraint implements ConstraintInterface
     use PropertiesTrait;
     use OptionsTrait;
 
-    private ?ConstraintNameInterface $constraintName = null;
+    private ?string $name = null;
 
-    private ?ConstraintType $constraintType = null;
+    private ?string $type = null;
 
-    private NodeLabelInterface|RelationTypeInterface|null $for = null;
+    private ?string $for = null;
 
     public function __construct(
     ) {
@@ -30,36 +27,36 @@ class Constraint implements ConstraintInterface
         $this->initOptionsTrait();
     }
 
-    public function getConstraintName(): ?ConstraintNameInterface
+    public function getName(): ?string
     {
-        return $this->constraintName;
+        return $this->name;
     }
 
-    public function setConstraintName(?ConstraintNameInterface $constraintName): self
+    public function setName(?string $name): self
     {
-        $this->constraintName = $constraintName;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getConstraintType(): ?ConstraintType
+    public function getType(): ?string
     {
-        return $this->constraintType;
+        return $this->type;
     }
 
-    public function setConstraintType(?ConstraintType $constraintType): self
+    public function setType(?string $type): self
     {
-        $this->constraintType = $constraintType;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getFor(): NodeLabelInterface|RelationTypeInterface|null
+    public function getFor(): ?string
     {
         return $this->for;
     }
 
-    public function setFor(NodeLabelInterface|RelationTypeInterface|null $for): self
+    public function setFor(?string $for): self
     {
         $this->for = $for;
 

@@ -10,17 +10,23 @@ interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersIn
 {
     // node label
 
-    public function addNodeLabel(NodeLabelInterface $nodeLabel): self;
+    public function addLabel(string $label): self;
 
-    public function addNodeLabels(NodeLabelStorageInterface $nodeLabelStorage): self;
+    /**
+     * @param string[] $labels
+     */
+    public function addLabels(iterable $labels): self;
 
-    public function hasNodeLabel(NodeLabelInterface $nodeLabel): bool;
+    public function hasLabel(string $label): bool;
 
-    public function getNodeLabels(): NodeLabelStorageInterface;
+    /**
+     * @return iterable<string>
+     */
+    public function getLabels(): iterable;
 
-    public function removeNodeLabel(NodeLabelInterface $nodeLabel): self;
+    public function removeLabel(string $label): self;
 
-    public function clearNodeLabels(): self;
+    public function clearLabels(): self;
 
     // relations
 

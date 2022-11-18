@@ -6,17 +6,23 @@ namespace Syndesi\CypherDataStructures\Contract;
 
 interface HasOptionsInterface
 {
-    public function addOption(OptionNameInterface $optionName, mixed $value = null): self;
+    public function addOption(string $name, mixed $value = null): self;
 
-    public function addOptions(OptionStorageInterface $optionStorage): self;
+    /**
+     * @param <string, mixed> $options
+     */
+    public function addOptions(array $options): self;
 
-    public function hasOption(OptionNameInterface $optionName): bool;
+    public function hasOption(string $name): bool;
 
-    public function getOption(OptionNameInterface $optionName): mixed;
+    public function getOption(string $name): mixed;
 
-    public function getOptions(): OptionStorageInterface;
+    /**
+     * @return array<string, mixed>
+     */
+    public function getOptions(): array;
 
-    public function removeOption(OptionNameInterface $optionName): self;
+    public function removeOption(string $name): self;
 
     public function clearOptions(): self;
 }
