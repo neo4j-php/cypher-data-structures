@@ -37,7 +37,10 @@ trait PropertiesTrait
         return $this->properties[$name];
     }
 
-    public function getProperties(): iterable
+    /**
+     * @return array<string, mixed>
+     */
+    public function getProperties(): array
     {
         return $this->properties;
     }

@@ -11,7 +11,7 @@ trait IdentifiersTrait
     use PropertiesTrait;
 
     /**
-     * @var string[]
+     * @var array<string, null>
      */
     private array $identifiers = [];
 
@@ -31,9 +31,9 @@ trait IdentifiersTrait
     /**
      * @throws InvalidArgumentException
      */
-    public function addIdentifiers(iterable $identifies): self
+    public function addIdentifiers(iterable $identifiers): self
     {
-        foreach ($identifies as $identifier) {
+        foreach ($identifiers as $identifier) {
             $this->addIdentifier($identifier);
         }
 
@@ -50,16 +50,25 @@ trait IdentifiersTrait
         return $this->properties[$identifier];
     }
 
-    public function getIdentifiers(): iterable
+    /**
+     * @return string[]
+     */
+    public function getIdentifiers(): array
     {
         return array_keys($this->identifiers);
     }
 
-    public function getIdentifiersWithPropertyValues(): iterable
+    /**
+     * @return array<string, mixed>
+     */
+    public function getIdentifiersWithPropertyValues(): array
     {
+        $result = [];
         foreach ($this->identifiers as $name => $value) {
-            yield $name => $this->properties[$name];
+            $result[$name] = $this->properties[$name];
         }
+
+        return $result;
     }
 
     public function removeIdentifier(string $identifier): self

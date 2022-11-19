@@ -6,8 +6,6 @@ namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
-use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;
-use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
@@ -22,17 +20,15 @@ class Node implements NodeInterface
     /**
      * @var array<string, null>
      */
-    private $labels = [];
-    private WeakRelationStorageInterface $weakRelationStorage;
-
-    public function __construct(
-    ) {
-        $this->weakRelationStorage = new WeakRelationStorage();
-    }
+    private array $labels = [];
+    /**
+     * @var array<string, RelationInterface>
+     */
+    private array $relations = [];
 
     public function __toString()
     {
-        return ToCypherHelper::nodeToCypherString($this) ?? '()';
+        return ToCypherHelper::nodeToCypherString($this);
     }
 
     // node label
@@ -58,12 +54,9 @@ class Node implements NodeInterface
         return array_key_exists($label, $this->labels);
     }
 
-    /**
-     * @return iterable<string>
-     */
-    public function getLabels(): iterable
+    public function getLabels(): array
     {
-        return $this->labels;
+        return array_keys($this->labels);
     }
 
     public function removeLabel(string $label): self
@@ -85,32 +78,41 @@ class Node implements NodeInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function addRelation(WeakRelationInterface|RelationInterface $relation): self
+    public function addRelation(RelationInterface $relation): self
     {
-        $weakRelation = $relation;
-        if ($weakRelation instanceof RelationInterface) {
-            $weakRelation = WeakRelation::create($weakRelation);
+        $startNode = $relation->getStartNode();
+        $endNode = $relation->getEndNode();
+        if (!$startNode) {
+            throw new InvalidArgumentException("Start node must be set");
         }
-        if (null === $weakRelation->get()) {
-            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
+        if (!$endNode) {
+            throw new InvalidArgumentException("End node must be set");
         }
-        /** @psalm-suppress PossiblyNullReference */
-        if (null === $weakRelation->get()->getStartNode()) {
-            throw InvalidArgumentException::createForTypeMismatch(NodeInterface::class, 'null');
-        }
-        /** @psalm-suppress PossiblyNullReference */
-        if (null === $weakRelation->get()->getEndNode()) {
-            throw InvalidArgumentException::createForTypeMismatch(NodeInterface::class, 'null');
-        }
+
         $ownIdentifyingString = ToCypherHelper::nodeToIdentifyingCypherString($this);
-        /** @psalm-suppress PossiblyNullReference */
-        if (ToCypherHelper::nodeToIdentifyingCypherString($weakRelation->get()->getStartNode()) !== $ownIdentifyingString &&
-            ToCypherHelper::nodeToIdentifyingCypherString($weakRelation->get()->getEndNode()) !== $ownIdentifyingString
+        if (ToCypherHelper::nodeToIdentifyingCypherString($startNode) !== $ownIdentifyingString &&
+            ToCypherHelper::nodeToIdentifyingCypherString($endNode) !== $ownIdentifyingString
         ) {
             throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
         }
 
-        $this->weakRelationStorage->attach($weakRelation);
+        $this->relations[$ownIdentifyingString] = $relation;
+
+        return $this;
+    }
+
+    /**
+     * @param iterable<RelationInterface> $relations
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException
+     */
+    public function addRelations(iterable $relations): self
+    {
+        foreach ($relations as $relation) {
+            $this->addRelation($relation);
+        }
 
         return $this;
     }
@@ -118,54 +120,32 @@ class Node implements NodeInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function addRelations(WeakRelationStorageInterface $weakRelationStorage): self
+    public function hasRelation(RelationInterface $relation): bool
     {
-        foreach ($weakRelationStorage as $key) {
-            $this->addRelation($key);
-        }
+        $identifyingString = ToCypherHelper::relationToIdentifyingCypherString($relation);
 
-        return $this;
+        return array_key_exists($identifyingString, $this->relations);
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @return RelationInterface[]
      */
-    public function hasRelation(WeakRelationInterface|RelationInterface $relation): bool
+    public function getRelations(): array
     {
-        if ($relation instanceof RelationInterface) {
-            $relation = WeakRelation::create($relation);
-        }
-        if (null === $relation->get()) {
-            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
-        }
-
-        return $this->weakRelationStorage->contains($relation);
+        return array_values($this->relations);
     }
 
-    public function getRelations(): WeakRelationStorageInterface
+    public function removeRelation(RelationInterface $relation): self
     {
-        return $this->weakRelationStorage;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function removeRelation(WeakRelationInterface|RelationInterface $relation): self
-    {
-        if ($relation instanceof RelationInterface) {
-            $relation = WeakRelation::create($relation);
-        }
-        if (null === $relation->get()) {
-            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
-        }
-        $this->weakRelationStorage->detach($relation);
+        $identifyingString = ToCypherHelper::relationToIdentifyingCypherString($relation);
+        unset($this->relations[$identifyingString]);
 
         return $this;
     }
 
     public function clearRelations(): self
     {
-        $this->weakRelationStorage = new WeakRelationStorage();
+        $this->relations = [];
 
         return $this;
     }

@@ -18,9 +18,9 @@ interface HasPropertiesInterface
     public function getProperty(string $name): mixed;
 
     /**
-     * @return iterable<string, mixed>
+     * @return array<string, mixed>
      */
-    public function getProperties(): iterable;
+    public function getProperties(): array;
 
     public function removeProperty(string $name): self;
 

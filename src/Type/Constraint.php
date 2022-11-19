@@ -21,12 +21,6 @@ class Constraint implements ConstraintInterface
 
     private ?string $for = null;
 
-    public function __construct(
-    ) {
-        $this->initPropertiesTrait();
-        $this->initOptionsTrait();
-    }
-
     public function getName(): ?string
     {
         return $this->name;

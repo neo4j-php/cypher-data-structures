@@ -18,14 +18,14 @@ interface HasIdentifiersInterface extends HasPropertiesInterface
     public function getIdentifier(string $identifier): mixed;
 
     /**
-     * @return iterable<string>
+     * @return string[]
      */
-    public function getIdentifiers(): iterable;
+    public function getIdentifiers(): array;
 
     /**
-     * @return iterable<string, mixed>
+     * @return array<string, mixed>
      */
-    public function getIdentifiersWithPropertyValues(): iterable;
+    public function getIdentifiersWithPropertyValues(): array;
 
     public function removeIdentifier(string $identifier): self;
 

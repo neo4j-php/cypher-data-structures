@@ -13,16 +13,16 @@ interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersIn
     public function addLabel(string $label): self;
 
     /**
-     * @param string[] $labels
+     * @param iterable<string> $labels
      */
     public function addLabels(iterable $labels): self;
 
     public function hasLabel(string $label): bool;
 
     /**
-     * @return iterable<string>
+     * @return string[]
      */
-    public function getLabels(): iterable;
+    public function getLabels(): array;
 
     public function removeLabel(string $label): self;
 
@@ -32,11 +32,19 @@ interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersIn
 
     public function addRelation(RelationInterface $relation): self;
 
-    public function addRelations(WeakRelationStorageInterface $weakRelationStorage): self;
+    /**
+     * @param iterable<RelationInterface> $relations
+     *
+     * @return $this
+     */
+    public function addRelations(iterable $relations): self;
 
     public function hasRelation(RelationInterface $relation): bool;
 
-    public function getRelations(): WeakRelationStorageInterface;
+    /**
+     * @return RelationInterface[]
+     */
+    public function getRelations(): array;
 
     public function removeRelation(RelationInterface $relation): self;
 

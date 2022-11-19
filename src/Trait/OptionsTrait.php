@@ -4,60 +4,57 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Trait;
 
-use Syndesi\CypherDataStructures\Contract\OptionNameInterface;
-use Syndesi\CypherDataStructures\Contract\OptionStorageInterface;
-use Syndesi\CypherDataStructures\Type\OptionStorage;
-
 trait OptionsTrait
 {
-    private OptionStorageInterface $optionStorage;
+    /**
+     * @var array<string, mixed>
+     */
+    private array $options = [];
 
-    private function initOptionsTrait(): void
+    public function addOption(string $name, mixed $value = null): self
     {
-        $this->optionStorage = new OptionStorage();
-    }
-
-    public function addOption(OptionNameInterface $optionName, mixed $value = null): self
-    {
-        $this->optionStorage->attach($optionName, $value);
+        $this->options[$name] = $value;
 
         return $this;
     }
 
-    public function addOptions(OptionStorageInterface $optionStorage): self
+    public function addOptions(iterable $options): self
     {
-        foreach ($optionStorage as $key) {
-            $this->optionStorage->attach($key, $optionStorage->offsetGet($key));
+        foreach ($options as $name => $value) {
+            $this->addOption($name, $value);
         }
 
         return $this;
     }
 
-    public function hasOption(OptionNameInterface $optionName): bool
+    public function hasOption(string $name): bool
     {
-        return $this->optionStorage->contains($optionName);
+        return array_key_exists($name, $this->options);
     }
 
-    public function getOption(OptionNameInterface $optionName): mixed
+    public function getOption(string $name): mixed
     {
-        return $this->optionStorage->offsetGet($optionName);
+        return $this->options[$name];
     }
 
-    public function getOptions(): OptionStorageInterface
+    /**
+     * @return array<string, mixed>
+     */
+    public function getOptions(): array
     {
-        return $this->optionStorage;
+        return $this->options;
     }
 
-    public function removeOption(OptionNameInterface $optionName): self
+    public function removeOption(string $name): self
     {
-        $this->optionStorage->detach($optionName);
+        unset($this->options[$name]);
 
         return $this;
     }
 
     public function clearOptions(): self
     {
-        $this->optionStorage = new OptionStorage();
+        $this->options = [];
 
         return $this;
     }

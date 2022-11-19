@@ -9,9 +9,9 @@ interface HasOptionsInterface
     public function addOption(string $name, mixed $value = null): self;
 
     /**
-     * @param <string, mixed> $options
+     * @param iterable<string, mixed> $options
      */
-    public function addOptions(array $options): self;
+    public function addOptions(iterable $options): self;
 
     public function hasOption(string $name): bool;
 
