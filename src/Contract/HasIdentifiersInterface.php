@@ -9,7 +9,7 @@ interface HasIdentifiersInterface extends HasPropertiesInterface
     public function addIdentifier(string $identifier): self;
 
     /**
-     * @param string[] $identifiers
+     * @param iterable<string> $identifiers
      */
     public function addIdentifiers(iterable $identifiers): self;
 

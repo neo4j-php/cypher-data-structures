@@ -91,4 +91,44 @@ class IdentifiersTraitTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $trait->addIdentifier('someProperty');
     }
+
+    public function testProperties(): void
+    {
+        $trait = $this->getTrait();
+        $trait->addProperty('someProperty', 'some value');
+        $this->assertCount(1, $trait->getProperties());
+        $this->assertTrue($trait->hasProperty('someProperty'));
+        $this->assertFalse($trait->hasProperty('notExistingProperty'));
+        $this->assertSame('some value', $trait->getProperty('someProperty'));
+
+        $trait->addProperties([
+            'otherProperty' => 'other value',
+            'anotherProperty' => 'another value',
+        ]);
+        $this->assertCount(3, $trait->getProperties());
+        $trait->removeProperty('otherProperty');
+        $this->assertCount(2, $trait->getProperties());
+        $trait->removeProperties();
+        $this->assertCount(0, $trait->getProperties());
+    }
+
+    public function testRemovePropertyWhichIsAlsoIdentifier(): void
+    {
+        $trait = $this->getTrait()
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $this->expectExceptionMessage("Unable to remove identifying property with name 'id' - remove identifier first");
+        $this->expectException(InvalidArgumentException::class);
+        $trait->removeProperty('id');
+    }
+
+    public function testRemovePropertiesWithExistingIdentifier(): void
+    {
+        $trait = $this->getTrait()
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $this->expectExceptionMessage("Unable to remove all properties because identifiers are still defined");
+        $this->expectException(InvalidArgumentException::class);
+        $trait->removeProperties();
+    }
 }
