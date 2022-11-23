@@ -24,5 +24,5 @@ interface HasOptionsInterface
 
     public function removeOption(string $name): self;
 
-    public function clearOptions(): self;
+    public function removeOptions(): self;
 }

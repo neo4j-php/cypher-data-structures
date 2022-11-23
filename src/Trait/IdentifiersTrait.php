@@ -51,17 +51,9 @@ trait IdentifiersTrait
     }
 
     /**
-     * @return string[]
-     */
-    public function getIdentifiers(): array
-    {
-        return array_keys($this->identifiers);
-    }
-
-    /**
      * @return array<string, mixed>
      */
-    public function getIdentifiersWithPropertyValues(): array
+    public function getIdentifiers(): array
     {
         $result = [];
         foreach ($this->identifiers as $name => $value) {
@@ -78,7 +70,7 @@ trait IdentifiersTrait
         return $this;
     }
 
-    public function clearIdentifier(): self
+    public function removeIdentifiers(): self
     {
         $this->identifiers = [];
 
@@ -103,7 +95,7 @@ trait IdentifiersTrait
     /**
      * @throws InvalidArgumentException
      */
-    public function clearProperties(): self
+    public function removeProperties(): self
     {
         if (count($this->identifiers) > 0) {
             throw new InvalidArgumentException("Unable to remove all properties because identifiers are still defined");

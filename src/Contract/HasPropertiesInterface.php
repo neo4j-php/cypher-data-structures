@@ -24,5 +24,5 @@ interface HasPropertiesInterface
 
     public function removeProperty(string $name): self;
 
-    public function clearProperties(): self;
+    public function removeProperties(): self;
 }

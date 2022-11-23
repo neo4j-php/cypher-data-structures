@@ -52,7 +52,7 @@ trait OptionsTrait
         return $this;
     }
 
-    public function clearOptions(): self
+    public function removeOptions(): self
     {
         $this->options = [];
 

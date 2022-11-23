@@ -10,9 +10,6 @@ use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
 class Node implements NodeInterface
 {
     use IdentifiersTrait;
@@ -30,8 +27,6 @@ class Node implements NodeInterface
     {
         return ToCypherHelper::nodeToCypherString($this);
     }
-
-    // node label
 
     public function addLabel(string $label): self
     {
@@ -66,14 +61,12 @@ class Node implements NodeInterface
         return $this;
     }
 
-    public function clearLabels(): self
+    public function removeLabels(): self
     {
         $this->labels = [];
 
         return $this;
     }
-
-    // relations
 
     /**
      * @throws InvalidArgumentException
@@ -143,7 +136,7 @@ class Node implements NodeInterface
         return $this;
     }
 
-    public function clearRelations(): self
+    public function removeRelations(): self
     {
         $this->relations = [];
 

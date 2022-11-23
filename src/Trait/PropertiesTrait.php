@@ -52,7 +52,7 @@ trait PropertiesTrait
         return $this;
     }
 
-    public function clearProperties(): self
+    public function removeProperties(): self
     {
         $this->properties = [];
 

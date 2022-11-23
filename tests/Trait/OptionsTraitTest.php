@@ -33,7 +33,7 @@ class OptionsTraitTest extends TestCase
         $this->assertCount(3, $trait->getOptions());
         $trait->removeOption('otherOption');
         $this->assertCount(2, $trait->getOptions());
-        $trait->clearOptions();
+        $trait->removeOptions();
         $this->assertCount(0, $trait->getOptions());
     }
 }

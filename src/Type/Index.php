@@ -10,7 +10,7 @@ use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
-class Index implements IndexInterface
+abstract class Index implements IndexInterface
 {
     use PropertiesTrait;
     use OptionsTrait;

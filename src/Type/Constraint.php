@@ -10,7 +10,7 @@ use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
-class Constraint implements ConstraintInterface
+abstract class Constraint implements ConstraintInterface
 {
     use PropertiesTrait;
     use OptionsTrait;

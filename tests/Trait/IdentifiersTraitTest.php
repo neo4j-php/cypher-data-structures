@@ -37,7 +37,7 @@ class IdentifiersTraitTest extends TestCase
         $this->assertCount(3, $trait->getIdentifiers());
         $trait->removeIdentifier('otherProperty');
         $this->assertCount(2, $trait->getIdentifiers());
-        $trait->clearIdentifier();
+        $trait->removeIdentifiers();
         $this->assertCount(0, $trait->getIdentifiers());
     }
 
@@ -50,7 +50,7 @@ class IdentifiersTraitTest extends TestCase
         $trait->addProperty('propertyD', 'value D');
         $trait->addIdentifier('propertyA');
         $trait->addIdentifier('propertyC');
-        $identifierWithPropertyValues = [...$trait->getIdentifiersWithPropertyValues()];
+        $identifierWithPropertyValues = [...$trait->getIdentifiers()];
         $this->assertCount(2, $identifierWithPropertyValues);
         $this->assertArrayHasKey('propertyA', $identifierWithPropertyValues);
         $this->assertArrayHasKey('propertyC', $identifierWithPropertyValues);
@@ -70,7 +70,7 @@ class IdentifiersTraitTest extends TestCase
         $trait->removeProperty('someProperty');
     }
 
-    public function testClearIdentifyingProperties(): void
+    public function testRemoveIdentifyingProperties(): void
     {
         if (false !== getenv("LEAK")) {
             $this->markTestSkipped();
@@ -79,7 +79,7 @@ class IdentifiersTraitTest extends TestCase
         $trait->addProperty('someProperty', 'some value');
         $trait->addIdentifier('someProperty');
         $this->expectException(InvalidArgumentException::class);
-        $trait->clearProperties();
+        $trait->removeProperties();
     }
 
     public function testAddIdentifierWithoutProperty(): void

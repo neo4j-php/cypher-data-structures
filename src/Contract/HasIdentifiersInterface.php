@@ -18,16 +18,11 @@ interface HasIdentifiersInterface extends HasPropertiesInterface
     public function getIdentifier(string $identifier): mixed;
 
     /**
-     * @return string[]
+     * @return array<string, mixed>
      */
     public function getIdentifiers(): array;
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getIdentifiersWithPropertyValues(): array;
-
     public function removeIdentifier(string $identifier): self;
 
-    public function clearIdentifier(): self;
+    public function removeIdentifiers(): self;
 }

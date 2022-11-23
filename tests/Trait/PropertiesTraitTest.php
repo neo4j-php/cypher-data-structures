@@ -33,7 +33,7 @@ class PropertiesTraitTest extends TestCase
         $this->assertCount(3, $trait->getProperties());
         $trait->removeProperty('otherProperty');
         $this->assertCount(2, $trait->getProperties());
-        $trait->clearProperties();
+        $trait->removeProperties();
         $this->assertCount(0, $trait->getProperties());
     }
 }

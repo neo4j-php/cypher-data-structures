@@ -86,7 +86,7 @@ class ToCypherHelper
         }
         $properties = $node->getProperties();
         if ($identifying) {
-            $properties = $node->getIdentifiersWithPropertyValues();
+            $properties = $node->getIdentifiers();
         }
         $propertyString = self::propertyArrayToCypherPropertyString($properties);
         if ('' !== $propertyString) {
@@ -125,7 +125,7 @@ class ToCypherHelper
         }
         $properties = $relation->getProperties();
         if ($identifying) {
-            $properties = $relation->getIdentifiersWithPropertyValues();
+            $properties = $relation->getIdentifiers();
         }
         $propertyString = self::propertyArrayToCypherPropertyString($properties);
         if ('' !== $propertyString) {

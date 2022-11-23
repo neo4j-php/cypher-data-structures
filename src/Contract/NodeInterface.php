@@ -8,8 +8,6 @@ use Stringable;
 
 interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersInterface
 {
-    // node label
-
     public function addLabel(string $label): self;
 
     /**
@@ -26,16 +24,12 @@ interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersIn
 
     public function removeLabel(string $label): self;
 
-    public function clearLabels(): self;
-
-    // relations
+    public function removeLabels(): self;
 
     public function addRelation(RelationInterface $relation): self;
 
     /**
      * @param iterable<RelationInterface> $relations
-     *
-     * @return $this
      */
     public function addRelations(iterable $relations): self;
 
@@ -48,5 +42,5 @@ interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersIn
 
     public function removeRelation(RelationInterface $relation): self;
 
-    public function clearRelations(): self;
+    public function removeRelations(): self;
 }
