@@ -38,7 +38,7 @@ class ToCypherHelper
             $resultParts[] = sprintf(
                 "%s: '%s'",
                 $name,
-                EscapeHelper::escapeCharacter("'", $value)
+                EscapeHelper::escapeCharacter("'", (string) $value)
             );
         }
 

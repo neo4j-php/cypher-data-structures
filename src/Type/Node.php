@@ -89,7 +89,7 @@ class Node implements NodeInterface
             throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
         }
 
-        $this->relations[$ownIdentifyingString] = $relation;
+        $this->relations[ToCypherHelper::relationToIdentifyingCypherString($relation)] = $relation;
 
         return $this;
     }
