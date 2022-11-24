@@ -236,9 +236,6 @@ class ToCypherHelper
         if (null === $index->getType()) {
             throw InvalidArgumentException::createForTypeMismatch('string', 'null');
         }
-        if (0 === count($index->getProperties())) {
-            throw new InvalidArgumentException("At least one property is required");
-        }
 
 //        $for = $index->getFor();
 //        if ($for instanceof NodeLabelInterface) {
