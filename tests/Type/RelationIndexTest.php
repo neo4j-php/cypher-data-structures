@@ -53,10 +53,8 @@ class RelationIndexTest extends TestCase
             ->setName('name')
             ->setType('BTREE')
             ->setFor('RELATION')
-            ->addProperty('id', 'not null')
-            ->addOption('option', 'value');
-        // todo
-        $this->assertSame('todo', (string) $relationIndex);
+            ->addProperty('id', 'not null');
+        $this->assertSame("BTREE INDEX name FOR ()-[relation:RELATION]-() ON (relation.id)", (string) $relationIndex);
     }
 
     public function testIsEqualTo(): void
@@ -64,7 +62,8 @@ class RelationIndexTest extends TestCase
         $relationIndex = (new RelationIndex())
             ->setName('name')
             ->setFor('RELATION')
-            ->setType('BTREE');
+            ->setType('BTREE')
+            ->addProperty('id', 'not null');
         $otherRelationIndex = (clone $relationIndex)
             ->setName('other_index');
         $this->assertFalse($relationIndex->isEqualTo(123));

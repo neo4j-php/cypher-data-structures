@@ -53,10 +53,8 @@ class NodeConstraintTest extends TestCase
             ->setName('name')
             ->setType('UNIQUE')
             ->setFor('Node')
-            ->addProperty('id', 'not null')
-            ->addOption('option', 'value');
-        // todo
-        $this->assertSame('todo', (string) $nodeConstraint);
+            ->addProperty('id', 'not null');
+        $this->assertSame("CONSTRAINT name FOR (node:Node) REQUIRE node.id IS UNIQUE", (string) $nodeConstraint);
     }
 
     public function testIsEqualTo(): void
@@ -64,7 +62,8 @@ class NodeConstraintTest extends TestCase
         $nodeConstraint = (new NodeConstraint())
             ->setName('name')
             ->setFor('Node')
-            ->setType('UNIQUE');
+            ->setType('UNIQUE')
+            ->addProperty('id', 'not null');
         $otherNodeConstraint = (clone $nodeConstraint)
             ->setName('other_index');
         $this->assertFalse($nodeConstraint->isEqualTo(123));

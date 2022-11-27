@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\IndexInterface;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
@@ -55,22 +53,5 @@ abstract class Index implements IndexInterface
         $this->for = $for;
 
         return $this;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __toString()
-    {
-        return ToCypherHelper::indexToCypherString($this);
-    }
-
-    public function isEqualTo(mixed $element): bool
-    {
-        if (!($element instanceof IndexInterface)) {
-            return false;
-        }
-
-        return ToCypherHelper::indexToCypherString($this) === ToCypherHelper::indexToCypherString($element);
     }
 }

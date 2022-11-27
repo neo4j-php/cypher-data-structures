@@ -6,7 +6,11 @@ namespace Syndesi\CypherDataStructures\Helper;
 
 use Exception;
 use Stringable;
+use Syndesi\CypherDataStructures\Contract\NodeConstraintInterface;
+use Syndesi\CypherDataStructures\Contract\NodeIndexInterface;
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
+use Syndesi\CypherDataStructures\Contract\RelationConstraintInterface;
+use Syndesi\CypherDataStructures\Contract\RelationIndexInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 
@@ -220,5 +224,213 @@ class ToStringHelper
         }
 
         return implode('', $parts);
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public static function optionsToString(array $options): string
+    {
+        return '';
+    }
+
+    public static function nodeConstraintToString(NodeConstraintInterface $nodeConstraint): string
+    {
+        $parts = [];
+
+        $parts[] = 'CONSTRAINT';
+
+        if ($name = $nodeConstraint->getName()) {
+            $parts[] = $name;
+        }
+
+        $parts[] = 'FOR';
+
+        $for = $nodeConstraint->getFor();
+        if (!$for) {
+            throw new InvalidArgumentException('For can not be null');
+        }
+        $parts[] = sprintf("(node:%s)", $for);
+
+        $parts[] = 'REQUIRE';
+
+        $properties = array_keys($nodeConstraint->getProperties());
+        sort($properties);
+        $propertyCount = count($properties);
+        if (0 === $propertyCount) {
+            throw new InvalidArgumentException('At least one property is required');
+        }
+        if (1 === $propertyCount) {
+            $parts[] = sprintf("node.%s", array_shift($properties));
+        }
+        if ($propertyCount > 1) {
+            $propertyParts = [];
+            foreach ($properties as $property) {
+                $propertyParts[] = sprintf("node.%s", $property);
+            }
+            $parts[] = sprintf("(%s)", implode(', ', $propertyParts));
+        }
+
+        $parts[] = 'IS';
+
+        $type = $nodeConstraint->getType();
+        if (!$type) {
+            throw new InvalidArgumentException('Type can not be null');
+        }
+        $parts[] = $type;
+
+        $options = $nodeConstraint->getOptions();
+        if (count($options) > 0) {
+            $parts[] = 'OPTIONS';
+            $parts[] = self::optionsToString($options);
+        }
+
+        return implode(' ', $parts);
+    }
+
+    public static function relationConstraintToString(RelationConstraintInterface $relationConstraint): string
+    {
+        $parts = [];
+
+        $parts[] = 'CONSTRAINT';
+
+        if ($name = $relationConstraint->getName()) {
+            $parts[] = $name;
+        }
+
+        $parts[] = 'FOR';
+
+        $for = $relationConstraint->getFor();
+        if (!$for) {
+            throw new InvalidArgumentException('For can not be null');
+        }
+        $parts[] = sprintf("()-[relation:%s]-()", $for);
+
+        $parts[] = 'REQUIRE';
+
+        $properties = array_keys($relationConstraint->getProperties());
+        sort($properties);
+        $propertyCount = count($properties);
+        if (0 === $propertyCount) {
+            throw new InvalidArgumentException('At least one property is required');
+        }
+        if (1 === $propertyCount) {
+            $parts[] = sprintf("relation.%s", array_shift($properties));
+        }
+        if ($propertyCount > 1) {
+            $propertyParts = [];
+            foreach ($properties as $property) {
+                $propertyParts[] = sprintf("relation.%s", $property);
+            }
+            $parts[] = sprintf("(%s)", implode(', ', $propertyParts));
+        }
+
+        $parts[] = 'IS';
+
+        $type = $relationConstraint->getType();
+        if (!$type) {
+            throw new InvalidArgumentException('Type can not be null');
+        }
+        $parts[] = $type;
+
+        $options = $relationConstraint->getOptions();
+        if (count($options) > 0) {
+            $parts[] = 'OPTIONS';
+            $parts[] = self::optionsToString($options);
+        }
+
+        return implode(' ', $parts);
+    }
+
+    public static function nodeIndexToString(NodeIndexInterface $nodeIndex): string
+    {
+        $parts = [];
+
+        $type = $nodeIndex->getType();
+        if ($type) {
+            $parts[] = $type;
+        }
+
+        $parts[] = 'INDEX';
+
+        if ($name = $nodeIndex->getName()) {
+            $parts[] = $name;
+        }
+
+        $parts[] = 'FOR';
+
+        $for = $nodeIndex->getFor();
+        if (!$for) {
+            throw new InvalidArgumentException('For can not be null');
+        }
+        $parts[] = sprintf("(node:%s)", $for);
+
+        $parts[] = 'ON';
+
+        $properties = array_keys($nodeIndex->getProperties());
+        sort($properties);
+        $propertyCount = count($properties);
+        if (0 === $propertyCount) {
+            throw new InvalidArgumentException('At least one property is required');
+        }
+        $propertyParts = [];
+        foreach ($properties as $property) {
+            $propertyParts[] = sprintf("node.%s", $property);
+        }
+        $parts[] = sprintf("(%s)", implode(', ', $propertyParts));
+
+        $options = $nodeIndex->getOptions();
+        if (count($options) > 0) {
+            $parts[] = 'OPTIONS';
+            $parts[] = self::optionsToString($options);
+        }
+
+        return implode(' ', $parts);
+    }
+
+    public static function relationIndexToString(RelationIndexInterface $relationIndex): string
+    {
+        $parts = [];
+
+        $type = $relationIndex->getType();
+        if ($type) {
+            $parts[] = $type;
+        }
+
+        $parts[] = 'INDEX';
+
+        if ($name = $relationIndex->getName()) {
+            $parts[] = $name;
+        }
+
+        $parts[] = 'FOR';
+
+        $for = $relationIndex->getFor();
+        if (!$for) {
+            throw new InvalidArgumentException('For can not be null');
+        }
+        $parts[] = sprintf("()-[relation:%s]-()", $for);
+
+        $parts[] = 'ON';
+
+        $properties = array_keys($relationIndex->getProperties());
+        sort($properties);
+        $propertyCount = count($properties);
+        if (0 === $propertyCount) {
+            throw new InvalidArgumentException('At least one property is required');
+        }
+        $propertyParts = [];
+        foreach ($properties as $property) {
+            $propertyParts[] = sprintf("relation.%s", $property);
+        }
+        $parts[] = sprintf("(%s)", implode(', ', $propertyParts));
+
+        $options = $relationIndex->getOptions();
+        if (count($options) > 0) {
+            $parts[] = 'OPTIONS';
+            $parts[] = self::optionsToString($options);
+        }
+
+        return implode(' ', $parts);
     }
 }

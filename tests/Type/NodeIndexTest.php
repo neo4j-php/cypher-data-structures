@@ -53,10 +53,8 @@ class NodeIndexTest extends TestCase
             ->setName('name')
             ->setType('BTREE')
             ->setFor('Node')
-            ->addProperty('id', 'not null')
-            ->addOption('option', 'value');
-        // todo
-        $this->assertSame('todo', (string) $nodeIndex);
+            ->addProperty('id', 'not null');
+        $this->assertSame("BTREE INDEX name FOR (node:Node) ON (node.id)", (string) $nodeIndex);
     }
 
     public function testIsEqualTo(): void
@@ -64,7 +62,8 @@ class NodeIndexTest extends TestCase
         $nodeIndex = (new NodeIndex())
             ->setName('name')
             ->setFor('Node')
-            ->setType('BTREE');
+            ->setType('BTREE')
+            ->addProperty('id', 'not null');
         $otherNodeIndex = (clone $nodeIndex)
             ->setName('other_index');
         $this->assertFalse($nodeIndex->isEqualTo(123));

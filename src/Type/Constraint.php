@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\ConstraintInterface;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
@@ -55,22 +53,5 @@ abstract class Constraint implements ConstraintInterface
         $this->for = $for;
 
         return $this;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __toString()
-    {
-        return ToCypherHelper::constraintToCypherString($this);
-    }
-
-    public function isEqualTo(mixed $element): bool
-    {
-        if (!($element instanceof ConstraintInterface)) {
-            return false;
-        }
-
-        return ToCypherHelper::constraintToCypherString($this) === ToCypherHelper::constraintToCypherString($element);
     }
 }

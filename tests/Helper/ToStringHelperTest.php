@@ -8,7 +8,11 @@ use PHPUnit\Framework\TestCase;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToStringHelper;
 use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\NodeConstraint;
+use Syndesi\CypherDataStructures\Type\NodeIndex;
 use Syndesi\CypherDataStructures\Type\Relation;
+use Syndesi\CypherDataStructures\Type\RelationConstraint;
+use Syndesi\CypherDataStructures\Type\RelationIndex;
 
 class ToStringHelperTest extends TestCase
 {
@@ -141,5 +145,65 @@ class ToStringHelperTest extends TestCase
         $this->assertSame("(:NodeA {id: 123})-[:RELATION {hello: 'world :D', id: 123}]->(:NodeB {id: 321})", ToStringHelper::relationToString($relation));
         $this->assertSame("[:RELATION {hello: 'world :D', id: 123}]", ToStringHelper::relationToString($relation, withNodes: false));
         $this->assertSame("[:RELATION {id: 123}]", ToStringHelper::relationToString($relation, identifying: true, withNodes: false));
+    }
+
+    public function testNodeConstraintToString(): void
+    {
+        $nodeConstraint = (new NodeConstraint())
+            ->setName('some_name')
+            ->setFor('Node')
+            ->setType('UNIQUE')
+            ->addProperty('id');
+
+        $this->assertSame("CONSTRAINT some_name FOR (node:Node) REQUIRE node.id IS UNIQUE", ToStringHelper::nodeConstraintToString($nodeConstraint));
+
+        $nodeConstraint->addProperty('hello');
+
+        $this->assertSame("CONSTRAINT some_name FOR (node:Node) REQUIRE (node.hello, node.id) IS UNIQUE", ToStringHelper::nodeConstraintToString($nodeConstraint));
+    }
+
+    public function testRelationConstraintToString(): void
+    {
+        $relationConstraint = (new RelationConstraint())
+            ->setName('some_name')
+            ->setFor('RELATION')
+            ->setType('UNIQUE')
+            ->addProperty('id');
+
+        $this->assertSame("CONSTRAINT some_name FOR ()-[relation:RELATION]-() REQUIRE relation.id IS UNIQUE", ToStringHelper::relationConstraintToString($relationConstraint));
+
+        $relationConstraint->addProperty('hello');
+
+        $this->assertSame("CONSTRAINT some_name FOR ()-[relation:RELATION]-() REQUIRE (relation.hello, relation.id) IS UNIQUE", ToStringHelper::relationConstraintToString($relationConstraint));
+    }
+
+    public function testNodeIndexToString(): void
+    {
+        $nodeIndex = (new NodeIndex())
+            ->setName('some_name')
+            ->setFor('Node')
+            ->setType('BTREE')
+            ->addProperty('id');
+
+        $this->assertSame("BTREE INDEX some_name FOR (node:Node) ON (node.id)", ToStringHelper::nodeIndexToString($nodeIndex));
+
+        $nodeIndex->addProperty('hello');
+
+        $this->assertSame("BTREE INDEX some_name FOR (node:Node) ON (node.hello, node.id)", ToStringHelper::nodeIndexToString($nodeIndex));
+    }
+
+    public function testRelationIndexToString(): void
+    {
+        $relationIndex = (new RelationIndex())
+            ->setName('some_name')
+            ->setFor('RELATION')
+            ->setType('BTREE')
+            ->addProperty('id');
+
+        $this->assertSame("BTREE INDEX some_name FOR ()-[relation:RELATION]-() ON (relation.id)", ToStringHelper::relationIndexToString($relationIndex));
+
+        $relationIndex->addProperty('hello');
+
+        $this->assertSame("BTREE INDEX some_name FOR ()-[relation:RELATION]-() ON (relation.hello, relation.id)", ToStringHelper::relationIndexToString($relationIndex));
     }
 }

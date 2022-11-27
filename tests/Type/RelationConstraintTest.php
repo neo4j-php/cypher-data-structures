@@ -53,10 +53,8 @@ class RelationConstraintTest extends TestCase
             ->setName('name')
             ->setType('UNIQUE')
             ->setFor('RELATION')
-            ->addProperty('id', 'not null')
-            ->addOption('option', 'value');
-        // todo
-        $this->assertSame('todo', (string) $relationConstraint);
+            ->addProperty('id', 'not null');
+        $this->assertSame("CONSTRAINT name FOR ()-[relation:RELATION]-() REQUIRE relation.id IS UNIQUE", (string) $relationConstraint);
     }
 
     public function testIsEqualTo(): void
@@ -64,7 +62,8 @@ class RelationConstraintTest extends TestCase
         $relationConstraint = (new RelationConstraint())
             ->setName('name')
             ->setFor('RELATION')
-            ->setType('UNIQUE');
+            ->setType('UNIQUE')
+            ->addProperty('id', 'not null');
         $otherRelationConstraint = (clone $relationConstraint)
             ->setName('other_index');
         $this->assertFalse($relationConstraint->isEqualTo(123));
