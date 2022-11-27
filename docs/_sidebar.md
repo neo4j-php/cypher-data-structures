@@ -4,6 +4,5 @@
   - [Relation](/relation.md)
   - [Index](/type.index.md)
   - [Constraint](/constraint.md)
-- [Helper](/helper.md)
 - [Benchmark](/benchmark.md)
 - [Credits & License](/credits_and_license.md)
