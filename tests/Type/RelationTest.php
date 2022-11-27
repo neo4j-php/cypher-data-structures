@@ -72,7 +72,7 @@ class RelationTest extends TestCase
                 (new Node())
                     ->addLabel('EndNode')
             );
-        $this->assertSame("(:StartNode)-[:SOME_TYPE {hello: 'world', id: '123'}]->(:EndNode)", (string) $relation);
+        $this->assertSame("(:StartNode)-[:SOME_TYPE {hello: 'world', id: 123}]->(:EndNode)", (string) $relation);
     }
 
     public function testIsEqualTo(): void

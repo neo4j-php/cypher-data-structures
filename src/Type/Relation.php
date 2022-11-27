@@ -6,7 +6,7 @@ namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Helper\ToStringHelper;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
 /**
@@ -24,7 +24,7 @@ class Relation implements RelationInterface
 
     public function __toString()
     {
-        return ToCypherHelper::relationToCypherString($this);
+        return ToStringHelper::relationToString($this);
     }
 
     public function getStartNode(): ?NodeInterface
@@ -69,6 +69,6 @@ class Relation implements RelationInterface
             return false;
         }
 
-        return ToCypherHelper::relationToIdentifyingCypherString($this) === ToCypherHelper::relationToIdentifyingCypherString($element);
+        return ToStringHelper::relationToString($this, identifying: true) === ToStringHelper::relationToString($element, identifying: true);
     }
 }

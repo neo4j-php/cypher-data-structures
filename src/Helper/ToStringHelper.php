@@ -6,6 +6,8 @@ namespace Syndesi\CypherDataStructures\Helper;
 
 use Exception;
 use Stringable;
+use Syndesi\CypherDataStructures\Contract\NodeInterface;
+use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 
 class ToStringHelper
@@ -158,5 +160,65 @@ class ToStringHelper
         }
 
         return implode($parts);
+    }
+
+    /**
+     * Turns a node to its Cypher string variant.
+     *
+     * @note relations are not included.
+     */
+    public static function nodeToString(NodeInterface $node, bool $identifying = false): string
+    {
+        $parts = [];
+        $parts[] = self::labelsToString($node->getLabels());
+        $properties = $node->getProperties();
+        if ($identifying) {
+            $properties = $node->getIdentifiers();
+        }
+        $propertyString = self::propertyArrayToString($properties);
+        if (strlen($propertyString) > 0) {
+            $parts[] = sprintf("{%s}", $propertyString);
+        }
+
+        return sprintf(
+            "(%s)",
+            implode(' ', $parts)
+        );
+    }
+
+    public static function relationToString(RelationInterface $relation, bool $identifying = false, bool $withNodes = true): string
+    {
+        $parts = [];
+        if ($withNodes) {
+            if (($startNode = $relation->getStartNode()) === null) {
+                throw new InvalidArgumentException('Start node can not be null');
+            }
+            $parts[] = self::nodeToString($startNode, true);
+            $parts[] = '-';
+        }
+
+        $relationParts = [];
+        if ($type = $relation->getType()) {
+            $relationParts[] = sprintf(':%s', $type);
+        }
+        $properties = $relation->getProperties();
+        if ($identifying) {
+            $properties = $relation->getIdentifiers();
+        }
+        $propertyString = self::propertyArrayToString($properties);
+        if (strlen($propertyString) > 0) {
+            $relationParts[] = sprintf("{%s}", $propertyString);
+        }
+        $parts[] = sprintf("[%s]", implode(' ', $relationParts));
+
+        if ($withNodes) {
+            if (($endNode = $relation->getEndNode()) === null) {
+                throw new InvalidArgumentException('End node can not be null');
+            }
+            $parts[] = '->';
+            $parts[] = self::nodeToString($endNode, true);
+        }
+
+        return implode('', $parts);
     }
 }

@@ -8,6 +8,7 @@ use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Helper\ToStringHelper;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
 class Node implements NodeInterface
@@ -25,7 +26,7 @@ class Node implements NodeInterface
 
     public function __toString()
     {
-        return ToCypherHelper::nodeToCypherString($this);
+        return ToStringHelper::nodeToString($this);
     }
 
     public function addLabel(string $label): self
@@ -82,9 +83,9 @@ class Node implements NodeInterface
             throw new InvalidArgumentException("End node must be set");
         }
 
-        $ownIdentifyingString = ToCypherHelper::nodeToIdentifyingCypherString($this);
-        if (ToCypherHelper::nodeToIdentifyingCypherString($startNode) !== $ownIdentifyingString &&
-            ToCypherHelper::nodeToIdentifyingCypherString($endNode) !== $ownIdentifyingString
+        $ownIdentifyingString = ToStringHelper::nodeToString($this, true);
+        if (ToStringHelper::nodeToString($startNode, true) !== $ownIdentifyingString &&
+            ToStringHelper::nodeToString($endNode, true) !== $ownIdentifyingString
         ) {
             throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
         }
@@ -149,6 +150,6 @@ class Node implements NodeInterface
             return false;
         }
 
-        return ToCypherHelper::nodeToIdentifyingCypherString($this) === ToCypherHelper::nodeToIdentifyingCypherString($element);
+        return ToStringHelper::nodeToString($this, true) === ToStringHelper::nodeToString($element, true);
     }
 }

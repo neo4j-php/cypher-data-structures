@@ -132,8 +132,7 @@ class NodeTest extends TestCase
             ->addLabels(['LabelA', 'LabelZ', 'LabelC', 'discouraged Style'])
             ->addProperty('id', 123)
             ->addIdentifier('id');
-        // todo fix backticks in ToCypherHelper class
-        $this->assertSame("(:LabelA:LabelC:LabelZ:discouraged Style {id: '123'})", (string) $node);
+        $this->assertSame("(:LabelA:LabelC:LabelZ:`discouraged Style` {id: 123})", (string) $node);
     }
 
     public function testIsEqualTo(): void

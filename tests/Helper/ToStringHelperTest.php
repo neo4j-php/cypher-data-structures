@@ -7,6 +7,8 @@ namespace Syndesi\CypherDataStructures\Tests\Helper;
 use PHPUnit\Framework\TestCase;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToStringHelper;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\Relation;
 
 class ToStringHelperTest extends TestCase
 {
@@ -101,5 +103,43 @@ class ToStringHelperTest extends TestCase
     {
         $labels = ['a', 'z', 'b', 'E', '_c', '012', 'problematic label', '#label'];
         $this->assertSame(":`#label`:`012`:E:_c:a:b:`problematic label`:z", ToStringHelper::labelsToString($labels));
+    }
+
+    public function testNodeToString(): void
+    {
+        $node = (new Node())
+            ->addLabels(['NodeA', 'NodeZ', 'NodeC', '_node', '01235'])
+            ->addProperties([
+                'id' => 123,
+                'hello' => 'world :D',
+            ])
+            ->addIdentifier('id');
+        $this->assertSame("(:`01235`:NodeA:NodeC:NodeZ:_node {hello: 'world :D', id: 123})", ToStringHelper::nodeToString($node));
+        $this->assertSame("(:`01235`:NodeA:NodeC:NodeZ:_node {id: 123})", ToStringHelper::nodeToString($node, true));
+    }
+
+    public function testRelationToString(): void
+    {
+        $nodeA = (new Node())
+            ->addLabel('NodeA')
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $nodeB = (new Node())
+            ->addLabel('NodeB')
+            ->addProperty('id', 321)
+            ->addIdentifier('id');
+        $relation = (new Relation())
+            ->setStartNode($nodeA)
+            ->setEndNode($nodeB)
+            ->setType('RELATION')
+            ->addProperties([
+                'id' => 123,
+                'hello' => 'world :D',
+            ])
+            ->addIdentifier('id');
+
+        $this->assertSame("(:NodeA {id: 123})-[:RELATION {hello: 'world :D', id: 123}]->(:NodeB {id: 321})", ToStringHelper::relationToString($relation));
+        $this->assertSame("[:RELATION {hello: 'world :D', id: 123}]", ToStringHelper::relationToString($relation, withNodes: false));
+        $this->assertSame("[:RELATION {id: 123}]", ToStringHelper::relationToString($relation, identifying: true, withNodes: false));
     }
 }
