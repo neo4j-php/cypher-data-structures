@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Contract;
 
-use Stringable;
-
-interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersInterface
+interface NodeInterface extends \Stringable, IsEqualToInterface, HasIdentifiersInterface
 {
     public function addLabel(string $label): self;
 

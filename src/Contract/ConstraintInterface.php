@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Contract;
 
-use Stringable;
-
-interface ConstraintInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface, HasOptionsInterface
+interface ConstraintInterface extends \Stringable, IsEqualToInterface, HasPropertiesInterface, HasOptionsInterface
 {
     public function getName(): ?string;
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Helper;
 
-use Exception;
-use Stringable;
 use Syndesi\CypherDataStructures\Contract\NodeConstraintInterface;
 use Syndesi\CypherDataStructures\Contract\NodeIndexInterface;
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
@@ -48,7 +46,7 @@ class ToStringHelper
 
     /**
      * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws \Exception
      */
     public static function escapeString(string $string, string $character = '\''): string
     {
@@ -79,7 +77,7 @@ class ToStringHelper
         if (null === $escapedString) {
             // @codeCoverageIgnoreStart
             // @infection-ignore-all
-            throw new Exception(preg_last_error_msg());
+            throw new \Exception(preg_last_error_msg());
             // @codeCoverageIgnoreEnd
         }
 
@@ -111,7 +109,7 @@ class ToStringHelper
             return sprintf("[%s]", $parts);
         }
         if (is_object($value)) {
-            if ($value instanceof Stringable) {
+            if ($value instanceof \Stringable) {
                 return (string) $value;
             }
         }

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Contract;
 
-use Stringable;
-
-interface RelationInterface extends Stringable, IsEqualToInterface, HasIdentifiersInterface
+interface RelationInterface extends \Stringable, IsEqualToInterface, HasIdentifiersInterface
 {
     public function setStartNode(?NodeInterface $node): self;
 

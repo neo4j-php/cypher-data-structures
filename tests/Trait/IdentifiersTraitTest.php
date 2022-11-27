@@ -43,14 +43,18 @@ class IdentifiersTraitTest extends TestCase
 
     public function testGetIdentifierWithPropertyValues(): void
     {
-        $trait = $this->getTrait();
-        $trait->addProperty('propertyA', 'value A');
-        $trait->addProperty('propertyB', 'value B');
-        $trait->addProperty('propertyC', 'value C');
-        $trait->addProperty('propertyD', 'value D');
-        $trait->addIdentifier('propertyA');
-        $trait->addIdentifier('propertyC');
-        $identifierWithPropertyValues = [...$trait->getIdentifiers()];
+        $trait = $this->getTrait()
+            ->addProperties([
+                'propertyA' => 'value A',
+                'propertyB' => 'value B',
+                'propertyC' => 'value C',
+                'propertyD' => 'value D',
+            ])
+            ->addIdentifiers([
+                'propertyA',
+                'propertyC',
+            ]);
+        $identifierWithPropertyValues = $trait->getIdentifiers();
         $this->assertCount(2, $identifierWithPropertyValues);
         $this->assertArrayHasKey('propertyA', $identifierWithPropertyValues);
         $this->assertArrayHasKey('propertyC', $identifierWithPropertyValues);
