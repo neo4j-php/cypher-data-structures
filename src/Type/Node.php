@@ -19,7 +19,7 @@ class Node implements NodeInterface
      */
     private array $labels = [];
     /**
-     * @var array<string, RelationInterface>
+     * @var RelationInterface[]
      */
     private array $relations = [];
 
@@ -89,7 +89,7 @@ class Node implements NodeInterface
             throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
         }
 
-        $this->relations[ToStringHelper::relationToString($relation, identifying: true)] = $relation;
+        $this->relations[] = $relation;
 
         return $this;
     }
@@ -115,9 +115,14 @@ class Node implements NodeInterface
      */
     public function hasRelation(RelationInterface $relation): bool
     {
-        $identifyingString = ToStringHelper::relationToString($relation, identifying: true);
+        $relationIdentifyingString = ToStringHelper::relationToString($relation, identifying: true);
+        foreach ($this->relations as $tmpRelation) {
+            if (ToStringHelper::relationToString($tmpRelation, identifying: true) === $relationIdentifyingString) {
+                return true;
+            }
+        }
 
-        return array_key_exists($identifyingString, $this->relations);
+        return false;
     }
 
     /**
@@ -125,13 +130,17 @@ class Node implements NodeInterface
      */
     public function getRelations(): array
     {
-        return array_values($this->relations);
+        return $this->relations;
     }
 
     public function removeRelation(RelationInterface $relation): self
     {
-        $identifyingString = ToStringHelper::relationToString($relation, identifying: true);
-        unset($this->relations[$identifyingString]);
+        $relationIdentifyingString = ToStringHelper::relationToString($relation, identifying: true);
+        foreach ($this->relations as $key => $tmpRelation) {
+            if (ToStringHelper::relationToString($tmpRelation, identifying: true) === $relationIdentifyingString) {
+                unset($this->relations[$key]);
+            }
+        }
 
         return $this;
     }

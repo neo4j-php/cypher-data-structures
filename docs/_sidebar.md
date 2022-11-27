@@ -1,7 +1,5 @@
 - [Home](/)
-- [Getting Started](/getting_started.md)
 - Types
-  - [Property](/property.md)
   - [Node](/node.md)
   - [Relation](/relation.md)
   - [Index](/type.index.md)
