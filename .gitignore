@@ -8,3 +8,4 @@ infection.html
 /.php-cs-fixer.cache
 /tmp/
 /docs/.npm/
+composer.lock
