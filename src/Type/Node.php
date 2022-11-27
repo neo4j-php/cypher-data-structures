@@ -7,7 +7,6 @@ namespace Syndesi\CypherDataStructures\Type;
 use Syndesi\CypherDataStructures\Contract\NodeInterface;
 use Syndesi\CypherDataStructures\Contract\RelationInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Helper\ToStringHelper;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
 
@@ -90,7 +89,7 @@ class Node implements NodeInterface
             throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
         }
 
-        $this->relations[ToCypherHelper::relationToIdentifyingCypherString($relation)] = $relation;
+        $this->relations[ToStringHelper::relationToString($relation, identifying: true)] = $relation;
 
         return $this;
     }
@@ -116,7 +115,7 @@ class Node implements NodeInterface
      */
     public function hasRelation(RelationInterface $relation): bool
     {
-        $identifyingString = ToCypherHelper::relationToIdentifyingCypherString($relation);
+        $identifyingString = ToStringHelper::relationToString($relation, identifying: true);
 
         return array_key_exists($identifyingString, $this->relations);
     }
@@ -131,7 +130,7 @@ class Node implements NodeInterface
 
     public function removeRelation(RelationInterface $relation): self
     {
-        $identifyingString = ToCypherHelper::relationToIdentifyingCypherString($relation);
+        $identifyingString = ToStringHelper::relationToString($relation, identifying: true);
         unset($this->relations[$identifyingString]);
 
         return $this;
