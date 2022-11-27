@@ -31,8 +31,9 @@ $relation->getType();
 Properties are key-value-pairs which can store data within a relationship.  
 The keys must be unique and [should be written in camelCase](https://neo4j.com/docs/cypher-manual/current/styleguide/#cypher-styleguide-casing).
 
-!> **Note**: While this library supports arrays and objects as property values, Neo4j has limited support for those types.  
-Be sure that those types are correctly handled.
+!> **Note**: While this library supports arrays and objects as property values, Neo4j has limited support for those
+   types.  
+   Be sure that those types are correctly handled.
 
 ```php
 // add property to a relationship:
