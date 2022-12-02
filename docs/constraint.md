@@ -95,4 +95,31 @@ $someConstraint->removeProperties();
 
 ## Options
 
-WIP
+Some constraints can be configured via options.  
+The example uses strings, but all types (arrays, integers etc.) are supported.
+
+```php
+// add a single option
+$someConstraint->addOption('name', 'value');
+
+// add multiple options
+$someConstraint->addOptions([
+    'other.name' => 'other value',
+    'some.name' => 'some value'
+]);
+
+// check if constraint has option
+$someConstraint->hasOption('name');
+
+// get specific option from a constraint
+$someConstraint->getOption('name');
+
+// get all options from a constraint
+$someConstraint->getOptions();
+
+// remove a specific option from a constraint:
+$someConstraint->removeOption('name');
+
+// remove all options from a constraint:
+$someConstraint->removeOptions();
+```

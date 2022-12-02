@@ -118,6 +118,9 @@ class IdentifiersTraitTest extends TestCase
 
     public function testRemovePropertyWhichIsAlsoIdentifier(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $trait = $this->getTrait()
             ->addProperty('id', 123)
             ->addIdentifier('id');
@@ -128,6 +131,9 @@ class IdentifiersTraitTest extends TestCase
 
     public function testRemovePropertiesWithExistingIdentifier(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $trait = $this->getTrait()
             ->addProperty('id', 123)
             ->addIdentifier('id');

@@ -96,4 +96,31 @@ $someIndex->removeProperties();
 
 ## Options
 
-WIP
+Some indexes can be configured via options.  
+The example uses strings, but all types (arrays, integers etc.) are supported.
+
+```php
+// add a single option
+$someIndex->addOption('name', 'value');
+
+// add multiple options
+$someIndex->addOptions([
+    'other.name' => 'other value',
+    'some.name' => 'some value'
+]);
+
+// check if index has option
+$someIndex->hasOption('name');
+
+// get specific option from an index
+$someIndex->getOption('name');
+
+// get all options from an index
+$someIndex->getOptions();
+
+// remove a specific option from an index:
+$someIndex->removeOption('name');
+
+// remove all options from an index:
+$someIndex->removeOptions();
+```

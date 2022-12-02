@@ -95,6 +95,9 @@ class NodeTest extends TestCase
 
     public function testExceptionOnMissingStartNode(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $node = new Node();
         $relation = (new Relation())
             ->setEndNode(new Node());
@@ -105,6 +108,9 @@ class NodeTest extends TestCase
 
     public function testExceptionOnMissingEndNode(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $node = new Node();
         $relation = (new Relation())
             ->setStartNode(new Node());
@@ -115,6 +121,9 @@ class NodeTest extends TestCase
 
     public function testExceptionOnRelationIsNotConnectedToNode(): void
     {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
         $node = (new Node())
             ->addProperty('id', 1234)
             ->addIdentifier('id');

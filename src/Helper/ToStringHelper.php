@@ -84,6 +84,20 @@ class ToStringHelper
         return $escapedString;
     }
 
+    /**
+     * @param array<mixed, mixed> $array
+     *
+     * @see https://stackoverflow.com/a/173479
+     */
+    public static function isArrayAssociate(array $array): bool
+    {
+        if ([] === $array) {
+            return false;
+        }
+
+        return array_keys($array) !== range(0, count($array) - 1);
+    }
+
     public static function valueToString(mixed $value): string
     {
         if (is_string($value)) {
@@ -99,11 +113,30 @@ class ToStringHelper
             return 'null';
         }
         if (is_array($value)) {
-            asort($value);
             $parts = [];
-            foreach ($value as $part) {
-                $parts[] = self::valueToString($part);
+            if (self::isArrayAssociate($value)) {
+                asort($value);
+                foreach ($value as $name => $part) {
+                    if (self::mustNameBeEscaped($name)) {
+                        $parts[] = sprintf(
+                            "`%s`: %s",
+                            self::escapeString($name),
+                            self::valueToString($part)
+                        );
+                    } else {
+                        $parts[] = sprintf(
+                            "%s: %s",
+                            $name,
+                            self::valueToString($part)
+                        );
+                    }
+                }
+            } else {
+                foreach ($value as $part) {
+                    $parts[] = self::valueToString($part);
+                }
             }
+
             $parts = implode(', ', $parts);
 
             return sprintf("[%s]", $parts);
@@ -120,7 +153,7 @@ class ToStringHelper
     /**
      * @param array<string, mixed> $properties
      */
-    public static function propertyArrayToString(array $properties, bool $escapeAllNames = false): string
+    public static function propertiesToString(array $properties, bool $escapeAllNames = false): string
     {
         ksort($properties);
         $parts = [];
@@ -177,7 +210,7 @@ class ToStringHelper
         if ($identifying) {
             $properties = $node->getIdentifiers();
         }
-        $propertyString = self::propertyArrayToString($properties);
+        $propertyString = self::propertiesToString($properties);
         if (strlen($propertyString) > 0) {
             $parts[] = sprintf("{%s}", $propertyString);
         }
@@ -207,7 +240,7 @@ class ToStringHelper
         if ($identifying) {
             $properties = $relation->getIdentifiers();
         }
-        $propertyString = self::propertyArrayToString($properties);
+        $propertyString = self::propertiesToString($properties);
         if (strlen($propertyString) > 0) {
             $relationParts[] = sprintf("{%s}", $propertyString);
         }
@@ -229,7 +262,7 @@ class ToStringHelper
      */
     public static function optionsToString(array $options): string
     {
-        return '';
+        return self::propertiesToString($options);
     }
 
     public static function nodeConstraintToString(NodeConstraintInterface $nodeConstraint): string
@@ -280,7 +313,7 @@ class ToStringHelper
         $options = $nodeConstraint->getOptions();
         if (count($options) > 0) {
             $parts[] = 'OPTIONS';
-            $parts[] = self::optionsToString($options);
+            $parts[] = sprintf("{%s}", self::optionsToString($options));
         }
 
         return implode(' ', $parts);
@@ -334,7 +367,7 @@ class ToStringHelper
         $options = $relationConstraint->getOptions();
         if (count($options) > 0) {
             $parts[] = 'OPTIONS';
-            $parts[] = self::optionsToString($options);
+            $parts[] = sprintf("{%s}", self::optionsToString($options));
         }
 
         return implode(' ', $parts);
@@ -380,7 +413,7 @@ class ToStringHelper
         $options = $nodeIndex->getOptions();
         if (count($options) > 0) {
             $parts[] = 'OPTIONS';
-            $parts[] = self::optionsToString($options);
+            $parts[] = sprintf("{%s}", self::optionsToString($options));
         }
 
         return implode(' ', $parts);
@@ -426,7 +459,7 @@ class ToStringHelper
         $options = $relationIndex->getOptions();
         if (count($options) > 0) {
             $parts[] = 'OPTIONS';
-            $parts[] = self::optionsToString($options);
+            $parts[] = sprintf("{%s}", self::optionsToString($options));
         }
 
         return implode(' ', $parts);
