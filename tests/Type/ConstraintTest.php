@@ -9,9 +9,9 @@ use stdClass;
 use Syndesi\CypherDataStructures\Type\Constraint;
 use Syndesi\CypherDataStructures\Type\ConstraintName;
 use Syndesi\CypherDataStructures\Type\ConstraintType;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\RelationType;
 use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\RelationType;
 
 class ConstraintTest extends TestCase
 {

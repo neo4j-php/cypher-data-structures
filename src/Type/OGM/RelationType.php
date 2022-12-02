@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Syndesi\CypherDataStructures\Type;
+namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;

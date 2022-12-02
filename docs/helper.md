@@ -30,9 +30,7 @@ Transforms objects of type `NodeLabelInterface` to a Cypher label string with so
 Internal labels will be sorted first.
 
 ```php
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
-use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;use Syndesi\CypherDataStructures\Type\OGM\NodeLabelStorage;
 
 $nodeLabelStorage = new NodeLabelStorage();
 $nodeLabelStorage->attach(new NodeLabel('LabelA'));
@@ -50,9 +48,9 @@ Transforms objects of type `NodeInterface` to a Cypher node string, optionally l
 ones.
 
 ```php
-use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\OGM\Node;
 use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
 $node = new Node();
@@ -85,12 +83,7 @@ identifying ones.
 Referenced nodes are limited to identifying properties. Both nodes can be omitted.
 
 ```php
-use Syndesi\CypherDataStructures\Type\Node;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\Relation;
-use Syndesi\CypherDataStructures\Type\RelationType;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
+use Syndesi\CypherDataStructures\Helper\ToCypherHelper;use Syndesi\CypherDataStructures\Type\OGM\Node;use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;use Syndesi\CypherDataStructures\Type\OGM\Relation;use Syndesi\CypherDataStructures\Type\OGM\RelationType;use Syndesi\CypherDataStructures\Type\PropertyName;
 
 $startNode = new Node();
 $startNode->addNodeLabel(new NodeLabel('StartNode'));
@@ -149,7 +142,7 @@ Transforms objects of type `ConstraintInterface` to a Cypher constraint string.
 use Syndesi\CypherDataStructures\Type\ConstraintName;
 use Syndesi\CypherDataStructures\Type\Constraint;
 use Syndesi\CypherDataStructures\Type\ConstraintType;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 
@@ -172,7 +165,7 @@ Transforms objects of type `ConstraintInterface` to a Cypher constraint string.
 use Syndesi\CypherDataStructures\Type\IndexName;
 use Syndesi\CypherDataStructures\Type\Index;
 use Syndesi\CypherDataStructures\Type\IndexType;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 

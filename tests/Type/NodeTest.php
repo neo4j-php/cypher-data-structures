@@ -7,14 +7,14 @@ namespace Syndesi\CypherDataStructures\Tests\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Type\Node;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
+use Syndesi\CypherDataStructures\Type\OGM\Node;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabelStorage;
+use Syndesi\CypherDataStructures\Type\OGM\Relation;
+use Syndesi\CypherDataStructures\Type\OGM\RelationType;
+use Syndesi\CypherDataStructures\Type\OGM\WeakRelation;
+use Syndesi\CypherDataStructures\Type\OGM\WeakRelationStorage;
 use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\Relation;
-use Syndesi\CypherDataStructures\Type\RelationType;
-use Syndesi\CypherDataStructures\Type\WeakRelation;
-use Syndesi\CypherDataStructures\Type\WeakRelationStorage;
 
 class NodeTest extends TestCase
 {

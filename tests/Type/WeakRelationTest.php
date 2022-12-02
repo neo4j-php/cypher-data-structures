@@ -6,10 +6,10 @@ namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Syndesi\CypherDataStructures\Type\OGM\Relation;
+use Syndesi\CypherDataStructures\Type\OGM\RelationType;
+use Syndesi\CypherDataStructures\Type\OGM\WeakRelation;
 use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\Relation;
-use Syndesi\CypherDataStructures\Type\RelationType;
-use Syndesi\CypherDataStructures\Type\WeakRelation;
 
 class WeakRelationTest extends TestCase
 {

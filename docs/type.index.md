@@ -19,7 +19,7 @@ Indexes are entities which contain the following attributes:
 use Syndesi\CypherDataStructures\Type\IndexName;
 use Syndesi\CypherDataStructures\Type\Index;
 use Syndesi\CypherDataStructures\Type\IndexType;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 
 $index = new Index();

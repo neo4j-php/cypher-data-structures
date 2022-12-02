@@ -24,11 +24,7 @@ Relations are entities which contain the following attributes:
 ## Examples
 
 ```php
-use Syndesi\CypherDataStructures\Type\RelationType;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\Node;
-use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\Relation;
+use Syndesi\CypherDataStructures\Type\OGM\Node;use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;use Syndesi\CypherDataStructures\Type\OGM\Relation;use Syndesi\CypherDataStructures\Type\OGM\RelationType;use Syndesi\CypherDataStructures\Type\PropertyName;
 
 $nodeA = new Node();
 $nodeA
