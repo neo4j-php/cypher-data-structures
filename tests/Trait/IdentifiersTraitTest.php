@@ -8,8 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Syndesi\CypherDataStructures\Contract\HasIdentifiersInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
-use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\PropertyStorage;
 
 class IdentifiersTraitTest extends TestCase
 {
@@ -17,52 +15,51 @@ class IdentifiersTraitTest extends TestCase
     {
         return new class() implements HasIdentifiersInterface {
             use IdentifiersTrait;
-
-            public function __construct()
-            {
-                $this->initIdentifiersTrait();
-            }
         };
     }
 
     public function testIdentifier(): void
     {
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('someProperty'), 'some value');
-        $trait->addIdentifier(new PropertyName('someProperty'));
-        $this->assertTrue($trait->hasIdentifier(new PropertyName('someProperty')));
-        $this->assertFalse($trait->hasIdentifier(new PropertyName('notExistingProperty')));
-        $this->assertSame(1, $trait->getIdentifiers()->count());
-        $this->assertSame('some value', $trait->getIdentifier(new PropertyName('someProperty')));
+        $trait->addProperty('someProperty', 'some value');
+        $trait->addIdentifier('someProperty');
+        $this->assertTrue($trait->hasIdentifier('someProperty'));
+        $this->assertFalse($trait->hasIdentifier('notExistingProperty'));
+        $this->assertSame(1, count($trait->getIdentifiers()));
+        $this->assertSame('some value', $trait->getIdentifier('someProperty'));
 
-        $trait->addProperty(new PropertyName('otherProperty'), 'other value');
-        $trait->addProperty(new PropertyName('anotherProperty'), 'another value');
-        $identifierStorage = new PropertyStorage();
-        $identifierStorage->attach(new PropertyName('otherProperty'));
-        $identifierStorage->attach(new PropertyName('anotherProperty'));
-        $trait->addIdentifiers($identifierStorage);
-        $this->assertSame(3, $trait->getIdentifiers()->count());
-        $trait->removeIdentifier(new PropertyName('otherProperty'));
-        $this->assertSame(2, $trait->getIdentifiers()->count());
-        $trait->clearIdentifier();
-        $this->assertSame(0, $trait->getIdentifiers()->count());
+        $trait->addProperty('otherProperty', 'other value');
+        $trait->addProperty('anotherProperty', 'another value');
+        $trait->addIdentifiers([
+            'otherProperty',
+            'anotherProperty',
+        ]);
+        $this->assertCount(3, $trait->getIdentifiers());
+        $trait->removeIdentifier('otherProperty');
+        $this->assertCount(2, $trait->getIdentifiers());
+        $trait->removeIdentifiers();
+        $this->assertCount(0, $trait->getIdentifiers());
     }
 
     public function testGetIdentifierWithPropertyValues(): void
     {
-        $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('propertyA'), 'value A');
-        $trait->addProperty(new PropertyName('propertyB'), 'value B');
-        $trait->addProperty(new PropertyName('propertyC'), 'value C');
-        $trait->addProperty(new PropertyName('propertyD'), 'value D');
-        $trait->addIdentifier(new PropertyName('propertyA'));
-        $trait->addIdentifier(new PropertyName('propertyC'));
-        $identifierWithPropertyValues = $trait->getIdentifiersWithPropertyValues();
-        $this->assertSame(2, $identifierWithPropertyValues->count());
-        $this->assertTrue($identifierWithPropertyValues->offsetExists(new PropertyName('propertyA')));
-        $this->assertTrue($identifierWithPropertyValues->offsetExists(new PropertyName('propertyC')));
-        $this->assertSame('value A', $identifierWithPropertyValues->offsetGet(new PropertyName('propertyA')));
-        $this->assertSame('value C', $identifierWithPropertyValues->offsetGet(new PropertyName('propertyC')));
+        $trait = $this->getTrait()
+            ->addProperties([
+                'propertyA' => 'value A',
+                'propertyB' => 'value B',
+                'propertyC' => 'value C',
+                'propertyD' => 'value D',
+            ])
+            ->addIdentifiers([
+                'propertyA',
+                'propertyC',
+            ]);
+        $identifierWithPropertyValues = $trait->getIdentifiers();
+        $this->assertCount(2, $identifierWithPropertyValues);
+        $this->assertArrayHasKey('propertyA', $identifierWithPropertyValues);
+        $this->assertArrayHasKey('propertyC', $identifierWithPropertyValues);
+        $this->assertSame('value A', $identifierWithPropertyValues['propertyA']);
+        $this->assertSame('value C', $identifierWithPropertyValues['propertyC']);
     }
 
     public function testRemoveIdentifyingProperty(): void
@@ -71,22 +68,22 @@ class IdentifiersTraitTest extends TestCase
             $this->markTestSkipped();
         }
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('someProperty'), 'some value');
-        $trait->addIdentifier(new PropertyName('someProperty'));
+        $trait->addProperty('someProperty', 'some value');
+        $trait->addIdentifier('someProperty');
         $this->expectException(InvalidArgumentException::class);
-        $trait->removeProperty(new PropertyName('someProperty'));
+        $trait->removeProperty('someProperty');
     }
 
-    public function testClearIdentifyingProperties(): void
+    public function testRemoveIdentifyingProperties(): void
     {
         if (false !== getenv("LEAK")) {
             $this->markTestSkipped();
         }
         $trait = $this->getTrait();
-        $trait->addProperty(new PropertyName('someProperty'), 'some value');
-        $trait->addIdentifier(new PropertyName('someProperty'));
+        $trait->addProperty('someProperty', 'some value');
+        $trait->addIdentifier('someProperty');
         $this->expectException(InvalidArgumentException::class);
-        $trait->clearProperties();
+        $trait->removeProperties();
     }
 
     public function testAddIdentifierWithoutProperty(): void
@@ -96,6 +93,52 @@ class IdentifiersTraitTest extends TestCase
         }
         $trait = $this->getTrait();
         $this->expectException(InvalidArgumentException::class);
-        $trait->addIdentifier(new PropertyName('someProperty'));
+        $trait->addIdentifier('someProperty');
+    }
+
+    public function testProperties(): void
+    {
+        $trait = $this->getTrait();
+        $trait->addProperty('someProperty', 'some value');
+        $this->assertCount(1, $trait->getProperties());
+        $this->assertTrue($trait->hasProperty('someProperty'));
+        $this->assertFalse($trait->hasProperty('notExistingProperty'));
+        $this->assertSame('some value', $trait->getProperty('someProperty'));
+
+        $trait->addProperties([
+            'otherProperty' => 'other value',
+            'anotherProperty' => 'another value',
+        ]);
+        $this->assertCount(3, $trait->getProperties());
+        $trait->removeProperty('otherProperty');
+        $this->assertCount(2, $trait->getProperties());
+        $trait->removeProperties();
+        $this->assertCount(0, $trait->getProperties());
+    }
+
+    public function testRemovePropertyWhichIsAlsoIdentifier(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $trait = $this->getTrait()
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $this->expectExceptionMessage("Unable to remove identifying property with name 'id' - remove identifier first");
+        $this->expectException(InvalidArgumentException::class);
+        $trait->removeProperty('id');
+    }
+
+    public function testRemovePropertiesWithExistingIdentifier(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $trait = $this->getTrait()
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $this->expectExceptionMessage("Unable to remove all properties because identifiers are still defined");
+        $this->expectException(InvalidArgumentException::class);
+        $trait->removeProperties();
     }
 }

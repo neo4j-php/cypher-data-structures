@@ -9,8 +9,6 @@ jobs:
     coverage:
         runs-on: ubuntu-latest
         name: "Generate unit test coverage report for PHP ${{ matrix.php-version }}"
-        strategy:
-            fail-fast: false
         env:
             XDEBUG_MODE: coverage
         steps:

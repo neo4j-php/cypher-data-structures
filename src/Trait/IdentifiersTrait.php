@@ -4,32 +4,26 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Trait;
 
-use Syndesi\CypherDataStructures\Contract\PropertyNameInterface;
-use Syndesi\CypherDataStructures\Contract\PropertyStorageInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Type\PropertyStorage;
 
 trait IdentifiersTrait
 {
     use PropertiesTrait;
 
-    private PropertyStorageInterface $identifierStorage;
-
-    private function initIdentifiersTrait(): void
-    {
-        $this->initPropertiesTrait();
-        $this->identifierStorage = new PropertyStorage();
-    }
+    /**
+     * @var array<string, null>
+     */
+    private array $identifiers = [];
 
     /**
      * @throws InvalidArgumentException
      */
-    public function addIdentifier(PropertyNameInterface $identifier): self
+    public function addIdentifier(string $identifier): self
     {
-        if (!$this->propertyStorage->contains($identifier)) {
-            throw new InvalidArgumentException(sprintf("Unable to add identifier '%s' because there exists no property with the same name", (string) $identifier));
+        if (!$this->hasProperty($identifier)) {
+            throw new InvalidArgumentException(sprintf("Unable to add identifier '%s' because there exists no property with the same name", $identifier));
         }
-        $this->identifierStorage->attach($identifier);
+        $this->identifiers[$identifier] = null;
 
         return $this;
     }
@@ -37,50 +31,48 @@ trait IdentifiersTrait
     /**
      * @throws InvalidArgumentException
      */
-    public function addIdentifiers(PropertyStorageInterface $identifies): self
+    public function addIdentifiers(iterable $identifiers): self
     {
-        foreach ($identifies as $identifier) {
+        foreach ($identifiers as $identifier) {
             $this->addIdentifier($identifier);
         }
 
         return $this;
     }
 
-    public function hasIdentifier(PropertyNameInterface $identifier): bool
+    public function hasIdentifier(string $identifier): bool
     {
-        return $this->identifierStorage->contains($identifier);
+        return array_key_exists($identifier, $this->identifiers);
     }
 
-    public function getIdentifier(PropertyNameInterface $identifier): mixed
+    public function getIdentifier(string $identifier): mixed
     {
-        return $this->propertyStorage->offsetGet($identifier);
+        return $this->properties[$identifier];
     }
 
-    public function getIdentifiers(): PropertyStorageInterface
+    /**
+     * @return array<string, mixed>
+     */
+    public function getIdentifiers(): array
     {
-        return $this->identifierStorage;
-    }
-
-    public function getIdentifiersWithPropertyValues(): PropertyStorageInterface
-    {
-        $identifierStorage = new PropertyStorage();
-        foreach ($this->identifierStorage as $key) {
-            $identifierStorage->attach($key, $this->propertyStorage->offsetGet($key));
+        $result = [];
+        foreach ($this->identifiers as $name => $value) {
+            $result[$name] = $this->properties[$name];
         }
 
-        return $identifierStorage;
+        return $result;
     }
 
-    public function removeIdentifier(PropertyNameInterface $identifier): self
+    public function removeIdentifier(string $identifier): self
     {
-        $this->identifierStorage->detach($identifier);
+        unset($this->identifiers[$identifier]);
 
         return $this;
     }
 
-    public function clearIdentifier(): self
+    public function removeIdentifiers(): self
     {
-        $this->identifierStorage = new PropertyStorage();
+        $this->identifiers = [];
 
         return $this;
     }
@@ -90,12 +82,12 @@ trait IdentifiersTrait
     /**
      * @throws InvalidArgumentException
      */
-    public function removeProperty(PropertyNameInterface $propertyName): self
+    public function removeProperty(string $name): self
     {
-        if ($this->identifierStorage->contains($propertyName)) {
-            throw new InvalidArgumentException(sprintf("Unable to remove identifying property with name '%s' - remove identifier first", (string) $propertyName));
+        if ($this->hasIdentifier($name)) {
+            throw new InvalidArgumentException(sprintf("Unable to remove identifying property with name '%s' - remove identifier first", $name));
         }
-        $this->propertyStorage->detach($propertyName);
+        unset($this->properties[$name]);
 
         return $this;
     }
@@ -103,12 +95,12 @@ trait IdentifiersTrait
     /**
      * @throws InvalidArgumentException
      */
-    public function clearProperties(): self
+    public function removeProperties(): self
     {
-        if ($this->identifierStorage->count() > 0) {
+        if (count($this->identifiers) > 0) {
             throw new InvalidArgumentException("Unable to remove all properties because identifiers are still defined");
         }
-        $this->propertyStorage = new PropertyStorage();
+        $this->properties = [];
 
         return $this;
     }
