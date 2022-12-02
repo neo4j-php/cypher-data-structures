@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 use Exception;
 use RuntimeException;
@@ -97,5 +98,14 @@ final class DateTime extends AbstractPropertyObject
     public function getPackstreamMarker(): int
     {
         return 0x49;
+    }
+
+    public static function fromDateTime(DateTimeInterface $dateTime): self
+    {
+        return new self(
+            $dateTime->getOffset(),
+            ((int) $dateTime->format('u') * 1000),
+            $dateTime->getTimezone()->getOffset($dateTime)
+        );
     }
 }

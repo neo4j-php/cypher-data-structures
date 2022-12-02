@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use Exception;
+use Syndesi\CypherDataStructures\Contract\DateTimeConvertible;
 use UnexpectedValueException;
 
 /**
@@ -26,7 +28,7 @@ use UnexpectedValueException;
  *
  * @psalm-suppress TypeDoesNotContainType
  */
-final class Date extends AbstractPropertyObject
+final class Date extends AbstractPropertyObject implements DateTimeConvertible
 {
     public function __construct(private int $days)
     {
@@ -69,5 +71,10 @@ final class Date extends AbstractPropertyObject
     public function getPackstreamMarker(): int
     {
         return 0x44;
+    }
+
+    public static function fromDateTime(DateTimeInterface $dateTime): DateTimeConvertible
+    {
+        return new self((int) $dateTime->diff((new \DateTime('@0')), true)->format('%a'));
     }
 }

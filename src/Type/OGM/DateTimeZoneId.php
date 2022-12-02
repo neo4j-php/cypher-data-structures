@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 use Exception;
+use Syndesi\CypherDataStructures\Contract\DateTimeConvertible;
+
 use function sprintf;
 
 /**
@@ -27,7 +30,7 @@ use function sprintf;
  *
  * @psalm-suppress TypeDoesNotContainType
  */
-final class DateTimeZoneId extends AbstractPropertyObject
+final class DateTimeZoneId extends AbstractPropertyObject implements DateTimeConvertible
 {
     public function __construct(private int $seconds, private int $nanoseconds, private string $tzId)
     {
@@ -97,5 +100,14 @@ final class DateTimeZoneId extends AbstractPropertyObject
     public function getPackstreamMarker(): int
     {
         return 0x69;
+    }
+
+    public static function fromDateTime(DateTimeInterface $dateTime): self
+    {
+        return new self(
+            $dateTime->getOffset(),
+            ((int) $dateTime->format('u') * 1000),
+            $dateTime->getTimezone()->getName()
+        );
     }
 }

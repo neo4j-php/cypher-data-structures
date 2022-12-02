@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use Exception;
+use Syndesi\CypherDataStructures\Contract\DateTimeConvertible;
 use function sprintf;
 use UnexpectedValueException;
 
@@ -27,7 +29,7 @@ use UnexpectedValueException;
  *
  * @psalm-suppress TypeDoesNotContainType
  */
-final class LocalDateTime extends AbstractPropertyObject
+final class LocalDateTime extends AbstractPropertyObject implements DateTimeConvertible
 {
     public function __construct(private int $seconds, private int $nanoseconds)
     {
@@ -82,5 +84,13 @@ final class LocalDateTime extends AbstractPropertyObject
     public function getPackstreamMarker(): int
     {
         return 0x64;
+    }
+
+    public static function fromDateTime(DateTimeInterface $dateTime): DateTimeConvertible
+    {
+        return new self(
+            $dateTime->getOffset(),
+            ((int) $dateTime->format('u') * 1000)
+        );
     }
 }
