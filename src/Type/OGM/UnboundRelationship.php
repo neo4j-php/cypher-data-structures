@@ -89,4 +89,9 @@ class UnboundRelationship extends AbstractPropertyObject
         /** @psalm-suppress ImpureMethodCall */
         return $this->properties->get($key);
     }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x72;
+    }
 }

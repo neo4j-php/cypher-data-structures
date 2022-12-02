@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
+use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
 use Syndesi\CypherDataStructures\TypeCaster;
 use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
 
@@ -23,7 +24,7 @@ use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
  *
  * @extends ArrayList<TValue>
  */
-class CypherList extends ArrayList
+class CypherList extends ArrayList implements PackstreamConvertible
 {
     /**
      * @return CypherMap<mixed>
@@ -116,5 +117,24 @@ class CypherList extends ArrayList
     public function getAsWGS843DPoint(int $key): WGS843DPoint
     {
         return $this->getAsObject($key, WGS843DPoint::class);
+    }
+
+    public function getPackstreamMarker(): int
+    {
+        // @see https://neo4j.com/docs/bolt/current/packstream/#data-type-list
+        $count = $this->count();
+
+        if ($count <= 0xF) {
+            return 0x90 + $count;
+        }
+        if ($count <= 0xFF) {
+            return 0xD4;
+        }
+
+        if ($count <= 0xFF) {
+            return 0xD5;
+        }
+
+        return 0xD6;
     }
 }

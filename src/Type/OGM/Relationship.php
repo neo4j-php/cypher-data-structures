@@ -74,4 +74,9 @@ final class Relationship extends UnboundRelationship
 
         return $tbr;
     }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x52;
+    }
 }

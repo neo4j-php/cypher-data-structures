@@ -87,4 +87,9 @@ final class Path extends AbstractPropertyObject
     {
         return new CypherMap($this);
     }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x50;
+    }
 }

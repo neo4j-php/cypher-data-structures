@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use Syndesi\CypherDataStructures\Contract\OGM\PointInterface;
+use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
 
 /**
  * A cartesian point in three dimensional space.
@@ -24,7 +25,7 @@ use Syndesi\CypherDataStructures\Contract\OGM\PointInterface;
  *
  * @psalm-import-type Crs from PointInterface
  */
-abstract class Abstract3DPoint extends AbstractPoint implements PointInterface
+abstract class Abstract3DPoint extends AbstractPoint implements PointInterface, PackstreamConvertible
 {
     private float $z;
 
@@ -49,5 +50,10 @@ abstract class Abstract3DPoint extends AbstractPoint implements PointInterface
         $tbr['z'] = $this->z;
 
         return $tbr;
+    }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x59;
     }
 }

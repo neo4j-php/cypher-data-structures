@@ -68,4 +68,9 @@ final class Date extends AbstractPropertyObject
     {
         return ['days' => $this->days];
     }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x44;
+    }
 }

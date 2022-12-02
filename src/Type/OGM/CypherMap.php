@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
+use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
 use function func_num_args;
 use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
 use Syndesi\CypherDataStructures\TypeCaster;
@@ -24,7 +25,7 @@ use Syndesi\CypherDataStructures\TypeCaster;
  *
  * @extends Map<TValue>
  */
-final class CypherMap extends Map
+final class CypherMap extends Map implements PackstreamConvertible
 {
     /**
      * @return CypherMap<mixed>
@@ -250,5 +251,24 @@ final class CypherMap extends Map
     public function keyBy(string $key): CypherMap
     {
         return CypherMap::fromIterable(parent::keyBy($key));
+    }
+
+    public function getPackstreamMarker(): int
+    {
+        // @see https://neo4j.com/docs/bolt/current/packstream/#data-type-dictionary
+        $count = $this->count();
+
+        if ($count <= 0xF) {
+            return 0xA0 + $count;
+        }
+        if ($count <= 0xFF) {
+            return 0xD8;
+        }
+
+        if ($count <= 0xFF) {
+            return 0xD9;
+        }
+
+        return 0xDA;
     }
 }

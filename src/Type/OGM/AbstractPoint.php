@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use Syndesi\CypherDataStructures\Contract\OGM\PointInterface;
+use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
 
 /**
  * A cartesian point in two dimensional space.
@@ -24,7 +25,7 @@ use Syndesi\CypherDataStructures\Contract\OGM\PointInterface;
  *
  * @psalm-import-type Crs from PointInterface
  */
-abstract class AbstractPoint extends AbstractPropertyObject implements PointInterface
+abstract class AbstractPoint extends AbstractPropertyObject implements PointInterface, PackstreamConvertible
 {
     private float $x;
     private float $y;
@@ -68,5 +69,10 @@ abstract class AbstractPoint extends AbstractPropertyObject implements PointInte
             'crs' => $this->getCrs(),
             'srid' => $this->getSrid(),
         ];
+    }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x58;
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
+use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
 use function array_key_exists;
 use ArrayAccess;
 use ArrayIterator;
@@ -34,7 +35,7 @@ use Traversable;
  *
  * @psalm-immutable
  */
-abstract class AbstractCypherObject implements JsonSerializable, ArrayAccess, IteratorAggregate
+abstract class AbstractCypherObject implements JsonSerializable, ArrayAccess, IteratorAggregate, PackstreamConvertible
 {
     /**
      * Represents the container as an array.

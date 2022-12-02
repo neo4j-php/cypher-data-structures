@@ -49,4 +49,9 @@ final class LocalTime extends AbstractPropertyObject
     {
         return new CypherMap($this);
     }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x74;
+    }
 }
