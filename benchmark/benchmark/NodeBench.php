@@ -6,8 +6,6 @@ namespace Syndesi\CypherDataStructures\Benchmark;
 
 use PhpBench\Attributes as Bench;
 use Syndesi\CypherDataStructures\Type\Node;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\PropertyName;
 
 class NodeBench
 {
@@ -32,16 +30,16 @@ class NodeBench
     {
         $nodes = [];
         for ($i = 0; $i < $params[0]; ++$i) {
-            $node = new Node();
-            $node
-                ->addNodeLabel(new NodeLabel('LabelA'))
-                ->addNodeLabel(new NodeLabel('LabelB'))
-                ->addProperty(new PropertyName('a'), 'some value for a')
-                ->addProperty(new PropertyName('b'), 'some value for b')
-                ->addProperty(new PropertyName('c'), 'some value for c')
-                ->addProperty(new PropertyName('d'), 'some value for d')
-                ->addProperty(new PropertyName('id'), rand())
-                ->addIdentifier(new PropertyName('id'));
+            $node = (new Node())
+                ->addLabels(['LabelA', 'LabelB'])
+                ->addProperties([
+                    'a' => 'some value for a',
+                    'b' => 'some value for b',
+                    'c' => 'some value for c',
+                    'd' => 'some value for d',
+                    'id' => rand()
+                ])
+                ->addIdentifier('id');
             $nodes[] = $node;
         }
     }

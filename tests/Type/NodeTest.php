@@ -5,266 +5,154 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Type\Node;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
-use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Type\Relation;
-use Syndesi\CypherDataStructures\Type\RelationType;
-use Syndesi\CypherDataStructures\Type\WeakRelation;
-use Syndesi\CypherDataStructures\Type\WeakRelationStorage;
 
 class NodeTest extends TestCase
 {
+    public function testNodeIsInitiallyEmpty(): void
+    {
+        $node = new Node();
+        $this->assertEmpty($node->getLabels());
+        $this->assertEmpty($node->getProperties());
+        $this->assertEmpty($node->getIdentifiers());
+        $this->assertEmpty($node->getRelations());
+    }
+
     public function testNodeLabels(): void
     {
         $node = new Node();
-        $node->addNodeLabel(new NodeLabel('SomeLabel'));
-        $this->assertSame(1, $node->getNodeLabels()->count());
-        $this->assertTrue($node->hasNodeLabel(new NodeLabel('SomeLabel')));
-        $this->assertFalse($node->hasNodeLabel(new NodeLabel('NotExistingLabel')));
 
-        $nodeLabelStorage = new NodeLabelStorage();
-        $nodeLabelStorage->attach(new NodeLabel('OtherLabel'));
-        $nodeLabelStorage->attach(new NodeLabel('AnotherLabel'));
+        $node->addLabel('labelA');
+        $this->assertCount(1, $node->getLabels());
+        $this->assertSame('labelA', $node->getLabels()[0]);
+        $this->assertTrue($node->hasLabel('labelA'));
 
-        $node->addNodeLabels($nodeLabelStorage);
-        $this->assertSame(3, $node->getNodeLabels()->count());
-        $node->removeNodeLabel(new NodeLabel('OtherLabel'));
-        $this->assertSame(2, $node->getNodeLabels()->count());
-        $node->clearNodeLabels();
-        $this->assertSame(0, $node->getNodeLabels()->count());
+        $labels = ['labelB', 'labelC', 'labelD'];
+        $node->addLabels($labels);
+        $this->assertCount(4, $node->getLabels());
+
+        $node->removeLabel('labelC');
+        $this->assertCount(3, $node->getLabels());
+        $this->assertFalse($node->hasLabel('labelC'));
+
+        $node->removeLabels();
+        $this->assertEmpty($node->getLabels());
+    }
+
+    public function testNodeRelations(): void
+    {
+        $node = (new Node())
+            ->addLabel('startNode')
+            ->addProperty('id', 100)
+            ->addIdentifier('id');
+
+        $relation = (new Relation())
+            ->setStartNode($node)
+            ->setEndNode(new Node());
+
+        $this->assertEmpty($node->getRelations());
+
+        $node->addRelation($relation);
+        $this->assertCount(1, $node->getRelations());
+        $this->assertSame($relation, $node->getRelations()[0]);
+        $this->assertTrue($node->hasRelation($relation));
+
+        $relations = [
+            (new Relation())
+                ->setStartNode($node)
+                ->setEndNode(
+                    (new Node())
+                        ->addLabel('otherNode')
+                        ->addProperty('id', 101)
+                        ->addIdentifier('id')
+                )
+                ->addProperty('id', 201)
+                ->addIdentifier('id'),
+            (new Relation())
+                ->setStartNode($node)
+                ->setEndNode(
+                    (new Node())
+                        ->addLabel('otherNode')
+                        ->addProperty('id', 102)
+                        ->addIdentifier('id')
+                )
+                ->addProperty('id', 202)
+                ->addIdentifier('id'),
+        ];
+
+        $this->assertFalse($node->hasRelation($relations[0]));
+        $node->addRelations($relations);
+        $this->assertCount(3, $node->getRelations());
+
+        $node->removeRelation($relations[1]);
+        $this->assertCount(2, $node->getRelations());
+
+        $node->removeRelations();
+        $this->assertEmpty($node->getRelations());
+    }
+
+    public function testExceptionOnMissingStartNode(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $node = new Node();
+        $relation = (new Relation())
+            ->setEndNode(new Node());
+        $this->expectExceptionMessage('Start node must be set');
+        $this->expectException(InvalidArgumentException::class);
+        $node->addRelation($relation);
+    }
+
+    public function testExceptionOnMissingEndNode(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $node = new Node();
+        $relation = (new Relation())
+            ->setStartNode(new Node());
+        $this->expectExceptionMessage('End node must be set');
+        $this->expectException(InvalidArgumentException::class);
+        $node->addRelation($relation);
+    }
+
+    public function testExceptionOnRelationIsNotConnectedToNode(): void
+    {
+        if (false !== getenv("LEAK")) {
+            $this->markTestSkipped();
+        }
+        $node = (new Node())
+            ->addProperty('id', 1234)
+            ->addIdentifier('id');
+        $relation = (new Relation())
+            ->setStartNode(new Node())
+            ->setEndNode(new Node());
+        $this->expectExceptionMessage('Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.');
+        $this->expectException(InvalidArgumentException::class);
+        $node->addRelation($relation);
     }
 
     public function testToString(): void
     {
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('NodeA'));
-        $node->addProperty(new PropertyName('id'), 'A');
-        $node->addProperty(new PropertyName('propertyA'), 'value A');
-        $node->addIdentifier(new PropertyName('id'));
-        $this->assertSame("(:NodeA {id: 'A', propertyA: 'value A'})", (string) $node);
-        $otherNode = new Node();
-        $this->assertSame('()', (string) $otherNode);
+        $node = (new Node())
+            ->addLabels(['LabelA', 'LabelZ', 'LabelC', 'discouraged Style'])
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $this->assertSame("(:LabelA:LabelC:LabelZ:`discouraged Style` {id: 123})", (string) $node);
     }
 
     public function testIsEqualTo(): void
     {
-        $nodeA = new Node();
-        $nodeA->addNodeLabel(new NodeLabel('NodeA'));
-        $nodeA->addProperty(new PropertyName('id'), 'A');
-        $nodeA->addProperty(new PropertyName('propertyA'), 'value A');
-        $nodeA->addIdentifier(new PropertyName('id'));
-
-        $nodeB = new Node();
-        $nodeB->addNodeLabel(new NodeLabel('NodeA'));
-        $nodeB->addProperty(new PropertyName('id'), 'A');
-        $nodeB->addProperty(new PropertyName('propertyB'), 'value B');
-        $nodeB->addIdentifier(new PropertyName('id'));
-
-        $nodeC = new Node();
-        $nodeC->addNodeLabel(new NodeLabel('NodeC'));
-        $nodeC->addProperty(new PropertyName('id'), 'C');
-        $nodeC->addProperty(new PropertyName('propertyC'), 'value C');
-        $nodeC->addIdentifier(new PropertyName('id'));
-
-        $this->assertTrue($nodeA->isEqualTo($nodeB));
-        $this->assertTrue($nodeB->isEqualTo($nodeA));
-        $this->assertFalse($nodeA->isEqualTo($nodeC));
-        $this->assertFalse($nodeC->isEqualTo($nodeA));
-        $this->assertFalse($nodeA->isEqualTo(new stdClass()));
-        $this->assertFalse($nodeA->isEqualTo('some string'));
-    }
-
-    public function testRelations(): void
-    {
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('Node'));
-        $node->addProperty(new PropertyName('id'), 1234);
-        $node->addIdentifier(new PropertyName('id'));
-
-        $otherNode = new Node();
-        $otherNode->addNodeLabel(new NodeLabel('OtherNode'));
-        $otherNode->addProperty(new PropertyName('id'), 4321);
-        $otherNode->addIdentifier(new PropertyName('id'));
-
-        $relationA = new Relation();
-        $relationA->setStartNode($node);
-        $relationA->setEndNode($otherNode);
-        $relationA->setRelationType(new RelationType('TYPE'));
-
-        $relationB = new Relation();
-        $relationB->setStartNode($otherNode);
-        $relationB->setEndNode($node);
-        $relationB->setRelationType(new RelationType('TYPE'));
-
-        $relationC = new Relation();
-        $relationC->setStartNode($node);
-        $relationC->setEndNode($node);
-        $relationC->setRelationType(new RelationType('TYPE'));
-
-        $node->addRelation($relationA);
-        $this->assertSame(1, $node->getRelations()->count());
-        $this->assertTrue($node->hasRelation($relationA));
-
-        $node->addRelation($relationB);
-        $this->assertSame(2, $node->getRelations()->count());
-        $this->assertTrue($node->hasRelation($relationB));
-
-        $node->addRelation($relationC);
-        $this->assertSame(3, $node->getRelations()->count());
-        $this->assertTrue($node->hasRelation($relationC));
-
-        $node->removeRelation($relationA);
-        $this->assertFalse($node->hasRelation($relationA));
-        $this->assertSame(2, $node->getRelations()->count());
-
-        $node->clearRelations();
-        $this->assertFalse($node->hasRelation($relationB));
-        $this->assertSame(0, $node->getRelations()->count());
-
-        $weakRelationStorage = new WeakRelationStorage();
-        $weakRelationStorage->attach(WeakRelation::create($relationA));
-        $weakRelationStorage->attach(WeakRelation::create($relationB));
-        $weakRelationStorage->attach(WeakRelation::create($relationC));
-        $node->addRelations($weakRelationStorage);
-        $this->assertSame(3, $node->getRelations()->count());
-    }
-
-    public function testAddInvalidRelation(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('Node'));
-        $node->addProperty(new PropertyName('id'), 1234);
-        $node->addIdentifier(new PropertyName('id'));
-
-        $otherNode = new Node();
-        $otherNode->addNodeLabel(new NodeLabel('OtherNode'));
-        $otherNode->addProperty(new PropertyName('id'), 4321);
-        $otherNode->addIdentifier(new PropertyName('id'));
-
-        $relation = new Relation();
-        $relation->setStartNode($node);
-        $relation->setEndNode($otherNode);
-        $relation->setRelationType(new RelationType('TYPE'));
-
-        $weakRelation = WeakRelation::create($relation);
-        unset($relation);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Reference of type 'Syndesi\CypherDataStructures\Contract\WeakRelationInterface' is already null.");
-
-        $node->addRelation($weakRelation);
-    }
-
-    public function testAddRelationWithoutBeingStartOrEnd(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('Node'));
-        $node->addProperty(new PropertyName('id'), 1234);
-        $node->addIdentifier(new PropertyName('id'));
-
-        $otherNode = new Node();
-        $otherNode->addNodeLabel(new NodeLabel('OtherNode'));
-        $otherNode->addProperty(new PropertyName('id'), 4321);
-        $otherNode->addIdentifier(new PropertyName('id'));
-
-        $relation = new Relation();
-        $relation->setStartNode($otherNode);
-        $relation->setEndNode($otherNode);
-        $relation->setRelationType(new RelationType('TYPE'));
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
-
-        $node->addRelation($relation);
-    }
-
-    public function testAddRelationWithoutStartNode(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('Node'));
-        $node->addProperty(new PropertyName('id'), 1234);
-        $node->addIdentifier(new PropertyName('id'));
-
-        $relation = new Relation();
-        $relation->setEndNode($node);
-        $relation->setRelationType(new RelationType('TYPE'));
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Contract\NodeInterface', got type 'null'");
-
-        $node->addRelation($relation);
-    }
-
-    public function testAddRelationWithoutEndNode(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('Node'));
-        $node->addProperty(new PropertyName('id'), 1234);
-        $node->addIdentifier(new PropertyName('id'));
-
-        $relation = new Relation();
-        $relation->setStartNode($node);
-        $relation->setRelationType(new RelationType('TYPE'));
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Expected type 'Syndesi\CypherDataStructures\Contract\NodeInterface', got type 'null'");
-
-        $node->addRelation($relation);
-    }
-
-    public function testHasInvalidRelation(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-
-        $node = new Node();
-
-        $relation = new Relation();
-        $weakRelation = WeakRelation::create($relation);
-        unset($relation);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Reference of type 'Syndesi\CypherDataStructures\Contract\WeakRelationInterface' is already null.");
-
-        $node->hasRelation($weakRelation);
-    }
-
-    public function testRemoveInvalidRelation(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-
-        $node = new Node();
-
-        $relation = new Relation();
-        $weakRelation = WeakRelation::create($relation);
-        unset($relation);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Reference of type 'Syndesi\CypherDataStructures\Contract\WeakRelationInterface' is already null.");
-
-        $node->removeRelation($weakRelation);
+        $node = (new Node())
+            ->addLabel('Node')
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
+        $this->assertFalse($node->isEqualTo(123));
+        $this->assertFalse($node->isEqualTo(new Node()));
+        $this->assertTrue($node->isEqualTo($node));
+        $this->assertTrue($node->isEqualTo(clone $node));
     }
 }

@@ -6,19 +6,23 @@ namespace Syndesi\CypherDataStructures\Contract;
 
 interface HasIdentifiersInterface extends HasPropertiesInterface
 {
-    public function addIdentifier(PropertyNameInterface $identifier): self;
+    public function addIdentifier(string $identifier): self;
 
-    public function addIdentifiers(PropertyStorageInterface $identifies): self;
+    /**
+     * @param iterable<string> $identifiers
+     */
+    public function addIdentifiers(iterable $identifiers): self;
 
-    public function hasIdentifier(PropertyNameInterface $identifier): bool;
+    public function hasIdentifier(string $identifier): bool;
 
-    public function getIdentifier(PropertyNameInterface $identifier): mixed;
+    public function getIdentifier(string $identifier): mixed;
 
-    public function getIdentifiers(): PropertyStorageInterface;
+    /**
+     * @return array<string, mixed>
+     */
+    public function getIdentifiers(): array;
 
-    public function getIdentifiersWithPropertyValues(): PropertyStorageInterface;
+    public function removeIdentifier(string $identifier): self;
 
-    public function removeIdentifier(PropertyNameInterface $identifier): self;
-
-    public function clearIdentifier(): self;
+    public function removeIdentifiers(): self;
 }

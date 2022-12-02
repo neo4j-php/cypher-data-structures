@@ -5,81 +5,53 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type;
 
 use Syndesi\CypherDataStructures\Contract\IndexInterface;
-use Syndesi\CypherDataStructures\Contract\IndexNameInterface;
-use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
-use Syndesi\CypherDataStructures\Contract\RelationTypeInterface;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
 use Syndesi\CypherDataStructures\Trait\OptionsTrait;
 use Syndesi\CypherDataStructures\Trait\PropertiesTrait;
 
-class Index implements IndexInterface
+abstract class Index implements IndexInterface
 {
     use PropertiesTrait;
     use OptionsTrait;
 
-    private ?IndexNameInterface $indexName = null;
+    private ?string $name = null;
 
-    private ?IndexType $indexType = null;
+    private ?string $type = null;
 
-    private NodeLabelInterface|RelationTypeInterface|null $for = null;
+    private ?string $for = null;
 
-    public function __construct(
-    ) {
-        $this->initPropertiesTrait();
-        $this->initOptionsTrait();
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
-    public function getIndexName(): ?IndexNameInterface
+    public function setName(?string $name): self
     {
-        return $this->indexName;
-    }
-
-    public function setIndexName(?IndexNameInterface $indexName): self
-    {
-        $this->indexName = $indexName;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getIndexType(): ?IndexType
+    public function getType(): ?string
     {
-        return $this->indexType;
+        return $this->type;
     }
 
-    public function setIndexType(?IndexType $indexType): self
+    public function setType(?string $type): self
     {
-        $this->indexType = $indexType;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getFor(): NodeLabelInterface|RelationTypeInterface|null
+    public function getFor(): ?string
     {
         return $this->for;
     }
 
-    public function setFor(NodeLabelInterface|RelationTypeInterface|null $for): self
+    public function setFor(?string $for): self
     {
         $this->for = $for;
 
         return $this;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __toString()
-    {
-        return ToCypherHelper::indexToCypherString($this);
-    }
-
-    public function isEqualTo(mixed $element): bool
-    {
-        if (!($element instanceof IndexInterface)) {
-            return false;
-        }
-
-        return ToCypherHelper::indexToCypherString($this) === ToCypherHelper::indexToCypherString($element);
     }
 }

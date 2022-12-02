@@ -7,5 +7,7 @@ infection.html
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 /tmp/
+/docs/.npm/
+/docs/.config/
+composer.lock
 /.idea
-/composer.lock

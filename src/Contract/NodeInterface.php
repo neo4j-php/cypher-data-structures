@@ -4,35 +4,41 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Contract;
 
-use Stringable;
-
-interface NodeInterface extends Stringable, IsEqualToInterface, HasIdentifiersInterface
+interface NodeInterface extends \Stringable, IsEqualToInterface, HasIdentifiersInterface
 {
-    // node label
+    public function addLabel(string $label): self;
 
-    public function addNodeLabel(NodeLabelInterface $nodeLabel): self;
+    /**
+     * @param iterable<string> $labels
+     */
+    public function addLabels(iterable $labels): self;
 
-    public function addNodeLabels(NodeLabelStorageInterface $nodeLabelStorage): self;
+    public function hasLabel(string $label): bool;
 
-    public function hasNodeLabel(NodeLabelInterface $nodeLabel): bool;
+    /**
+     * @return string[]
+     */
+    public function getLabels(): array;
 
-    public function getNodeLabels(): NodeLabelStorageInterface;
+    public function removeLabel(string $label): self;
 
-    public function removeNodeLabel(NodeLabelInterface $nodeLabel): self;
-
-    public function clearNodeLabels(): self;
-
-    // relations
+    public function removeLabels(): self;
 
     public function addRelation(RelationInterface $relation): self;
 
-    public function addRelations(WeakRelationStorageInterface $weakRelationStorage): self;
+    /**
+     * @param iterable<RelationInterface> $relations
+     */
+    public function addRelations(iterable $relations): self;
 
     public function hasRelation(RelationInterface $relation): bool;
 
-    public function getRelations(): WeakRelationStorageInterface;
+    /**
+     * @return RelationInterface[]
+     */
+    public function getRelations(): array;
 
     public function removeRelation(RelationInterface $relation): self;
 
-    public function clearRelations(): self;
+    public function removeRelations(): self;
 }

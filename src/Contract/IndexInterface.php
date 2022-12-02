@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Contract;
 
-use Stringable;
-use Syndesi\CypherDataStructures\Type\IndexType;
-
-interface IndexInterface extends Stringable, IsEqualToInterface, HasPropertiesInterface, HasOptionsInterface
+interface IndexInterface extends \Stringable, IsEqualToInterface, HasPropertiesInterface, HasOptionsInterface
 {
-    public function getIndexName(): ?IndexNameInterface;
+    public function getName(): ?string;
 
-    public function setIndexName(?IndexNameInterface $indexName): self;
+    public function setName(?string $name): self;
 
-    public function getIndexType(): ?IndexType;
+    public function getType(): ?string;
 
-    public function setIndexType(?IndexType $indexType): self;
+    public function setType(?string $type): self;
 
-    public function getFor(): NodeLabelInterface|RelationTypeInterface|null;
+    public function getFor(): ?string;
 
-    public function setFor(NodeLabelInterface|RelationTypeInterface|null $for): self;
+    public function setFor(?string $for): self;
 }

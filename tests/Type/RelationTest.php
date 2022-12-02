@@ -5,155 +5,98 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
-use stdClass;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Type\Node;
-use Syndesi\CypherDataStructures\Type\NodeLabel;
-use Syndesi\CypherDataStructures\Type\PropertyName;
-use Syndesi\CypherDataStructures\Type\PropertyStorage;
 use Syndesi\CypherDataStructures\Type\Relation;
-use Syndesi\CypherDataStructures\Type\RelationType;
 
 class RelationTest extends TestCase
 {
-    public function testProperties(): void
+    public function testRelationIsInitiallyEmpty(): void
     {
         $relation = new Relation();
-        $relation->addProperty(new PropertyName('someProperty'), 'some value');
-        $this->assertSame(1, $relation->getProperties()->count());
-        $this->assertTrue($relation->hasProperty(new PropertyName('someProperty')));
-        $this->assertFalse($relation->hasProperty(new PropertyName('notExistingProperty')));
-        $this->assertSame('some value', $relation->getProperty(new PropertyName('someProperty')));
-
-        $propertyStorage = new PropertyStorage();
-        $propertyStorage->attach(new PropertyName('otherProperty'), 'other value');
-        $propertyStorage->attach(new PropertyName('anotherProperty'), 'another value');
-
-        $relation->addProperties($propertyStorage);
-        $this->assertSame(3, $relation->getProperties()->count());
-        $relation->removeProperty(new PropertyName('otherProperty'));
-        $this->assertSame(2, $relation->getProperties()->count());
-        $relation->clearProperties();
-        $this->assertSame(0, $relation->getProperties()->count());
+        $this->assertNull($relation->getType());
+        $this->assertEmpty($relation->getProperties());
+        $this->assertEmpty($relation->getIdentifiers());
+        $this->assertNull($relation->getStartNode());
+        $this->assertNull($relation->getEndNode());
     }
 
     public function testRelationType(): void
     {
         $relation = new Relation();
-        $relation->setRelationType(new RelationType('SOME_TYPE'));
-        $this->assertSame('SOME_TYPE', $relation->getRelationType()->getRelationType());
+        $relation->setType('SOME_TYPE');
+        $this->assertSame('SOME_TYPE', $relation->getType());
+        $relation->setType(null);
+        $this->assertNull($relation->getType());
     }
 
-    public function testIdentifier(): void
+    public function testRelationStartNode(): void
     {
         $relation = new Relation();
-        $relation->addProperty(new PropertyName('someProperty'), 'some value');
-        $relation->addIdentifier(new PropertyName('someProperty'));
-        $this->assertTrue($relation->hasIdentifier(new PropertyName('someProperty')));
-        $this->assertFalse($relation->hasIdentifier(new PropertyName('notExistingProperty')));
-        $this->assertSame(1, $relation->getIdentifiers()->count());
-        $this->assertSame('some value', $relation->getIdentifier(new PropertyName('someProperty')));
-
-        $relation->addProperty(new PropertyName('otherProperty'), 'other value');
-        $relation->addProperty(new PropertyName('anotherProperty'), 'another value');
-        $identifierStorage = new PropertyStorage();
-        $identifierStorage->attach(new PropertyName('otherProperty'));
-        $identifierStorage->attach(new PropertyName('anotherProperty'));
-        $relation->addIdentifiers($identifierStorage);
-        $this->assertSame(3, $relation->getIdentifiers()->count());
-        $relation->removeIdentifier(new PropertyName('otherProperty'));
-        $this->assertSame(2, $relation->getIdentifiers()->count());
-        $relation->clearIdentifier();
-        $this->assertSame(0, $relation->getIdentifiers()->count());
-    }
-
-    public function testRemoveIdentifyingProperty(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-        $relation = new Relation();
-        $relation->addProperty(new PropertyName('someProperty'), 'some value');
-        $relation->addIdentifier(new PropertyName('someProperty'));
-        $this->expectException(InvalidArgumentException::class);
-        $relation->removeProperty(new PropertyName('someProperty'));
-    }
-
-    public function testRemoveAllIdentifyingProperty(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-        $relation = new Relation();
-        $relation->addProperty(new PropertyName('someProperty'), 'some value');
-        $relation->addIdentifier(new PropertyName('someProperty'));
-        $this->expectException(InvalidArgumentException::class);
-        $relation->clearProperties();
-    }
-
-    public function testAddIdentifierWithoutProperty(): void
-    {
-        if (false !== getenv("LEAK")) {
-            $this->markTestSkipped();
-        }
-        $relation = new Relation();
-        $this->expectException(InvalidArgumentException::class);
-        $relation->addIdentifier(new PropertyName('someProperty'));
-    }
-
-    public function testStartNode(): void
-    {
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('SomeNode'))
-            ->addProperty(new PropertyName('id'), 123)
-            ->addIdentifier(new PropertyName('id'));
-        $relation = new Relation();
+        $this->assertNull($relation->getStartNode());
+        $node = (new Node())
+            ->addLabel('Node')
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
         $relation->setStartNode($node);
         $this->assertSame($node, $relation->getStartNode());
+        $relation->setStartNode(null);
+        $this->assertNull($relation->getStartNode());
     }
 
-    public function testEndNode(): void
+    public function testRelationEndNode(): void
     {
-        $node = new Node();
-        $node->addNodeLabel(new NodeLabel('SomeNode'))
-            ->addProperty(new PropertyName('id'), 123)
-            ->addIdentifier(new PropertyName('id'));
         $relation = new Relation();
+        $this->assertNull($relation->getEndNode());
+        $node = (new Node())
+            ->addLabel('Node')
+            ->addProperty('id', 123)
+            ->addIdentifier('id');
         $relation->setEndNode($node);
         $this->assertSame($node, $relation->getEndNode());
+        $relation->setEndNode(null);
+        $this->assertNull($relation->getEndNode());
     }
 
     public function testToString(): void
     {
-        $relation = new Relation();
-        $relation->setRelationType(new RelationType('TYPE'));
-        $relation->addProperty(new PropertyName('id'), 'A');
-        $relation->addProperty(new PropertyName('value'), 'A');
-        $this->assertSame("()-[:TYPE {id: 'A', value: 'A'}]->()", (string) $relation);
+        $relation = (new Relation())
+            ->setType('SOME_TYPE')
+            ->addProperty('id', 123)
+            ->addProperty('hello', 'world')
+            ->addIdentifier('id')
+            ->setStartNode(
+                (new Node())
+                    ->addLabel('StartNode')
+            )
+            ->setEndNode(
+                (new Node())
+                    ->addLabel('EndNode')
+            );
+        $this->assertSame("(:StartNode)-[:SOME_TYPE {hello: 'world', id: 123}]->(:EndNode)", (string) $relation);
     }
 
-    public function testIsEqual(): void
+    public function testIsEqualTo(): void
     {
-        $relationA = new Relation();
-        $relationA->setRelationType(new RelationType('TYPE_A'));
-        $relationA->addProperty(new PropertyName('id'), 'A');
-        $relationA->addProperty(new PropertyName('value'), 'A');
-
-        $relationB = new Relation();
-        $relationB->setRelationType(new RelationType('TYPE_A'));
-        $relationB->addProperty(new PropertyName('id'), 'A');
-        $relationB->addProperty(new PropertyName('value'), 'B');
-
-        $relationC = new Relation();
-        $relationC->setRelationType(new RelationType('TYPE_C'));
-        $relationC->addProperty(new PropertyName('id'), 'C');
-        $relationC->addProperty(new PropertyName('value'), 'C');
-
-        $this->assertTrue($relationA->isEqualTo($relationB));
-        $this->assertTrue($relationB->isEqualTo($relationA));
-        $this->assertFalse($relationA->isEqualTo($relationC));
-        $this->assertFalse($relationC->isEqualTo($relationA));
-        $this->assertFalse($relationA->isEqualTo(new stdClass()));
-        $this->assertFalse($relationA->isEqualTo('some string'));
+        $relation = (new Relation())
+            ->setType('SOME_TYPE')
+            ->addProperty('id', 123)
+            ->addProperty('hello', 'world')
+            ->addIdentifier('id')
+            ->setStartNode(
+                (new Node())
+                    ->addLabel('StartNode')
+            )
+            ->setEndNode(
+                (new Node())
+                    ->addLabel('EndNode')
+            );
+        $this->assertFalse($relation->isEqualTo(123));
+        $this->assertFalse($relation->isEqualTo(
+            (new Relation())
+                ->setStartNode(new Node())
+                ->setEndNode(new Node())
+        ));
+        $this->assertTrue($relation->isEqualTo($relation));
+        $this->assertTrue($relation->isEqualTo(clone $relation));
     }
 }
