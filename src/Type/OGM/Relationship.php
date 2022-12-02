@@ -24,18 +24,12 @@ use Syndesi\CypherDataStructures\TypeCaster;
  */
 final class Relationship extends UnboundRelationship
 {
-    private int $startNodeId;
-
-    private int $endNodeId;
-
     /**
      * @param Dictionary<OGMTypes> $properties
      */
-    public function __construct(int $id, int $startNodeId, int $endNodeId, string $type, Dictionary $properties)
+    public function __construct(int $id, private int $startNodeId, private int $endNodeId, string $type, Dictionary $properties)
     {
         parent::__construct($id, $type, $properties);
-        $this->startNodeId = $startNodeId;
-        $this->endNodeId = $endNodeId;
     }
 
     /**

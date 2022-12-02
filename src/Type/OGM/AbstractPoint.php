@@ -27,13 +27,8 @@ use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
  */
 abstract class AbstractPoint extends AbstractPropertyObject implements PointInterface, PackstreamConvertible
 {
-    private float $x;
-    private float $y;
-
-    public function __construct(float $x, float $y)
+    public function __construct(private float $x, private float $y)
     {
-        $this->x = $x;
-        $this->y = $y;
     }
 
     abstract public function getCrs(): string;

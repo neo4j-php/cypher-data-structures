@@ -79,7 +79,7 @@ class ToCypherHelper
 
         return sprintf(
             ":%s",
-            implode(':', array_merge($internalNodeLabels, $publicNodeLabels))
+            implode(':', [...$internalNodeLabels, ...$publicNodeLabels])
         );
     }
 
@@ -322,7 +322,7 @@ class ToCypherHelper
         }
         if (is_object($value)) {
             if (!($value instanceof Stringable)) {
-                throw InvalidArgumentException::createForTypeMismatch(Stringable::class, get_class($value));
+                throw InvalidArgumentException::createForTypeMismatch(Stringable::class, $value::class);
             }
 
             return (string) $value;

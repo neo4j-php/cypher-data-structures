@@ -19,10 +19,7 @@ use function get_debug_type;
 
 final class RuntimeTypeException extends RuntimeException
 {
-    /**
-     * @param mixed $value
-     */
-    public function __construct($value, string $type)
+    public function __construct(mixed $value, string $type)
     {
         $actualType = get_debug_type($value);
         $message = sprintf('Cannot cast %s to type: %s', $actualType, $type);

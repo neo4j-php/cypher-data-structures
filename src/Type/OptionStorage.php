@@ -19,7 +19,7 @@ class OptionStorage extends SplObjectStorage implements OptionStorageInterface
     public function getHash(object $object): string
     {
         if (!($object instanceof OptionNameInterface)) {
-            throw InvalidArgumentException::createForTypeMismatch(OptionNameInterface::class, get_class($object));
+            throw InvalidArgumentException::createForTypeMismatch(OptionNameInterface::class, $object::class);
         }
 
         return $object->getOptionName();
@@ -32,7 +32,7 @@ class OptionStorage extends SplObjectStorage implements OptionStorageInterface
     {
         $element = parent::current();
         if (!($element instanceof OptionNameInterface)) {
-            throw LogicException::createForInternalTypeMismatch(OptionNameInterface::class, get_class($element));
+            throw LogicException::createForInternalTypeMismatch(OptionNameInterface::class, $element::class);
         }
 
         return $element;

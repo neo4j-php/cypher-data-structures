@@ -29,19 +29,11 @@ use function sprintf;
  */
 class UnboundRelationship extends AbstractPropertyObject
 {
-    private int $id;
-    private string $type;
-    /** @var Dictionary<OGMTypes> */
-    private Dictionary $properties;
-
     /**
      * @param Dictionary<OGMTypes> $properties
      */
-    public function __construct(int $id, string $type, Dictionary $properties)
+    public function __construct(private int $id, private string $type, private Dictionary $properties)
     {
-        $this->id = $id;
-        $this->type = $type;
-        $this->properties = $properties;
     }
 
     public function getId(): int

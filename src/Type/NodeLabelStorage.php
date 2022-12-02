@@ -19,7 +19,7 @@ class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInter
     public function getHash(object $object): string
     {
         if (!($object instanceof NodeLabelInterface)) {
-            throw InvalidArgumentException::createForTypeMismatch(NodeLabelInterface::class, get_class($object));
+            throw InvalidArgumentException::createForTypeMismatch(NodeLabelInterface::class, $object::class);
         }
 
         return $object->getNodeLabel();
@@ -32,7 +32,7 @@ class NodeLabelStorage extends SplObjectStorage implements NodeLabelStorageInter
     {
         $element = parent::current();
         if (!($element instanceof NodeLabelInterface)) {
-            throw LogicException::createForInternalTypeMismatch(NodeLabelInterface::class, get_class($element));
+            throw LogicException::createForInternalTypeMismatch(NodeLabelInterface::class, $element::class);
         }
 
         return $element;

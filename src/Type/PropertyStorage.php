@@ -19,7 +19,7 @@ class PropertyStorage extends SplObjectStorage implements PropertyStorageInterfa
     public function getHash(object $object): string
     {
         if (!($object instanceof PropertyNameInterface)) {
-            throw InvalidArgumentException::createForTypeMismatch(PropertyNameInterface::class, get_class($object));
+            throw InvalidArgumentException::createForTypeMismatch(PropertyNameInterface::class, $object::class);
         }
 
         return $object->getPropertyName();
@@ -32,7 +32,7 @@ class PropertyStorage extends SplObjectStorage implements PropertyStorageInterfa
     {
         $element = parent::current();
         if (!($element instanceof PropertyNameInterface)) {
-            throw LogicException::createForInternalTypeMismatch(PropertyNameInterface::class, get_class($element));
+            throw LogicException::createForInternalTypeMismatch(PropertyNameInterface::class, $element::class);
         }
 
         return $element;

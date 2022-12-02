@@ -27,12 +27,9 @@ use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
  */
 abstract class Abstract3DPoint extends AbstractPoint implements PointInterface, PackstreamConvertible
 {
-    private float $z;
-
-    public function __construct(float $x, float $y, float $z)
+    public function __construct(float $x, float $y, private float $z)
     {
         parent::__construct($x, $y);
-        $this->z = $z;
     }
 
     public function getZ(): float

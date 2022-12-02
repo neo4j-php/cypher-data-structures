@@ -22,11 +22,8 @@ namespace Syndesi\CypherDataStructures\Type\OGM;
  */
 final class LocalTime extends AbstractPropertyObject
 {
-    private int $nanoseconds;
-
-    public function __construct(int $nanoseconds)
+    public function __construct(private int $nanoseconds)
     {
-        $this->nanoseconds = $nanoseconds;
     }
 
     /**

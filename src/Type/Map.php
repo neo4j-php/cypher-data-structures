@@ -351,10 +351,7 @@ class Map extends AbstractCypherSequence
         return parent::jsonSerialize();
     }
 
-    /**
-     * @param mixed $default
-     */
-    public function getAsString(string $key, $default = null): string
+    public function getAsString(string $key, mixed $default = null): string
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -370,10 +367,7 @@ class Map extends AbstractCypherSequence
         return $tbr;
     }
 
-    /**
-     * @param mixed $default
-     */
-    public function getAsInt(string $key, $default = null): int
+    public function getAsInt(string $key, mixed $default = null): int
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -389,10 +383,7 @@ class Map extends AbstractCypherSequence
         return $tbr;
     }
 
-    /**
-     * @param mixed $default
-     */
-    public function getAsFloat(string $key, $default = null): float
+    public function getAsFloat(string $key, mixed $default = null): float
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -408,10 +399,7 @@ class Map extends AbstractCypherSequence
         return $tbr;
     }
 
-    /**
-     * @param mixed $default
-     */
-    public function getAsBool(string $key, $default = null): bool
+    public function getAsBool(string $key, mixed $default = null): bool
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -428,11 +416,9 @@ class Map extends AbstractCypherSequence
     }
 
     /**
-     * @param mixed $default
-     *
      * @return null
      */
-    public function getAsNull(string $key, $default = null)
+    public function getAsNull(string $key, mixed $default = null)
     {
         if (func_num_args() === 1) {
             /** @psalm-suppress UnusedMethodCall */
@@ -446,11 +432,10 @@ class Map extends AbstractCypherSequence
      * @template U
      *
      * @param class-string<U> $class
-     * @param mixed           $default
      *
      * @return U
      */
-    public function getAsObject(string $key, string $class, $default = null): object
+    public function getAsObject(string $key, string $class, mixed $default = null): object
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -467,11 +452,9 @@ class Map extends AbstractCypherSequence
     }
 
     /**
-     * @param mixed $default
-     *
      * @return Map<mixed>
      */
-    public function getAsMap(string $key, $default = null): Map
+    public function getAsMap(string $key, mixed $default = null): Map
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -481,18 +464,16 @@ class Map extends AbstractCypherSequence
         }
 
         if (!is_iterable($value)) {
-            throw new RuntimeTypeException($value, __CLASS__);
+            throw new RuntimeTypeException($value, self::class);
         }
 
         return new Map($value);
     }
 
     /**
-     * @param mixed $default
-     *
      * @return ArrayList<mixed>
      */
-    public function getAsArrayList(string $key, $default = null): ArrayList
+    public function getAsArrayList(string $key, mixed $default = null): ArrayList
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);

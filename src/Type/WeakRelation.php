@@ -50,7 +50,7 @@ class WeakRelation implements WeakRelationInterface
         }
         if (!($element instanceof RelationInterface)) {
             // @codeCoverageIgnoreStart
-            throw LogicException::createForInternalTypeMismatch(RelationInterface::class, get_class($element));
+            throw LogicException::createForInternalTypeMismatch(RelationInterface::class, $element::class);
             // @codeCoverageIgnoreEnd
         }
 

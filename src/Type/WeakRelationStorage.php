@@ -19,7 +19,7 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
     public function getHash(object $object): string
     {
         if (!($object instanceof WeakRelationInterface)) {
-            throw InvalidArgumentException::createForTypeMismatch(WeakRelationInterface::class, get_class($object));
+            throw InvalidArgumentException::createForTypeMismatch(WeakRelationInterface::class, $object::class);
         }
         if (null === $object->get()) {
             throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
@@ -36,7 +36,7 @@ class WeakRelationStorage extends SplObjectStorage implements WeakRelationStorag
     {
         $element = parent::current();
         if (!($element instanceof WeakRelationInterface)) {
-            throw LogicException::createForInternalTypeMismatch(WeakRelationInterface::class, get_class($element));
+            throw LogicException::createForInternalTypeMismatch(WeakRelationInterface::class, $element::class);
         }
 
         return $element;

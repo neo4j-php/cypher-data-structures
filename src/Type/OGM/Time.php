@@ -23,13 +23,8 @@ namespace Syndesi\CypherDataStructures\Type\OGM;
  */
 final class Time extends AbstractPropertyObject
 {
-    private int $nanoSeconds;
-    private int $tzOffsetSeconds;
-
-    public function __construct(int $nanoSeconds, int $tzOffsetSeconds)
+    public function __construct(private int $nanoSeconds, private int $tzOffsetSeconds)
     {
-        $this->nanoSeconds = $nanoSeconds;
-        $this->tzOffsetSeconds = $tzOffsetSeconds;
     }
 
     /**
