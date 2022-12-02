@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Bolt\structures\IStructure;
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
-
 /**
  * The time of day represented in nanoseconds.
  *
@@ -23,7 +20,7 @@ use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
  *
  * @extends AbstractPropertyObject<int, int>
  */
-final class LocalTime extends AbstractPropertyObject implements BoltConvertibleInterface
+final class LocalTime extends AbstractPropertyObject
 {
     private int $nanoseconds;
 
@@ -51,10 +48,5 @@ final class LocalTime extends AbstractPropertyObject implements BoltConvertibleI
     public function getProperties(): CypherMap
     {
         return new CypherMap($this);
-    }
-
-    public function convertToBolt(): IStructure
-    {
-        return new \Bolt\structures\LocalTime($this->getNanoseconds());
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
 use Laudis\Neo4j\Contracts\PointInterface;
 
 /**
@@ -25,7 +24,7 @@ use Laudis\Neo4j\Contracts\PointInterface;
  *
  * @psalm-import-type Crs from \Laudis\Neo4j\Contracts\PointInterface
  */
-final class CartesianPoint extends AbstractPoint implements PointInterface, BoltConvertibleInterface
+final class CartesianPoint extends AbstractPoint implements PointInterface
 {
     /** @var Crs */
     public const CRS = 'cartesian';

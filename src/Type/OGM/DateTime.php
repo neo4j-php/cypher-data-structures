@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Bolt\structures\IStructure;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
 use RuntimeException;
 use function sprintf;
 
@@ -28,7 +26,7 @@ use function sprintf;
  *
  * @extends AbstractPropertyObject<int, int>
  */
-final class DateTime extends AbstractPropertyObject implements BoltConvertibleInterface
+final class DateTime extends AbstractPropertyObject
 {
     private int $seconds;
     private int $nanoseconds;
@@ -101,10 +99,5 @@ final class DateTime extends AbstractPropertyObject implements BoltConvertibleIn
     public function getProperties(): CypherMap
     {
         return new CypherMap($this);
-    }
-
-    public function convertToBolt(): IStructure
-    {
-        return new \Bolt\structures\DateTime($this->getSeconds(), $this->getNanoseconds(), $this->getTimeZoneOffsetSeconds());
     }
 }

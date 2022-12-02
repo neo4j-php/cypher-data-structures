@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Bolt\structures\IStructure;
 use DateInterval;
 use Exception;
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
 
 /**
  * A temporal range represented in months, days, seconds and nanoseconds.
@@ -25,7 +23,7 @@ use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
  *
  * @extends AbstractPropertyObject<int, int>
  */
-final class Duration extends AbstractPropertyObject implements BoltConvertibleInterface
+final class Duration extends AbstractPropertyObject
 {
     private int $months;
     private int $days;
@@ -98,15 +96,5 @@ final class Duration extends AbstractPropertyObject implements BoltConvertibleIn
     public function getProperties(): CypherMap
     {
         return new CypherMap($this);
-    }
-
-    public function convertToBolt(): IStructure
-    {
-        return new \Bolt\structures\Duration(
-            $this->getMonths(),
-            $this->getDays(),
-            $this->getSeconds(),
-            $this->getNanoseconds()
-        );
     }
 }

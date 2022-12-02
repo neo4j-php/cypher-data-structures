@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Bolt\structures\IStructure;
 use DateTimeImmutable;
 use Exception;
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
 use UnexpectedValueException;
 
 /**
@@ -28,7 +26,7 @@ use UnexpectedValueException;
  *
  * @psalm-suppress TypeDoesNotContainType
  */
-final class Date extends AbstractPropertyObject implements BoltConvertibleInterface
+final class Date extends AbstractPropertyObject
 {
     private int $days;
 
@@ -69,10 +67,5 @@ final class Date extends AbstractPropertyObject implements BoltConvertibleInterf
     public function toArray(): array
     {
         return ['days' => $this->days];
-    }
-
-    public function convertToBolt(): IStructure
-    {
-        return new \Bolt\structures\Date($this->getDays());
     }
 }

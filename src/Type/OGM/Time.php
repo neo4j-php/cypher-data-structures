@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Bolt\structures\IStructure;
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
 
 /**
  * A time object represented in seconds since the unix epoch.
@@ -23,7 +21,7 @@ use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
  *
  * @extends AbstractPropertyObject<float, float>
  */
-final class Time extends AbstractPropertyObject implements BoltConvertibleInterface
+final class Time extends AbstractPropertyObject
 {
     private int $nanoSeconds;
     private int $tzOffsetSeconds;
@@ -55,10 +53,5 @@ final class Time extends AbstractPropertyObject implements BoltConvertibleInterf
     public function getProperties(): CypherMap
     {
         return new CypherMap($this);
-    }
-
-    public function convertToBolt(): IStructure
-    {
-        return new \Bolt\structures\Time($this->getNanoSeconds(), $this->getTzOffsetSeconds());
     }
 }

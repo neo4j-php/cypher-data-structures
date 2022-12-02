@@ -15,7 +15,6 @@ namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use Bolt\structures\IStructure;
 use Bolt\structures\Point3D;
-use Laudis\Neo4j\Contracts\BoltConvertibleInterface;
 use Laudis\Neo4j\Contracts\PointInterface;
 
 /**
@@ -27,14 +26,9 @@ use Laudis\Neo4j\Contracts\PointInterface;
  *
  * @psalm-import-type Crs from \Laudis\Neo4j\Contracts\PointInterface
  */
-abstract class Abstract3DPoint extends AbstractPoint implements PointInterface, BoltConvertibleInterface
+abstract class Abstract3DPoint extends AbstractPoint implements PointInterface
 {
     private float $z;
-
-    public function convertToBolt(): IStructure
-    {
-        return new Point3D($this->getSrid(), $this->getX(), $this->getY(), $this->getZ());
-    }
 
     /**
      * @param Crs $crs
