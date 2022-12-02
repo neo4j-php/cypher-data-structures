@@ -16,7 +16,7 @@ class NodeLabel implements NodeLabelInterface
      * @throws InvalidArgumentException
      */
     public function __construct(
-        private readonly string $nodeLabel
+        private string $nodeLabel
     ) {
         if (!preg_match(self::FORMAT, $this->nodeLabel)) {
             throw InvalidArgumentException::createForRegexMismatch(self::FORMAT, self::FORMAT_DESCRIPTION, $this->nodeLabel);

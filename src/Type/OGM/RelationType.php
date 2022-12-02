@@ -16,7 +16,7 @@ class RelationType implements RelationTypeInterface
      * @throws InvalidArgumentException
      */
     public function __construct(
-        private readonly string $relationType
+        private string $relationType
     ) {
         if (!preg_match(self::FORMAT, $this->relationType)) {
             throw InvalidArgumentException::createForRegexMismatch(self::FORMAT, self::FORMAT_DESCRIPTION, $this->relationType);

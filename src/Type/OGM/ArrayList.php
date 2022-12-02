@@ -20,8 +20,8 @@ use Generator;
 use function is_array;
 use function is_callable;
 use function is_iterable;
-use Laudis\Neo4j\Exception\RuntimeTypeException;
-use Laudis\Neo4j\TypeCaster;
+use Syndesi\CypherDataStructures\TypeCaster;
+use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
 use OutOfBoundsException;
 
 /**
@@ -34,7 +34,7 @@ use OutOfBoundsException;
 class ArrayList extends AbstractCypherSequence
 {
     /**
-     * @param iterable<mixed, TValue>|callable():\Generator<mixed, TValue> $iterable
+     * @param iterable<mixed, TValue>|callable():Generator $iterable
      *
      * @psalm-mutation-free
      */

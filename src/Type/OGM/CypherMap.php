@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use function func_num_args;
-use Laudis\Neo4j\Exception\RuntimeTypeException;
-use Laudis\Neo4j\TypeCaster;
+use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
+use Syndesi\CypherDataStructures\TypeCaster;
 
 /**
  * An immutable ordered map of items.
@@ -27,11 +27,9 @@ use Laudis\Neo4j\TypeCaster;
 final class CypherMap extends Map
 {
     /**
-     * @param mixed $default
-     *
      * @return CypherMap<mixed>
      */
-    public function getAsCypherMap(string $key, $default = null): CypherMap
+    public function getAsCypherMap(string $key, mixed $default = null): CypherMap
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);

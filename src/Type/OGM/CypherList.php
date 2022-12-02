@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Laudis\Neo4j\Exception\RuntimeTypeException;
-use Laudis\Neo4j\TypeCaster;
+use Syndesi\CypherDataStructures\TypeCaster;
+use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
 
 /**
  * An immutable ordered sequence of items.

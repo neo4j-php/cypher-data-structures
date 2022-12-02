@@ -15,12 +15,10 @@ namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use BadMethodCallException;
 use function get_class;
-use Laudis\Neo4j\Contracts\HasPropertiesInterface;
+use Syndesi\CypherDataStructures\Contract\OGM\HasPropertiesInterface;
 use function sprintf;
 
-/**
- * @psalm-import-type OGMTypes from \Laudis\Neo4j\Formatter\OGMFormatter
- *
+/** *
  * @template PropertyTypes
  * @template ObjectTypes
  *

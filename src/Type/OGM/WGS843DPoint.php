@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Laudis\Neo4j\Contracts\PointInterface;
+use Syndesi\CypherDataStructures\Contract\OGM\PointInterface;
 
 /**
  * A WGS84 Point in three dimensional space.
@@ -22,7 +22,7 @@ use Laudis\Neo4j\Contracts\PointInterface;
  *
  * @psalm-immutable
  *
- * @psalm-import-type Crs from \Laudis\Neo4j\Contracts\PointInterface
+ * @psalm-import-type Crs from PointInterface
  */
 final class WGS843DPoint extends Abstract3DPoint implements PointInterface
 {

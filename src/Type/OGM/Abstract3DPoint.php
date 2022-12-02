@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Bolt\structures\IStructure;
-use Bolt\structures\Point3D;
-use Laudis\Neo4j\Contracts\PointInterface;
+use Syndesi\CypherDataStructures\Contract\OGM\PointInterface;
 
 /**
  * A cartesian point in three dimensional space.
@@ -24,15 +22,12 @@ use Laudis\Neo4j\Contracts\PointInterface;
  *
  * @psalm-immutable
  *
- * @psalm-import-type Crs from \Laudis\Neo4j\Contracts\PointInterface
+ * @psalm-import-type Crs from PointInterface
  */
 abstract class Abstract3DPoint extends AbstractPoint implements PointInterface
 {
     private float $z;
 
-    /**
-     * @param Crs $crs
-     */
     public function __construct(float $x, float $y, float $z)
     {
         parent::__construct($x, $y);
