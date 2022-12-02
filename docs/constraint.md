@@ -15,11 +15,7 @@ Constraints are entities which contain the following attributes:
 ## Examples
 
 ```php
-use Syndesi\CypherDataStructures\Type\ConstraintName;
-use Syndesi\CypherDataStructures\Type\Constraint;
-use Syndesi\CypherDataStructures\Type\ConstraintType;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
-use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\Constraint;use Syndesi\CypherDataStructures\Type\ConstraintName;use Syndesi\CypherDataStructures\Type\ConstraintType;use Syndesi\CypherDataStructures\Type\NodeLabel;use Syndesi\CypherDataStructures\Type\PropertyName;
 
 $constraint = new Constraint();
 $constraint

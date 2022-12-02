@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Benchmark;
 
 use PhpBench\Attributes as Bench;
-use Syndesi\CypherDataStructures\Type\OGM\Node;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
-use Syndesi\CypherDataStructures\Type\OGM\Relation;
-use Syndesi\CypherDataStructures\Type\OGM\RelationType;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
 use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\Relation;
+use Syndesi\CypherDataStructures\Type\RelationType;
 
 class RelationBench
 {

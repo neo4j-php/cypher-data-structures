@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
+use Syndesi\CypherDataStructures\Type\OGM\Node;
+
 /**
  * A Path class representing a Path in cypher.
  *

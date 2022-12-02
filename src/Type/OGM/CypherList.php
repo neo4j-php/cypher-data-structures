@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
-use Syndesi\CypherDataStructures\TypeCaster;
 use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
+use Syndesi\CypherDataStructures\Type\ArrayList;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\TypeCaster;
 
 /**
  * An immutable ordered sequence of items.

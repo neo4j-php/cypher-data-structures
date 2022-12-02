@@ -10,8 +10,8 @@ use stdClass;
 use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Exception\LogicException;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabelStorage;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
 
 class NodeLabelStorageTest extends TestCase
 {

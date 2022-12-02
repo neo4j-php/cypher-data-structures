@@ -13,31 +13,35 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use function array_key_exists;
-use function array_reverse;
 use ArrayAccess;
 use ArrayIterator;
 use BadMethodCallException;
+use Countable;
+use Iterator;
+use JsonSerializable;
+use OutOfBoundsException;
+use ReturnTypeWillChange;
+use Syndesi\CypherDataStructures\Type\ArrayList;
+use Syndesi\CypherDataStructures\Type\Map;
+use UnexpectedValueException;
+
+use function array_key_exists;
+use function array_reverse;
 use function call_user_func;
 use function count;
-use Countable;
 use function get_object_vars;
 use function implode;
-use const INF;
 use function is_array;
 use function is_callable;
 use function is_numeric;
 use function is_object;
 use function is_string;
-use Iterator;
-use JsonSerializable;
 use function method_exists;
-use OutOfBoundsException;
-use const PHP_INT_MAX;
 use function property_exists;
-use ReturnTypeWillChange;
 use function sprintf;
-use UnexpectedValueException;
+
+use const INF;
+use const PHP_INT_MAX;
 
 /**
  * Abstract immutable sequence with basic functional methods.

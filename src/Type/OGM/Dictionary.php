@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
 use Syndesi\CypherDataStructures\Contract\PackstreamConvertible;
-use function func_num_args;
 use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
+use Syndesi\CypherDataStructures\Type\Map;
+use Syndesi\CypherDataStructures\Type\Node;
 use Syndesi\CypherDataStructures\TypeCaster;
+
+use function func_num_args;
 
 /**
  * An immutable ordered map of items.

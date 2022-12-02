@@ -13,26 +13,27 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures;
 
+use Syndesi\CypherDataStructures\Type\Node;
 use Syndesi\CypherDataStructures\Type\OGM\Cartesian3DPoint;
 use Syndesi\CypherDataStructures\Type\OGM\CartesianPoint;
+use Syndesi\CypherDataStructures\Type\OGM\CypherList;
 use Syndesi\CypherDataStructures\Type\OGM\Date;
 use Syndesi\CypherDataStructures\Type\OGM\DateTime;
+use Syndesi\CypherDataStructures\Type\OGM\Dictionary;
 use Syndesi\CypherDataStructures\Type\OGM\Duration;
 use Syndesi\CypherDataStructures\Type\OGM\LocalDateTime;
 use Syndesi\CypherDataStructures\Type\OGM\LocalTime;
-use Syndesi\CypherDataStructures\Type\OGM\Node;
 use Syndesi\CypherDataStructures\Type\OGM\Path;
 use Syndesi\CypherDataStructures\Type\OGM\Relationship;
 use Syndesi\CypherDataStructures\Type\OGM\Time;
 use Syndesi\CypherDataStructures\Type\OGM\WGS843DPoint;
 use Syndesi\CypherDataStructures\Type\OGM\WGS84Point;
+
 use function is_a;
 use function is_iterable;
 use function is_numeric;
 use function is_object;
 use function is_scalar;
-use Syndesi\CypherDataStructures\Type\OGM\CypherList;
-use Syndesi\CypherDataStructures\Type\OGM\Dictionary;
 use function method_exists;
 
 /**

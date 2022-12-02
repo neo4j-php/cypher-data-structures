@@ -11,23 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Syndesi\CypherDataStructures\Type\OGM;
+namespace Syndesi\CypherDataStructures\Type;
+
+use ArrayIterator;
+use Generator;
+use OutOfBoundsException;
+use stdClass;
+use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
+use Syndesi\CypherDataStructures\Type\OGM\AbstractCypherSequence;
+use Syndesi\CypherDataStructures\TypeCaster;
 
 use function array_key_exists;
 use function array_key_last;
-use ArrayIterator;
 use function count;
 use function func_num_args;
-use Generator;
 use function is_array;
 use function is_callable;
 use function is_iterable;
-use Syndesi\CypherDataStructures\Type\Pair;
-use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
-use Syndesi\CypherDataStructures\TypeCaster;
-use OutOfBoundsException;
 use function sprintf;
-use stdClass;
 
 /**
  * An immutable ordered map of items.

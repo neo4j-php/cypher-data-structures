@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Syndesi\CypherDataStructures\Type\OGM;
+namespace Syndesi\CypherDataStructures\Type;
 
 use SplObjectStorage;
 use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;

@@ -9,9 +9,9 @@ use stdClass;
 use Syndesi\CypherDataStructures\Type\Index;
 use Syndesi\CypherDataStructures\Type\IndexName;
 use Syndesi\CypherDataStructures\Type\IndexType;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
-use Syndesi\CypherDataStructures\Type\OGM\RelationType;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
 use Syndesi\CypherDataStructures\Type\PropertyName;
+use Syndesi\CypherDataStructures\Type\RelationType;
 
 class IndexTest extends TestCase
 {

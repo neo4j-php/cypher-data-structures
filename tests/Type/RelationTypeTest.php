@@ -6,7 +6,7 @@ namespace Syndesi\CypherDataStructures\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Type\OGM\RelationType;
+use Syndesi\CypherDataStructures\Type\RelationType;
 
 class RelationTypeTest extends TestCase
 {

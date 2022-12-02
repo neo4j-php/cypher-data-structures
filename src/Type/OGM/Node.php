@@ -2,178 +2,139 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Neo4j PHP Client and Driver package.
+ *
+ * (c) Nagels <https://nagels.tech>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Syndesi\CypherDataStructures\Contract\NodeInterface;
-use Syndesi\CypherDataStructures\Contract\NodeLabelInterface;
-use Syndesi\CypherDataStructures\Contract\NodeLabelStorageInterface;
-use Syndesi\CypherDataStructures\Contract\RelationInterface;
-use Syndesi\CypherDataStructures\Contract\WeakRelationInterface;
-use Syndesi\CypherDataStructures\Contract\WeakRelationStorageInterface;
-use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
-use Syndesi\CypherDataStructures\Helper\ToCypherHelper;
-use Syndesi\CypherDataStructures\Trait\IdentifiersTrait;
+use Syndesi\CypherDataStructures\TypeCaster;
+use Syndesi\CypherDataStructures\Exception\PropertyDoesNotExistException;
+
+use function sprintf;
 
 /**
- * @psalm-suppress PropertyNotSetInConstructor
+ * A Node class representing a Node in cypher.
+ *
+ * @psalm-import-type OGMTypes from TypeCaster
+ *
+ * @psalm-immutable
+ *
+ * @extends AbstractPropertyObject<OGMTypes, int|string|Dictionary<OGMTypes>>
+ * @extends AbstractPropertyObject<OGMTypes, int|CypherList<string>|Dictionary<OGMTypes>>
  */
-class Node implements NodeInterface
+final class Node extends AbstractPropertyObject
 {
-    use IdentifiersTrait;
-
-    private NodeLabelStorageInterface $nodeLabelStorage;
-    private WeakRelationStorageInterface $weakRelationStorage;
-
-    public function __construct(
-    ) {
-        $this->nodeLabelStorage = new NodeLabelStorage();
-        $this->weakRelationStorage = new WeakRelationStorage();
-        $this->initIdentifiersTrait();
-    }
-
-    public function __toString()
-    {
-        return ToCypherHelper::nodeToCypherString($this) ?? '()';
-    }
-
-    // node label
-
-    public function addNodeLabel(NodeLabelInterface $nodeLabel): self
-    {
-        $this->nodeLabelStorage->attach($nodeLabel);
-
-        return $this;
-    }
-
-    public function addNodeLabels(NodeLabelStorageInterface $nodeLabelStorage): self
-    {
-        foreach ($nodeLabelStorage as $key) {
-            $this->nodeLabelStorage->attach($key);
-        }
-
-        return $this;
-    }
-
-    public function hasNodeLabel(NodeLabelInterface $nodeLabel): bool
-    {
-        return $this->nodeLabelStorage->contains($nodeLabel);
-    }
-
-    public function getNodeLabels(): NodeLabelStorageInterface
-    {
-        return $this->nodeLabelStorage;
-    }
-
-    public function removeNodeLabel(NodeLabelInterface $nodeLabel): self
-    {
-        $this->nodeLabelStorage->detach($nodeLabel);
-
-        return $this;
-    }
-
-    public function clearNodeLabels(): self
-    {
-        $this->nodeLabelStorage = new NodeLabelStorage();
-
-        return $this;
-    }
-
-    // relations
+    private int $id;
+    /** @var CypherList<string> */
+    private CypherList $labels;
+    /** @var Dictionary<OGMTypes> */
+    private Dictionary $properties;
 
     /**
-     * @throws InvalidArgumentException
+     * @param CypherList<string>  $labels
+     * @param Dictionary<OGMTypes> $properties
      */
-    public function addRelation(WeakRelationInterface|RelationInterface $relation): self
+    public function __construct(int $id, CypherList $labels, Dictionary $properties)
     {
-        $weakRelation = $relation;
-        if ($weakRelation instanceof RelationInterface) {
-            $weakRelation = WeakRelation::create($weakRelation);
-        }
-        if (null === $weakRelation->get()) {
-            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
-        }
-        /** @psalm-suppress PossiblyNullReference */
-        if (null === $weakRelation->get()->getStartNode()) {
-            throw InvalidArgumentException::createForTypeMismatch(NodeInterface::class, 'null');
-        }
-        /** @psalm-suppress PossiblyNullReference */
-        if (null === $weakRelation->get()->getEndNode()) {
-            throw InvalidArgumentException::createForTypeMismatch(NodeInterface::class, 'null');
-        }
-        $ownIdentifyingString = ToCypherHelper::nodeToIdentifyingCypherString($this);
-        /** @psalm-suppress PossiblyNullReference */
-        if (ToCypherHelper::nodeToIdentifyingCypherString($weakRelation->get()->getStartNode()) !== $ownIdentifyingString &&
-            ToCypherHelper::nodeToIdentifyingCypherString($weakRelation->get()->getEndNode()) !== $ownIdentifyingString
-        ) {
-            throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
-        }
-
-        $this->weakRelationStorage->attach($weakRelation);
-
-        return $this;
+        $this->id = $id;
+        $this->labels = $labels;
+        $this->properties = $properties;
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @deprecated
+     * @see self::getLabels
+     *
+     * @return CypherList<string>
      */
-    public function addRelations(WeakRelationStorageInterface $weakRelationStorage): self
+    public function labels(): CypherList
     {
-        foreach ($weakRelationStorage as $key) {
-            $this->addRelation($key);
-        }
-
-        return $this;
+        return $this->labels;
     }
 
     /**
-     * @throws InvalidArgumentException
+     * The labels on the node.
+     *
+     * @return CypherList<string>
      */
-    public function hasRelation(WeakRelationInterface|RelationInterface $relation): bool
+    public function getLabels(): CypherList
     {
-        if ($relation instanceof RelationInterface) {
-            $relation = WeakRelation::create($relation);
-        }
-        if (null === $relation->get()) {
-            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
-        }
-
-        return $this->weakRelationStorage->contains($relation);
-    }
-
-    public function getRelations(): WeakRelationStorageInterface
-    {
-        return $this->weakRelationStorage;
+        return $this->labels;
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @return Dictionary<OGMTypes>
+     *
+     * @deprecated
+     * @see self::getProperties
      */
-    public function removeRelation(WeakRelationInterface|RelationInterface $relation): self
+    public function properties(): Dictionary
     {
-        if ($relation instanceof RelationInterface) {
-            $relation = WeakRelation::create($relation);
-        }
-        if (null === $relation->get()) {
-            throw InvalidArgumentException::createForAlreadyNullReference(WeakRelationInterface::class);
-        }
-        $this->weakRelationStorage->detach($relation);
-
-        return $this;
+        return $this->properties;
     }
 
-    public function clearRelations(): self
+    /**
+     * @deprecated
+     * @see self::getId
+     */
+    public function id(): int
     {
-        $this->weakRelationStorage = new WeakRelationStorage();
-
-        return $this;
+        return $this->id;
     }
 
-    public function isEqualTo(mixed $element): bool
+    /**
+     * The id of the node.
+     */
+    public function getId(): int
     {
-        if (!($element instanceof NodeInterface)) {
-            return false;
+        return $this->id;
+    }
+
+    /**
+     * Gets the property of the node by key.
+     *
+     * @return OGMTypes
+     */
+    public function getProperty(string $key)
+    {
+        /** @psalm-suppress ImpureMethodCall */
+        if (!$this->properties->hasKey($key)) {
+            throw new PropertyDoesNotExistException(sprintf('Property "%s" does not exist on node', $key));
         }
 
-        return ToCypherHelper::nodeToIdentifyingCypherString($this) === ToCypherHelper::nodeToIdentifyingCypherString($element);
+        /** @psalm-suppress ImpureMethodCall */
+        return $this->properties->get($key);
+    }
+
+    /**
+     * @psalm-suppress ImplementedReturnTypeMismatch False positive.
+     *
+     * @return array{id: int, labels: CypherList<string>, properties: Dictionary<OGMTypes>}
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'labels' => $this->labels,
+            'properties' => $this->properties,
+        ];
+    }
+
+    public function getProperties(): Dictionary
+    {
+        /** @psalm-suppress InvalidReturnStatement false positive with type alias. */
+        return $this->properties;
+    }
+
+    public function getPackstreamMarker(): int
+    {
+        return 0x4E;
     }
 }

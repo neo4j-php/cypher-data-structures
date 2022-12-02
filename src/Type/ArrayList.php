@@ -11,18 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Syndesi\CypherDataStructures\Type\OGM;
+namespace Syndesi\CypherDataStructures\Type;
 
 use AppendIterator;
-use function array_values;
 use ArrayIterator;
 use Generator;
+use OutOfBoundsException;
+use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
+use Syndesi\CypherDataStructures\Type\OGM\AbstractCypherSequence;
+use Syndesi\CypherDataStructures\TypeCaster;
+
+use function array_values;
 use function is_array;
 use function is_callable;
 use function is_iterable;
-use Syndesi\CypherDataStructures\TypeCaster;
-use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
-use OutOfBoundsException;
 
 /**
  * An immutable ordered sequence of items.

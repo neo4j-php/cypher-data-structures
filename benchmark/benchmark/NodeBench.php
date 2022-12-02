@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Benchmark;
 
 use PhpBench\Attributes as Bench;
-use Syndesi\CypherDataStructures\Type\OGM\Node;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 
 class NodeBench

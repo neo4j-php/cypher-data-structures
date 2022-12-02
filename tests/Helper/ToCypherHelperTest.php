@@ -14,15 +14,15 @@ use Syndesi\CypherDataStructures\Type\ConstraintType;
 use Syndesi\CypherDataStructures\Type\Index;
 use Syndesi\CypherDataStructures\Type\IndexName;
 use Syndesi\CypherDataStructures\Type\IndexType;
-use Syndesi\CypherDataStructures\Type\OGM\Node;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabel;
-use Syndesi\CypherDataStructures\Type\OGM\NodeLabelStorage;
-use Syndesi\CypherDataStructures\Type\OGM\Relation;
-use Syndesi\CypherDataStructures\Type\OGM\RelationType;
+use Syndesi\CypherDataStructures\Type\Node;
+use Syndesi\CypherDataStructures\Type\NodeLabel;
+use Syndesi\CypherDataStructures\Type\NodeLabelStorage;
 use Syndesi\CypherDataStructures\Type\OptionName;
 use Syndesi\CypherDataStructures\Type\OptionStorage;
 use Syndesi\CypherDataStructures\Type\PropertyName;
 use Syndesi\CypherDataStructures\Type\PropertyStorage;
+use Syndesi\CypherDataStructures\Type\Relation;
+use Syndesi\CypherDataStructures\Type\RelationType;
 
 class ToCypherHelperTest extends TestCase
 {
