@@ -49,17 +49,6 @@ final class Node extends AbstractPropertyObject
     }
 
     /**
-     * @deprecated
-     * @see self::getLabels
-     *
-     * @return CypherList<string>
-     */
-    public function labels(): CypherList
-    {
-        return $this->labels;
-    }
-
-    /**
      * The labels on the node.
      *
      * @return CypherList<string>
@@ -67,26 +56,6 @@ final class Node extends AbstractPropertyObject
     public function getLabels(): CypherList
     {
         return $this->labels;
-    }
-
-    /**
-     * @return Dictionary<OGMTypes>
-     *
-     * @deprecated
-     * @see self::getProperties
-     */
-    public function properties(): Dictionary
-    {
-        return $this->properties;
-    }
-
-    /**
-     * @deprecated
-     * @see self::getId
-     */
-    public function id(): int
-    {
-        return $this->id;
     }
 
     /**
