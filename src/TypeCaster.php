@@ -32,11 +32,11 @@ use function is_numeric;
 use function is_object;
 use function is_scalar;
 use Syndesi\CypherDataStructures\Type\OGM\CypherList;
-use Syndesi\CypherDataStructures\Type\OGM\CypherMap;
+use Syndesi\CypherDataStructures\Type\OGM\Dictionary;
 use function method_exists;
 
 /**
- * @psalm-type OGMTypes = string|int|float|bool|null|Date|DateTime|Duration|LocalDateTime|LocalTime|Time|CypherList|CypherMap|Node|Relationship|Path|Cartesian3DPoint|CartesianPoint|WGS84Point|WGS843DPoint
+ * @psalm-type OGMTypes = string|int|float|bool|null|Date|DateTime|Duration|LocalDateTime|LocalTime|Time|CypherList|Dictionary|Node|Relationship|Path|Cartesian3DPoint|CartesianPoint|WGS84Point|WGS843DPoint
  */
 final class TypeCaster
 {
@@ -171,12 +171,12 @@ final class TypeCaster
     /**
      * @param mixed $value
      *
-     * @return CypherMap<mixed>|null
+     * @return Dictionary<mixed>|null
      */
-    public static function toCypherMap($value): ?CypherMap
+    public static function toCypherMap($value): ?Dictionary
     {
         if (is_iterable($value)) {
-            return CypherMap::fromIterable($value);
+            return Dictionary::fromIterable($value);
         }
 
         return null;

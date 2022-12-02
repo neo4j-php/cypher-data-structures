@@ -50,10 +50,10 @@ abstract class AbstractPoint extends AbstractPropertyObject implements PointInte
         return $this->y;
     }
 
-    public function getProperties(): CypherMap
+    public function getProperties(): Dictionary
     {
         /** @psalm-suppress InvalidReturnStatement False positive */
-        return new CypherMap($this);
+        return new Dictionary($this);
     }
 
     /**

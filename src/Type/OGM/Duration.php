@@ -93,9 +93,9 @@ final class Duration extends AbstractPropertyObject
         ];
     }
 
-    public function getProperties(): CypherMap
+    public function getProperties(): Dictionary
     {
-        return new CypherMap($this);
+        return new Dictionary($this);
     }
 
     public function getPackstreamMarker(): int

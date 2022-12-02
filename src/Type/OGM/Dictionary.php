@@ -25,12 +25,12 @@ use Syndesi\CypherDataStructures\TypeCaster;
  *
  * @extends Map<TValue>
  */
-final class CypherMap extends Map implements PackstreamConvertible
+final class Dictionary extends Map implements PackstreamConvertible
 {
     /**
-     * @return CypherMap<mixed>
+     * @return Dictionary<mixed>
      */
-    public function getAsCypherMap(string $key, mixed $default = null): CypherMap
+    public function getAsCypherMap(string $key, mixed $default = null): Dictionary
     {
         if (func_num_args() === 1) {
             $value = $this->get($key);
@@ -232,7 +232,7 @@ final class CypherMap extends Map implements PackstreamConvertible
      *
      * @pure
      */
-    public static function fromIterable(iterable $iterable): CypherMap
+    public static function fromIterable(iterable $iterable): Dictionary
     {
         return new self($iterable);
     }
@@ -248,9 +248,9 @@ final class CypherMap extends Map implements PackstreamConvertible
     /**
      * @psalm-mutation-free
      */
-    public function keyBy(string $key): CypherMap
+    public function keyBy(string $key): Dictionary
     {
-        return CypherMap::fromIterable(parent::keyBy($key));
+        return Dictionary::fromIterable(parent::keyBy($key));
     }
 
     public function getPackstreamMarker(): int

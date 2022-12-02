@@ -94,11 +94,11 @@ final class DateTimeZoneId extends AbstractPropertyObject
     }
 
     /**
-     * @return CypherMap<string|int>
+     * @return Dictionary<string|int>
      */
-    public function getProperties(): CypherMap
+    public function getProperties(): Dictionary
     {
-        return new CypherMap($this);
+        return new Dictionary($this);
     }
 
     public function getPackstreamMarker(): int

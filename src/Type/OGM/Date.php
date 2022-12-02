@@ -59,9 +59,9 @@ final class Date extends AbstractPropertyObject
         return $dateTimeImmutable;
     }
 
-    public function getProperties(): CypherMap
+    public function getProperties(): Dictionary
     {
-        return new CypherMap($this);
+        return new Dictionary($this);
     }
 
     public function toArray(): array

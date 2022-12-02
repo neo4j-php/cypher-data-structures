@@ -29,9 +29,9 @@ final class Relationship extends UnboundRelationship
     private int $endNodeId;
 
     /**
-     * @param CypherMap<OGMTypes> $properties
+     * @param Dictionary<OGMTypes> $properties
      */
-    public function __construct(int $id, int $startNodeId, int $endNodeId, string $type, CypherMap $properties)
+    public function __construct(int $id, int $startNodeId, int $endNodeId, string $type, Dictionary $properties)
     {
         parent::__construct($id, $type, $properties);
         $this->startNodeId = $startNodeId;
@@ -62,7 +62,7 @@ final class Relationship extends UnboundRelationship
      *                type: string,
      *                startNodeId: int,
      *                endNodeId: int,
-     *                properties: CypherMap<OGMTypes>
+     *                properties: Dictionary<OGMTypes>
      *                }
      */
     public function toArray(): array

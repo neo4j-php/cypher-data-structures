@@ -27,14 +27,14 @@ use Syndesi\CypherDataStructures\Exception\RuntimeTypeException;
 class CypherList extends ArrayList implements PackstreamConvertible
 {
     /**
-     * @return CypherMap<mixed>
+     * @return Dictionary<mixed>
      */
-    public function getAsCypherMap(int $key): CypherMap
+    public function getAsCypherMap(int $key): Dictionary
     {
         $value = $this->get($key);
         $tbr = TypeCaster::toCypherMap($value);
         if ($tbr === null) {
-            throw new RuntimeTypeException($value, CypherMap::class);
+            throw new RuntimeTypeException($value, Dictionary::class);
         }
 
         return $tbr;

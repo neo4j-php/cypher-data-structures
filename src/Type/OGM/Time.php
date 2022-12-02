@@ -50,9 +50,9 @@ final class Time extends AbstractPropertyObject
         return $this->nanoSeconds;
     }
 
-    public function getProperties(): CypherMap
+    public function getProperties(): Dictionary
     {
-        return new CypherMap($this);
+        return new Dictionary($this);
     }
 
     public function getPackstreamMarker(): int

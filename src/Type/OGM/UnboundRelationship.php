@@ -25,19 +25,19 @@ use function sprintf;
  *
  * @psalm-immutable
  *
- * @extends AbstractPropertyObject<OGMTypes, int|string|CypherMap<OGMTypes>>
+ * @extends AbstractPropertyObject<OGMTypes, int|string|Dictionary<OGMTypes>>
  */
 class UnboundRelationship extends AbstractPropertyObject
 {
     private int $id;
     private string $type;
-    /** @var CypherMap<OGMTypes> */
-    private CypherMap $properties;
+    /** @var Dictionary<OGMTypes> */
+    private Dictionary $properties;
 
     /**
-     * @param CypherMap<OGMTypes> $properties
+     * @param Dictionary<OGMTypes> $properties
      */
-    public function __construct(int $id, string $type, CypherMap $properties)
+    public function __construct(int $id, string $type, Dictionary $properties)
     {
         $this->id = $id;
         $this->type = $type;
@@ -54,7 +54,7 @@ class UnboundRelationship extends AbstractPropertyObject
         return $this->type;
     }
 
-    public function getProperties(): CypherMap
+    public function getProperties(): Dictionary
     {
         /** @psalm-suppress InvalidReturnStatement false positive with type alias. */
         return $this->properties;
@@ -63,7 +63,7 @@ class UnboundRelationship extends AbstractPropertyObject
     /**
      * @psalm-suppress ImplementedReturnTypeMismatch False positive.
      *
-     * @return array{id: int, type: string, properties: CypherMap<OGMTypes>}
+     * @return array{id: int, type: string, properties: Dictionary<OGMTypes>}
      */
     public function toArray(): array
     {

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Syndesi\CypherDataStructures\Contract\OGM;
 
 use BadMethodCallException;
-use Syndesi\CypherDataStructures\Type\OGM\CypherMap;
+use Syndesi\CypherDataStructures\Type\OGM\Dictionary;
 
 /**
  * Defines how an object with properties should behave.
@@ -28,9 +28,9 @@ interface HasPropertiesInterface
     /**
      * Returns the properties a map.
      *
-     * @return CypherMap<T>
+     * @return Dictionary<T>
      */
-    public function getProperties(): CypherMap;
+    public function getProperties(): Dictionary;
 
     /**
      * @param string $name
