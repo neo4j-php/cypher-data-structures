@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
-use Laudis\Neo4j\Exception\PropertyDoesNotExistException;
+use Syndesi\CypherDataStructures\Exception\PropertyDoesNotExistException;
+use Syndesi\CypherDataStructures\TypeCaster;
+
 use function sprintf;
 
 /**
  * A relationship without any nodes attached to it.
  *
- * @psalm-import-type OGMTypes from \Laudis\Neo4j\Formatter\OGMFormatter
+ * @psalm-import-type OGMTypes from TypeCaster
  *
  * @psalm-immutable
  *

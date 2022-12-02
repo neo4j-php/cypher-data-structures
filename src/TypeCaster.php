@@ -13,6 +13,19 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures;
 
+use Syndesi\CypherDataStructures\Type\OGM\Cartesian3DPoint;
+use Syndesi\CypherDataStructures\Type\OGM\CartesianPoint;
+use Syndesi\CypherDataStructures\Type\OGM\Date;
+use Syndesi\CypherDataStructures\Type\OGM\DateTime;
+use Syndesi\CypherDataStructures\Type\OGM\Duration;
+use Syndesi\CypherDataStructures\Type\OGM\LocalDateTime;
+use Syndesi\CypherDataStructures\Type\OGM\LocalTime;
+use Syndesi\CypherDataStructures\Type\OGM\Node;
+use Syndesi\CypherDataStructures\Type\OGM\Path;
+use Syndesi\CypherDataStructures\Type\OGM\Relationship;
+use Syndesi\CypherDataStructures\Type\OGM\Time;
+use Syndesi\CypherDataStructures\Type\OGM\WGS843DPoint;
+use Syndesi\CypherDataStructures\Type\OGM\WGS84Point;
 use function is_a;
 use function is_iterable;
 use function is_numeric;
@@ -22,6 +35,9 @@ use Syndesi\CypherDataStructures\Type\OGM\CypherList;
 use Syndesi\CypherDataStructures\Type\OGM\CypherMap;
 use function method_exists;
 
+/**
+ * @psalm-type OGMTypes = string|int|float|bool|null|Date|DateTime|Duration|LocalDateTime|LocalTime|Time|CypherList|CypherMap|Node|Relationship|Path|Cartesian3DPoint|CartesianPoint|WGS84Point|WGS843DPoint
+ */
 final class TypeCaster
 {
     /**

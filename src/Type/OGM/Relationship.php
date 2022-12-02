@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Type\OGM;
 
+use Syndesi\CypherDataStructures\TypeCaster;
+
 /**
  * A Relationship class representing a Relationship in cypher.
  *
- * @psalm-import-type OGMTypes from \Laudis\Neo4j\Formatter\OGMFormatter
+ * @psalm-import-type OGMTypes from TypeCaster
  *
  * @psalm-immutable
  */
