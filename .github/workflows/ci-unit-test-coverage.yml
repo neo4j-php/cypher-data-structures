@@ -23,7 +23,7 @@ jobs:
                   php-version: '8.3'
                   extensions: xdebug
                   tools: composer:v2
-            - run: composer install
+            - run: composer install --ignore-platform-req=php
               shell: bash
             - run: composer test:coverage:xml
               shell: bash

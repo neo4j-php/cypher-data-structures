@@ -20,7 +20,7 @@ jobs:
               with:
                   php-version: '8.3'
                   tools: composer:v2
-            - run: composer install
+            - run: composer install --ignore-platform-req=php
               shell: bash
             - run: composer psalm
               shell: bash
