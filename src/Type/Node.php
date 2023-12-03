@@ -83,8 +83,8 @@ class Node implements NodeInterface
         }
 
         $ownIdentifyingString = ToStringHelper::nodeToString($this, true);
-        if (ToStringHelper::nodeToString($startNode, true) !== $ownIdentifyingString &&
-            ToStringHelper::nodeToString($endNode, true) !== $ownIdentifyingString
+        if (ToStringHelper::nodeToString($startNode, true) !== $ownIdentifyingString
+            && ToStringHelper::nodeToString($endNode, true) !== $ownIdentifyingString
         ) {
             throw new InvalidArgumentException("Adding a relation to a node requires that either the start node or the end node must be the same as the node itself.");
         }
