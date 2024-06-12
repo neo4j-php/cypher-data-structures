@@ -10,3 +10,4 @@ infection.html
 /docs/.npm/
 /docs/.config/
 composer.lock
+/.idea
