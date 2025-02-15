@@ -12,7 +12,7 @@ class OptionsTraitTest extends TestCase
 {
     private function getTrait(): HasOptionsInterface
     {
-        return new class() implements HasOptionsInterface {
+        return new class implements HasOptionsInterface {
             use OptionsTrait;
         };
     }

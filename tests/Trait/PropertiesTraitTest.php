@@ -12,7 +12,7 @@ class PropertiesTraitTest extends TestCase
 {
     private function getTrait(): HasPropertiesInterface
     {
-        return new class() implements HasPropertiesInterface {
+        return new class implements HasPropertiesInterface {
             use PropertiesTrait;
         };
     }

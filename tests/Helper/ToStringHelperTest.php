@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Syndesi\CypherDataStructures\Tests\Helper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Syndesi\CypherDataStructures\Exception\InvalidArgumentException;
 use Syndesi\CypherDataStructures\Helper\ToStringHelper;
@@ -28,7 +29,7 @@ class ToStringHelperTest extends TestCase
         $this->assertTrue(ToStringHelper::mustNameBeEscaped('abc abc'));
     }
 
-    public function escapeStringProvider(): array
+    public static function escapeStringProvider(): array
     {
         return [
             ['hello world', 'hello world'],
@@ -44,9 +45,7 @@ class ToStringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider escapeStringProvider
-     */
+    #[DataProvider("escapeStringProvider")]
     public function testEscapeCharacter(string $string, string $output): void
     {
         $result = ToStringHelper::escapeString($string);
@@ -63,7 +62,7 @@ class ToStringHelperTest extends TestCase
         ToStringHelper::escapeString('some string', '--');
     }
 
-    public function valueToStringProvider(): array
+    public static function valueToStringProvider(): array
     {
         return [
             [null, 'null'],
@@ -83,9 +82,14 @@ class ToStringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider valueToStringProvider
-     */
+    public function testIsArrayAssociate(): void
+    {
+        $this->assertFalse(ToStringHelper::isArrayAssociate([]));
+        $this->assertFalse(ToStringHelper::isArrayAssociate([1, 2, 3]));
+        $this->assertTrue(ToStringHelper::isArrayAssociate(['a' => 'b', 'c' => 'd']));
+    }
+
+    #[DataProvider("valueToStringProvider")]
     public function testValueToString($value, $string): void
     {
         $this->assertSame($string, ToStringHelper::valueToString($value));

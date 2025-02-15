@@ -56,7 +56,7 @@ trait IdentifiersTrait
     public function getIdentifiers(): array
     {
         $result = [];
-        foreach ($this->identifiers as $name => $value) {
+        foreach ($this->identifiers as $name => $_) {
             $result[$name] = $this->properties[$name];
         }
 
