@@ -13,7 +13,7 @@ class IdentifiersTraitTest extends TestCase
 {
     private function getTrait(): HasIdentifiersInterface
     {
-        return new class() implements HasIdentifiersInterface {
+        return new class implements HasIdentifiersInterface {
             use IdentifiersTrait;
         };
     }

@@ -233,7 +233,8 @@ class ToStringHelper
         }
 
         $relationParts = [];
-        if ($type = $relation->getType()) {
+        $type = $relation->getType();
+        if (null !== $type) {
             $relationParts[] = sprintf(':%s', $type);
         }
         $properties = $relation->getProperties();
@@ -271,14 +272,15 @@ class ToStringHelper
 
         $parts[] = 'CONSTRAINT';
 
-        if ($name = $nodeConstraint->getName()) {
+        $name = $nodeConstraint->getName();
+        if (null !== $name) {
             $parts[] = $name;
         }
 
         $parts[] = 'FOR';
 
         $for = $nodeConstraint->getFor();
-        if (!$for) {
+        if (null === $for) {
             throw new InvalidArgumentException('For can not be null');
         }
         $parts[] = sprintf("(node:%s)", $for);
@@ -292,6 +294,9 @@ class ToStringHelper
             throw new InvalidArgumentException('At least one property is required');
         }
         if (1 === $propertyCount) {
+            /**
+             * @psalm-suppress PossiblyNullArgument
+             */
             $parts[] = sprintf("node.%s", array_shift($properties));
         }
         if ($propertyCount > 1) {
@@ -305,7 +310,7 @@ class ToStringHelper
         $parts[] = 'IS';
 
         $type = $nodeConstraint->getType();
-        if (!$type) {
+        if (null === $type) {
             throw new InvalidArgumentException('Type can not be null');
         }
         $parts[] = $type;
@@ -325,14 +330,15 @@ class ToStringHelper
 
         $parts[] = 'CONSTRAINT';
 
-        if ($name = $relationConstraint->getName()) {
+        $name = $relationConstraint->getName();
+        if (null !== $name) {
             $parts[] = $name;
         }
 
         $parts[] = 'FOR';
 
         $for = $relationConstraint->getFor();
-        if (!$for) {
+        if (null === $for) {
             throw new InvalidArgumentException('For can not be null');
         }
         $parts[] = sprintf("()-[relation:%s]-()", $for);
@@ -346,6 +352,9 @@ class ToStringHelper
             throw new InvalidArgumentException('At least one property is required');
         }
         if (1 === $propertyCount) {
+            /**
+             * @psalm-suppress PossiblyNullArgument
+             */
             $parts[] = sprintf("relation.%s", array_shift($properties));
         }
         if ($propertyCount > 1) {
@@ -359,7 +368,7 @@ class ToStringHelper
         $parts[] = 'IS';
 
         $type = $relationConstraint->getType();
-        if (!$type) {
+        if (null === $type) {
             throw new InvalidArgumentException('Type can not be null');
         }
         $parts[] = $type;
@@ -378,20 +387,21 @@ class ToStringHelper
         $parts = [];
 
         $type = $nodeIndex->getType();
-        if ($type) {
+        if (null !== $type) {
             $parts[] = $type;
         }
 
         $parts[] = 'INDEX';
 
-        if ($name = $nodeIndex->getName()) {
+        $name = $nodeIndex->getName();
+        if (null !== $name) {
             $parts[] = $name;
         }
 
         $parts[] = 'FOR';
 
         $for = $nodeIndex->getFor();
-        if (!$for) {
+        if (null === $for) {
             throw new InvalidArgumentException('For can not be null');
         }
         $parts[] = sprintf("(node:%s)", $for);
@@ -424,20 +434,21 @@ class ToStringHelper
         $parts = [];
 
         $type = $relationIndex->getType();
-        if ($type) {
+        if (null !== $type) {
             $parts[] = $type;
         }
 
         $parts[] = 'INDEX';
 
-        if ($name = $relationIndex->getName()) {
+        $name = $relationIndex->getName();
+        if (null !== $name) {
             $parts[] = $name;
         }
 
         $parts[] = 'FOR';
 
         $for = $relationIndex->getFor();
-        if (!$for) {
+        if (null === $for) {
             throw new InvalidArgumentException('For can not be null');
         }
         $parts[] = sprintf("()-[relation:%s]-()", $for);
